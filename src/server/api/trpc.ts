@@ -6,9 +6,28 @@
  * TL;DR - This is where all the tRPC server stuff is created and plugged in. The pieces you will
  * need to use are documented accordingly near the end.
  */
-import { initTRPC } from "@trpc/server";
+import { inferAsyncReturnType, initTRPC, TRPCError } from "@trpc/server";
 import superjson from "superjson";
 import { ZodError } from "zod";
+import {
+  getAuth,
+  SignedInAuthObject,
+  SignedOutAuthObject,
+} from "@clerk/nextjs/server";
+import { NextRequest } from "next/server";
+import { xata } from "../db";
+import { CreateNextContextOptions } from "@trpc/server/adapters/next";
+
+interface AuthContext {
+  auth: SignedInAuthObject | SignedOutAuthObject;
+}
+
+export const createContextInner = async ({ auth }: AuthContext) => {
+  return {
+    auth,
+    xata,
+  };
+};
 
 /**
  * 1. CONTEXT
@@ -22,10 +41,10 @@ import { ZodError } from "zod";
  *
  * @see https://trpc.io/docs/server/context
  */
-export const createTRPCContext = async (opts: { headers: Headers }) => {
-  return {
-    ...opts,
-  };
+export const createTRPCContext = async (opts: CreateNextContextOptions) => {
+  // Fetch stuff that depends on the request
+
+  return await createContextInner({ auth: getAuth(opts.req) });
 };
 
 /**
@@ -49,6 +68,8 @@ const t = initTRPC.context<typeof createTRPCContext>().create({
   },
 });
 
+export type Context = inferAsyncReturnType<typeof createTRPCContext>;
+
 /**
  * 3. ROUTER & PROCEDURE (THE IMPORTANT BIT)
  *
@@ -63,6 +84,17 @@ const t = initTRPC.context<typeof createTRPCContext>().create({
  */
 export const createTRPCRouter = t.router;
 
+const isAuthed = t.middleware(({ next, ctx }) => {
+  if (!ctx.auth.userId) {
+    throw new TRPCError({ code: "UNAUTHORIZED" });
+  }
+  return next({
+    ctx: {
+      auth: ctx.auth,
+    },
+  });
+});
+
 /**
  * Public (unauthenticated) procedure
  *
@@ -71,3 +103,6 @@ export const createTRPCRouter = t.router;
  * are logged in.
  */
 export const publicProcedure = t.procedure;
+
+// export this procedure to be used anywhere in your application
+export const protectedProcedure = t.procedure.use(isAuthed);

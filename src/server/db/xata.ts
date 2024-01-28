@@ -6,12 +6,31 @@ import type {
   XataRecord,
 } from "@xata.io/client";
 
-const tables = [] as const;
+const tables = [
+  {
+    name: "barbershop",
+    columns: [
+      { name: "logo", type: "file", file: { defaultPublicAccess: true } },
+      { name: "verified", type: "bool", notNull: true, defaultValue: "false" },
+      { name: "name", type: "string", notNull: true, defaultValue: "" },
+    ],
+  },
+  { name: "address", columns: [] },
+] as const;
 
 export type SchemaTables = typeof tables;
 export type InferredTypes = SchemaInference<SchemaTables>;
 
-export type DatabaseSchema = {};
+export type Barbershop = InferredTypes["barbershop"];
+export type BarbershopRecord = Barbershop & XataRecord;
+
+export type Address = InferredTypes["address"];
+export type AddressRecord = Address & XataRecord;
+
+export type DatabaseSchema = {
+  barbershop: BarbershopRecord;
+  address: AddressRecord;
+};
 
 const DatabaseClient = buildClient();
 
