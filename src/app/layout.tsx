@@ -5,6 +5,7 @@ import { Inter } from "next/font/google";
 
 import { TRPCReactProvider } from "~/trpc/react";
 import { type Metadata } from "next";
+import { cn } from "~/lib";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -220,7 +221,12 @@ export default function RootLayout({
   return (
     <ClerkProvider>
       <html lang="en">
-        <body className={`font-sans ${inter.variable}`}>
+        <body
+          className={cn(
+            "bg-background flex min-h-screen w-full font-sans antialiased",
+            inter.variable,
+          )}
+        >
           <TRPCReactProvider>{children}</TRPCReactProvider>
         </body>
       </html>

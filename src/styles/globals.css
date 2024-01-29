@@ -73,4 +73,10 @@
   body {
     @apply bg-background text-foreground;
   }
+
+  @media all and (display-mode: standalone) {
+    * {
+      @apply ring-0 !important;
+    }
+  }
 }

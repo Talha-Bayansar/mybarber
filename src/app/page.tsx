@@ -1,4 +1,5 @@
 import { UserButton } from "@clerk/nextjs";
+import { Header, Main, Page, SearchInput, Title } from "~/components";
 import { api } from "~/trpc/server";
 
 export default async function Home() {
@@ -6,8 +7,11 @@ export default async function Home() {
     query: "test",
   });
   return (
-    <div className="h-screen">
-      <UserButton afterSignOutUrl="/" />
-    </div>
+    <Page hasNavigationBar={false} className="gap-8">
+      <Header />
+      <Main>
+        <SearchInput />
+      </Main>
+    </Page>
   );
 }
