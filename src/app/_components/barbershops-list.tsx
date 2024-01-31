@@ -1,28 +1,61 @@
 import Image from "next/image";
-import { Card, List, Skeleton } from "~/components";
-import { generateArray, isArrayEmpty } from "~/lib";
+import Link from "next/link";
+import { Button, Card, List, Skeleton } from "~/components";
+import { generateArray, isArrayEmpty, routes } from "~/lib";
 import { type BarbershopRecord } from "~/server/db";
 import { api } from "~/trpc/server";
 
 type Props = {
-  query?: string;
+  params: {
+    name?: string;
+    zip?: string;
+    page?: string;
+  };
 };
 
-export const BarbershopsList = async ({ query }: Props) => {
+export const BarbershopsList = async ({ params }: Props) => {
+  const SIZE = 20;
+  const page = Number(params.page ?? 1);
+
   const barbershops = await api.barbershop.search.query({
-    query: query ?? "",
+    name: params.name,
+    zip: params.zip,
+    size: SIZE,
+    offset: (page - 1) * SIZE,
   });
 
-  if (isArrayEmpty(barbershops)) return <div>Empty</div>;
+  const getParamsURI = (page: number) => {
+    const { name, zip } = params;
+    let url = `page=${page}`;
+
+    if (!!name || !!zip) {
+      if (!!name) {
+        url += `&name=${name}`;
+      } else {
+        url += `&zip=${zip}`;
+      }
+    }
+
+    return url;
+  };
+
+  if (isArrayEmpty(barbershops.records)) return <div>Empty</div>;
 
   return (
-    <List className="md:grid md:grid-cols-2">
-      {barbershops.map((barbershop) => (
-        <BarbershopItem
-          key={barbershop.id}
-          barbershop={barbershop as BarbershopRecord}
-        />
-      ))}
+    <List>
+      <List className="md:grid md:grid-cols-2">
+        {barbershops.records.map((barbershop) => (
+          <BarbershopItem
+            key={barbershop.id}
+            barbershop={barbershop as BarbershopRecord}
+          />
+        ))}
+      </List>
+      {barbershops.meta.page.more && (
+        <Button asChild>
+          <Link href={`${routes.root}?${getParamsURI(page + 1)}`}>Next</Link>
+        </Button>
+      )}
     </List>
   );
 };

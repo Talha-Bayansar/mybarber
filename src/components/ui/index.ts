@@ -3,3 +3,4 @@ export * from "./button";
 export * from "./tooltip";
 export * from "./skeleton";
 export * from "./card";
+export * from "./select";

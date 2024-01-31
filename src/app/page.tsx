@@ -8,7 +8,9 @@ import {
 
 type Props = {
   searchParams: {
-    query?: string;
+    name?: string;
+    zip?: string;
+    page?: string;
   };
 };
 
@@ -17,9 +19,9 @@ export default function Home({ searchParams }: Props) {
     <Page hasNavigationBar={false} className="gap-8">
       <Header />
       <Main className="gap-8">
-        <SearchForm query={searchParams.query} />
+        <SearchForm params={searchParams} />
         <Suspense fallback={<BarbershopsListSkeleton />}>
-          <BarbershopsList query={searchParams.query} />
+          <BarbershopsList params={searchParams} />
         </Suspense>
       </Main>
     </Page>
