@@ -18,7 +18,7 @@ export default function Home({ searchParams }: Props) {
   return (
     <Page hasNavigationBar={false} className="gap-8">
       <Header />
-      <Main className="gap-8">
+      <Main className="gap-4">
         <SearchForm params={searchParams} />
         <Suspense fallback={<BarbershopsListSkeleton />}>
           <BarbershopsList params={searchParams} />

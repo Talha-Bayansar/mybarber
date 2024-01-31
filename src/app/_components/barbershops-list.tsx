@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { Button, Card, List, Skeleton } from "~/components";
+import { Button, Card, EmptyState, List, Skeleton } from "~/components";
 import { generateArray, isArrayEmpty, routes } from "~/lib";
 import { type BarbershopRecord } from "~/server/db";
 import { api } from "~/trpc/server";
@@ -14,18 +14,18 @@ type Props = {
 };
 
 export const BarbershopsList = async ({ params }: Props) => {
+  const { name, zip } = params;
   const SIZE = 20;
   const page = Number(params.page ?? 1);
 
   const barbershops = await api.barbershop.search.query({
-    name: params.name,
-    zip: params.zip,
+    name: name,
+    zip: zip,
     size: SIZE,
     offset: (page - 1) * SIZE,
   });
 
   const getParamsURI = (page: number) => {
-    const { name, zip } = params;
     let url = `page=${page}`;
 
     if (!!name || !!zip) {
@@ -39,10 +39,13 @@ export const BarbershopsList = async ({ params }: Props) => {
     return url;
   };
 
-  if (isArrayEmpty(barbershops.records)) return <div>Empty</div>;
+  if (isArrayEmpty(barbershops.records)) return <EmptyState />;
 
   return (
     <List>
+      <p className="mb-4 text-center text-gray-500">
+        Result(s) for "{params.name || params.zip}"
+      </p>
       <List className="md:grid md:grid-cols-2">
         {barbershops.records.map((barbershop) => (
           <BarbershopItem
@@ -72,7 +75,9 @@ const BarbershopItem = ({ barbershop }: { barbershop: BarbershopRecord }) => {
       />
       <div className="flex flex-col p-2">
         <h2>{barbershop.name}</h2>
-        <p>{barbershop.address?.city}</p>
+        <p>
+          {barbershop.address?.city} {barbershop.address?.zip}
+        </p>
       </div>
     </Card>
   );

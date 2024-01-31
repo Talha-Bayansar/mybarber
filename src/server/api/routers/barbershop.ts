@@ -28,9 +28,7 @@ export const barbershopRouter = createTRPCRouter({
                   },
                 },
                 {
-                  "address.zip": {
-                    $iContains: input.zip,
-                  },
+                  "address.zip": input.zip,
                 },
               ],
             },
