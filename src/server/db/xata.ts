@@ -13,9 +13,35 @@ const tables = [
       { name: "logo", type: "file", file: { defaultPublicAccess: true } },
       { name: "verified", type: "bool", notNull: true, defaultValue: "false" },
       { name: "name", type: "string", notNull: true, defaultValue: "" },
+      {
+        name: "address",
+        type: "link",
+        link: { table: "address" },
+        unique: true,
+      },
+      { name: "phoneNumber", type: "string" },
+      { name: "email", type: "email" },
+    ],
+    revLinks: [{ column: "barbershop", table: "barber" }],
+  },
+  {
+    name: "address",
+    columns: [
+      { name: "street", type: "string" },
+      { name: "zip", type: "string" },
+      { name: "city", type: "string" },
+      { name: "houseNumber", type: "string" },
+    ],
+    revLinks: [{ column: "address", table: "barbershop" }],
+  },
+  {
+    name: "barber",
+    columns: [
+      { name: "firstName", type: "string" },
+      { name: "lastName", type: "string" },
+      { name: "barbershop", type: "link", link: { table: "barbershop" } },
     ],
   },
-  { name: "address", columns: [] },
 ] as const;
 
 export type SchemaTables = typeof tables;
@@ -27,9 +53,13 @@ export type BarbershopRecord = Barbershop & XataRecord;
 export type Address = InferredTypes["address"];
 export type AddressRecord = Address & XataRecord;
 
+export type Barber = InferredTypes["barber"];
+export type BarberRecord = Barber & XataRecord;
+
 export type DatabaseSchema = {
   barbershop: BarbershopRecord;
   address: AddressRecord;
+  barber: BarberRecord;
 };
 
 const DatabaseClient = buildClient();

@@ -13,6 +13,7 @@ export const barbershopRouter = createTRPCRouter({
             $iContains: input.query,
           },
         })
+        .select(["*", "address.*"])
         .getAll();
       return response;
     }),
