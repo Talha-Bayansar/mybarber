@@ -22,7 +22,10 @@ const tables = [
       { name: "phoneNumber", type: "string" },
       { name: "email", type: "email" },
     ],
-    revLinks: [{ column: "barbershop", table: "barber" }],
+    revLinks: [
+      { column: "barbershop", table: "barber" },
+      { column: "barbershop", table: "favorite_barbershop" },
+    ],
   },
   {
     name: "address",
@@ -42,6 +45,13 @@ const tables = [
       { name: "barbershop", type: "link", link: { table: "barbershop" } },
     ],
   },
+  {
+    name: "favorite_barbershop",
+    columns: [
+      { name: "userId", type: "string" },
+      { name: "barbershop", type: "link", link: { table: "barbershop" } },
+    ],
+  },
 ] as const;
 
 export type SchemaTables = typeof tables;
@@ -56,10 +66,14 @@ export type AddressRecord = Address & XataRecord;
 export type Barber = InferredTypes["barber"];
 export type BarberRecord = Barber & XataRecord;
 
+export type FavoriteBarbershop = InferredTypes["favorite_barbershop"];
+export type FavoriteBarbershopRecord = FavoriteBarbershop & XataRecord;
+
 export type DatabaseSchema = {
   barbershop: BarbershopRecord;
   address: AddressRecord;
   barber: BarberRecord;
+  favorite_barbershop: FavoriteBarbershopRecord;
 };
 
 const DatabaseClient = buildClient();
