@@ -1,6 +1,6 @@
 "use client";
 
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
 import {
   SearchInput,
@@ -9,23 +9,21 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
+  Skeleton,
 } from "~/components";
 import { routes } from "~/lib";
 
 type Filter = "name" | "zip";
 
-type Props = {
-  params: {
-    name?: string;
-    zip?: string;
-  };
-};
+export const SearchForm = () => {
+  const params = useSearchParams();
+  const name = params.get("name");
+  const zip = params.get("zip");
 
-export const SearchForm = ({ params }: Props) => {
   const router = useRouter();
-  const [query, setQuery] = useState(params.name ?? params.zip ?? "");
+  const [query, setQuery] = useState(name ?? zip ?? "");
   const [selectedFilter, setSelectedFilter] = useState<Filter>(
-    params.name ? "name" : "zip",
+    name ? "name" : "zip",
   );
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -58,4 +56,8 @@ export const SearchForm = ({ params }: Props) => {
       </Select>
     </form>
   );
+};
+
+export const SearchFormSkeleton = () => {
+  return <Skeleton className="h-10 w-full" />;
 };

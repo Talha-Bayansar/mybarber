@@ -1,48 +1,40 @@
+"use client";
+
 import Link from "next/link";
 import { Button, Card, EmptyState, List, Skeleton } from "~/components";
 import { generateArray, isArrayEmpty, routes } from "~/lib";
-import { type FavoriteBarbershopRecord } from "~/server/db";
-import { api } from "~/trpc/server";
 import { BarbershopItem } from ".";
+import { useSearchParams } from "next/navigation";
+import { api } from "~/trpc/react";
 
 type Props = {
-  params: {
-    name?: string;
-    zip?: string;
-    page?: string;
-  };
+  initialData: string;
 };
 
-export const BarbershopsList = async ({ params }: Props) => {
-  const { name, zip } = params;
+export const BarbershopsList = ({ initialData }: Props) => {
+  const params = useSearchParams();
+  const name = params.get("name");
+  const zip = params.get("zip");
+  const page = params.get("page");
   const SIZE = 20;
-  const page = Number(params.page ?? 1);
-  let hasSearched = false;
+  const pageNumber = Number(page ?? 1);
 
-  let barbershops;
-
-  if (!!name || !!zip) {
-    hasSearched = true;
-
-    barbershops = await api.barbershop.search.query({
+  const { data: barbershops, isLoading } = api.barbershop.search.useQuery(
+    {
       name: name,
       zip: zip,
       size: SIZE,
-      offset: (page - 1) * SIZE,
-    });
-  } else {
-    hasSearched = false;
-
-    barbershops = await api.barbershop.getFavoriteBarbershops.query({
-      size: SIZE,
-      offset: (page - 1) * SIZE,
-    });
-  }
+      offset: (pageNumber - 1) * SIZE,
+    },
+    {
+      initialData: JSON.parse(initialData),
+    },
+  );
 
   const getParamsURI = (page: number) => {
     let url = `page=${page}`;
 
-    if (hasSearched && (!!name || !!zip)) {
+    if (!!name || !!zip) {
       if (!!name) {
         url += `&name=${name}`;
       } else {
@@ -53,45 +45,25 @@ export const BarbershopsList = async ({ params }: Props) => {
     return url;
   };
 
-  if (isArrayEmpty(barbershops.records)) return <EmptyState />;
+  if (isLoading) return <BarbershopsListSkeleton />;
 
-  if (!hasSearched)
-    return (
-      <List>
-        <p className="mb-4 text-center text-gray-500">Favorties</p>
-        <List className="md:grid md:grid-cols-2">
-          {barbershops.records.map((barbershop: FavoriteBarbershopRecord) => (
-            <BarbershopItem
-              key={barbershop.id}
-              isFavorite
-              barbershopJSON={JSON.stringify(barbershop.barbershop)}
-            />
-          ))}
-        </List>
-        {barbershops.meta.page.more && (
-          <Button asChild>
-            <Link href={`${routes.root}?${getParamsURI(page + 1)}`}>Next</Link>
-          </Button>
-        )}
-      </List>
-    );
+  if (isArrayEmpty(barbershops.records)) return <EmptyState />;
 
   return (
     <List>
       <p className="mb-4 text-center text-gray-500">
-        Result(s) for "{params.name || params.zip}"
+        Result(s) for "{name || zip}"
       </p>
       <List className="md:grid md:grid-cols-2">
         {barbershops.records.map((barbershop) => (
-          <BarbershopItem
-            key={barbershop.id}
-            barbershopJSON={JSON.stringify(barbershop)}
-          />
+          <BarbershopItem key={barbershop.id} barbershop={barbershop} />
         ))}
       </List>
       {barbershops.meta.page.more && (
         <Button asChild>
-          <Link href={`${routes.root}?${getParamsURI(page + 1)}`}>Next</Link>
+          <Link href={`${routes.root}?${getParamsURI(pageNumber + 1)}`}>
+            Next
+          </Link>
         </Button>
       )}
     </List>

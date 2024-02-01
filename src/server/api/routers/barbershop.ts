@@ -6,6 +6,7 @@ import {
   protectedProcedure,
   publicProcedure,
 } from "~/server/api/trpc";
+import { BarbershopRecord } from "~/server/db";
 
 export const barbershopRouter = createTRPCRouter({
   search: publicProcedure
@@ -55,35 +56,27 @@ export const barbershopRouter = createTRPCRouter({
 
       return response;
     }),
-  getFavoriteBarbershops: protectedProcedure
-    .input(
-      z.object({
-        size: z.number().min(1).max(20).optional(),
-        offset: z.number(),
-      }),
-    )
-    .query(async ({ ctx, input }) => {
-      const { xata, userId } = ctx;
+  getFavoriteBarbershops: protectedProcedure.query(async ({ ctx, input }) => {
+    const { xata, userId } = ctx;
 
-      const response = await xata.db.favorite_barbershop
-        .filter({
-          userId: userId,
-        })
-        .select(["barbershop.*"])
-        .getPaginated({
-          pagination: {
-            size: input.size,
-            offset: input.offset,
-          },
-        });
+    const response = await xata.db.favorite_barbershop
+      .filter({
+        userId: userId,
+      })
+      .select(["barbershop.*"])
+      .getAll();
 
-      if (!response)
-        throw new TRPCError({
-          code: "INTERNAL_SERVER_ERROR",
-        });
+    if (!response)
+      throw new TRPCError({
+        code: "INTERNAL_SERVER_ERROR",
+      });
 
-      return response;
-    }),
+    const barbershops = response.map(
+      (record) => record.barbershop as BarbershopRecord,
+    );
+
+    return barbershops;
+  }),
   toggleFavorite: protectedProcedure
     .input(
       z.object({

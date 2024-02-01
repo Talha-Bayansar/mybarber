@@ -8,16 +8,14 @@ import type { BarbershopRecord } from "~/server/db";
 import { api } from "~/trpc/react";
 
 type BarbershopItemProps = {
-  barbershopJSON: string;
+  barbershop: BarbershopRecord;
   isFavorite?: boolean;
 };
 
 export const BarbershopItem = ({
-  barbershopJSON,
+  barbershop,
   isFavorite,
 }: BarbershopItemProps) => {
-  const barbershop = JSON.parse(barbershopJSON) as BarbershopRecord;
-
   return (
     <Card className="relative flex overflow-hidden pr-10">
       <Image
@@ -46,7 +44,12 @@ type FavoriteButtonProps = {
 };
 
 const FavoriteButton = ({ isFavorite, barbershopId }: FavoriteButtonProps) => {
-  const toggleFavorite = api.barbershop.toggleFavorite.useMutation();
+  const { refetch } = api.barbershop.getFavoriteBarbershops.useQuery();
+  const toggleFavorite = api.barbershop.toggleFavorite.useMutation({
+    onSuccess: () => {
+      refetch();
+    },
+  });
 
   return (
     <IconButton
