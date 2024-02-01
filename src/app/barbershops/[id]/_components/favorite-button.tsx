@@ -19,9 +19,9 @@ export const FavoriteButton = ({ barbershopId }: Props) => {
     id: barbershopId,
   });
   const toggleFavorite = api.barbershop.toggleFavorite.useMutation({
-    onSuccess: () => {
-      refetch();
-      refetchIsFavorite();
+    onSuccess: async () => {
+      await refetch();
+      await refetchIsFavorite();
     },
   });
 

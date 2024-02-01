@@ -52,8 +52,8 @@ type FavoriteButtonProps = {
 const FavoriteButton = ({ isFavorite, barbershopId }: FavoriteButtonProps) => {
   const { refetch } = api.barbershop.getFavoriteBarbershops.useQuery();
   const toggleFavorite = api.barbershop.toggleFavorite.useMutation({
-    onSuccess: () => {
-      refetch();
+    onSuccess: async () => {
+      await refetch();
     },
   });
 
