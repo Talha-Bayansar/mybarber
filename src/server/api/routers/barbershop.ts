@@ -63,7 +63,7 @@ export const barbershopRouter = createTRPCRouter({
       .filter({
         userId: userId,
       })
-      .select(["barbershop.*"])
+      .select(["barbershop.*", "barbershop.address.*"])
       .getAll();
 
     if (!response)
@@ -77,6 +77,30 @@ export const barbershopRouter = createTRPCRouter({
 
     return barbershops;
   }),
+  isFavorite: protectedProcedure
+    .input(
+      z.object({
+        id: z.string().min(1),
+      }),
+    )
+    .query(async ({ ctx, input }) => {
+      const { xata, userId } = ctx;
+
+      const response = await xata.db.favorite_barbershop
+        .filter({
+          $all: [
+            {
+              "barbershop.id": input.id,
+            },
+            {
+              userId: userId,
+            },
+          ],
+        })
+        .getFirst();
+
+      return !!response;
+    }),
   toggleFavorite: protectedProcedure
     .input(
       z.object({

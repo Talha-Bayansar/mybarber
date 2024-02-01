@@ -20,7 +20,7 @@ export const FavoritesList = ({ initialData }: Props) => {
 
   return (
     <List>
-      <p className="mb-4 text-center text-gray-500">Favorties</p>
+      <p className="mb-4 text-center text-gray-500">My favorites</p>
       <List className="md:grid md:grid-cols-2">
         {barbershops.map((barbershop) => (
           <BarbershopItem

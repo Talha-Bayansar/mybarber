@@ -3,4 +3,7 @@ export const routes = {
   settings: {
     root: "/settings",
   },
+  barbershops: {
+    root: "/barbershops",
+  },
 };

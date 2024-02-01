@@ -10,7 +10,7 @@ type Props = {
   };
 };
 
-export default async function Home({ searchParams }: Props) {
+export default async function RootPage({ searchParams }: Props) {
   const { name, zip, page } = searchParams;
   const pageNumber = Number(page ?? 1);
   const SIZE = 20;

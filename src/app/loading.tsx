@@ -1,7 +1,7 @@
 import { Header, Main, Page } from "~/components";
 import { BarbershopsListSkeleton, SearchFormSkeleton } from "./_components";
 
-const Loading = () => {
+const RootLoading = () => {
   return (
     <Page hasNavigationBar={false} className="gap-8">
       <Header />
@@ -13,4 +13,4 @@ const Loading = () => {
   );
 };
 
-export default Loading;
+export default RootLoading;

@@ -40,6 +40,7 @@ export const SearchForm = () => {
       <SearchInput
         className="w-full"
         placeholder="Search barbershops by"
+        value={query}
         onChange={(e) => setQuery(e.target.value)}
       />
       <Select
