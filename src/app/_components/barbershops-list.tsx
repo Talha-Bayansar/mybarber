@@ -85,7 +85,6 @@ export const BarbershopsList = async ({ params }: Props) => {
         {barbershops.records.map((barbershop) => (
           <BarbershopItem
             key={barbershop.id}
-            isFavorite={false}
             barbershopJSON={JSON.stringify(barbershop)}
           />
         ))}

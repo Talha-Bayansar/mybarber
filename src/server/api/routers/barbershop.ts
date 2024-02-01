@@ -19,6 +19,7 @@ export const barbershopRouter = createTRPCRouter({
     )
     .query(async ({ ctx, input }) => {
       const { xata } = ctx;
+
       const response = await xata.db.barbershop
         .filter({
           $all: [

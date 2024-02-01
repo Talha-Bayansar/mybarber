@@ -7,15 +7,16 @@ import { cn } from "~/lib";
 import type { BarbershopRecord } from "~/server/db";
 import { api } from "~/trpc/react";
 
+type BarbershopItemProps = {
+  barbershopJSON: string;
+  isFavorite?: boolean;
+};
+
 export const BarbershopItem = ({
   barbershopJSON,
   isFavorite,
-}: {
-  barbershopJSON: string;
-  isFavorite: boolean;
-}) => {
+}: BarbershopItemProps) => {
   const barbershop = JSON.parse(barbershopJSON) as BarbershopRecord;
-  const toggleFavorite = api.barbershop.toggleFavorite.useMutation();
 
   return (
     <Card className="relative flex overflow-hidden pr-10">
@@ -32,20 +33,35 @@ export const BarbershopItem = ({
           {barbershop.address?.city} {barbershop.address?.zip}
         </p>
       </div>
-      <IconButton
-        className="absolute right-0 top-0 p-2"
-        onClick={() =>
-          toggleFavorite.mutate({
-            barbershopId: barbershop.id,
-          })
-        }
-      >
-        <Heart
-          className={cn({
-            "text-red-500": isFavorite,
-          })}
-        />
-      </IconButton>
+      {isFavorite && (
+        <FavoriteButton isFavorite={isFavorite} barbershopId={barbershop.id} />
+      )}
     </Card>
+  );
+};
+
+type FavoriteButtonProps = {
+  isFavorite: boolean;
+  barbershopId: string;
+};
+
+const FavoriteButton = ({ isFavorite, barbershopId }: FavoriteButtonProps) => {
+  const toggleFavorite = api.barbershop.toggleFavorite.useMutation();
+
+  return (
+    <IconButton
+      className="absolute right-0 top-0 p-2"
+      onClick={() =>
+        toggleFavorite.mutate({
+          barbershopId: barbershopId,
+        })
+      }
+    >
+      <Heart
+        className={cn({
+          "text-red-500": isFavorite,
+        })}
+      />
+    </IconButton>
   );
 };
