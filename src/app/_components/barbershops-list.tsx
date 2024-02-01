@@ -1,9 +1,9 @@
-import Image from "next/image";
 import Link from "next/link";
 import { Button, Card, EmptyState, List, Skeleton } from "~/components";
 import { generateArray, isArrayEmpty, routes } from "~/lib";
-import { type BarbershopRecord } from "~/server/db";
+import { type FavoriteBarbershopRecord } from "~/server/db";
 import { api } from "~/trpc/server";
+import { BarbershopItem } from ".";
 
 type Props = {
   params: {
@@ -17,18 +17,32 @@ export const BarbershopsList = async ({ params }: Props) => {
   const { name, zip } = params;
   const SIZE = 20;
   const page = Number(params.page ?? 1);
+  let hasSearched = false;
 
-  const barbershops = await api.barbershop.search.query({
-    name: name,
-    zip: zip,
-    size: SIZE,
-    offset: (page - 1) * SIZE,
-  });
+  let barbershops;
+
+  if (!!name || !!zip) {
+    hasSearched = true;
+
+    barbershops = await api.barbershop.search.query({
+      name: name,
+      zip: zip,
+      size: SIZE,
+      offset: (page - 1) * SIZE,
+    });
+  } else {
+    hasSearched = false;
+
+    barbershops = await api.barbershop.getFavoriteBarbershops.query({
+      size: SIZE,
+      offset: (page - 1) * SIZE,
+    });
+  }
 
   const getParamsURI = (page: number) => {
     let url = `page=${page}`;
 
-    if (!!name || !!zip) {
+    if (hasSearched && (!!name || !!zip)) {
       if (!!name) {
         url += `&name=${name}`;
       } else {
@@ -41,6 +55,27 @@ export const BarbershopsList = async ({ params }: Props) => {
 
   if (isArrayEmpty(barbershops.records)) return <EmptyState />;
 
+  if (!hasSearched)
+    return (
+      <List>
+        <p className="mb-4 text-center text-gray-500">Favorties</p>
+        <List className="md:grid md:grid-cols-2">
+          {barbershops.records.map((barbershop: FavoriteBarbershopRecord) => (
+            <BarbershopItem
+              key={barbershop.id}
+              isFavorite
+              barbershopJSON={JSON.stringify(barbershop.barbershop)}
+            />
+          ))}
+        </List>
+        {barbershops.meta.page.more && (
+          <Button asChild>
+            <Link href={`${routes.root}?${getParamsURI(page + 1)}`}>Next</Link>
+          </Button>
+        )}
+      </List>
+    );
+
   return (
     <List>
       <p className="mb-4 text-center text-gray-500">
@@ -50,7 +85,8 @@ export const BarbershopsList = async ({ params }: Props) => {
         {barbershops.records.map((barbershop) => (
           <BarbershopItem
             key={barbershop.id}
-            barbershop={barbershop as BarbershopRecord}
+            isFavorite={false}
+            barbershopJSON={JSON.stringify(barbershop)}
           />
         ))}
       </List>
@@ -60,26 +96,6 @@ export const BarbershopsList = async ({ params }: Props) => {
         </Button>
       )}
     </List>
-  );
-};
-
-const BarbershopItem = ({ barbershop }: { barbershop: BarbershopRecord }) => {
-  return (
-    <Card className="flex overflow-hidden">
-      <Image
-        className="h-24 w-24"
-        width={400}
-        height={400}
-        alt={`Logo of ${barbershop.name}`}
-        src={barbershop.logo?.url ?? "https://placehold.co/400"}
-      />
-      <div className="flex flex-col p-2">
-        <h2>{barbershop.name}</h2>
-        <p>
-          {barbershop.address?.city} {barbershop.address?.zip}
-        </p>
-      </div>
-    </Card>
   );
 };
 

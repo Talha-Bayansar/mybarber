@@ -83,7 +83,7 @@ export const barbershopRouter = createTRPCRouter({
 
       return response;
     }),
-  createFavorite: protectedProcedure
+  toggleFavorite: protectedProcedure
     .input(
       z.object({
         barbershopId: z.string().min(1),
@@ -92,12 +92,41 @@ export const barbershopRouter = createTRPCRouter({
     .mutation(async ({ ctx, input }) => {
       const { xata, userId } = ctx;
 
-      const response = await xata.db.favorite_barbershop.create({
-        userId: userId,
-        barbershop: input.barbershopId,
-      });
+      const isFavorite = await xata.db.favorite_barbershop
+        .filter({
+          $all: [
+            {
+              "barbershop.id": input.barbershopId,
+            },
+            {
+              userId: userId,
+            },
+          ],
+        })
+        .getFirst();
 
-      if (!response)
+      let isError = false;
+
+      let response;
+
+      if (isFavorite) {
+        response = await isFavorite.delete();
+
+        if (!response) {
+          isError = true;
+        }
+      } else {
+        response = await xata.db.favorite_barbershop.create({
+          userId: userId,
+          barbershop: input.barbershopId,
+        });
+
+        if (!response) {
+          isError = true;
+        }
+      }
+
+      if (isError)
         throw new TRPCError({
           code: "INTERNAL_SERVER_ERROR",
         });
