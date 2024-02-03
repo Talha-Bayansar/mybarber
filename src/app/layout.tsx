@@ -12,9 +12,18 @@ const inter = Inter({
   variable: "--font-sans",
 });
 
+const APP_NAME = "MyBarber";
+const APP_DEFAULT_TITLE = "MyBarber";
+const APP_TITLE_TEMPLATE = "%s - MyBarber";
+const APP_DESCRIPTION = "Official MyBarber PWA";
+
 export const metadata: Metadata = {
-  title: "MyBarber",
-  description: "Official MyBarber PWA",
+  applicationName: APP_NAME,
+  title: {
+    default: APP_DEFAULT_TITLE,
+    template: APP_TITLE_TEMPLATE,
+  },
+  description: APP_DESCRIPTION,
   generator: "Next.js",
   manifest: "/manifest.json",
   keywords: ["My", "Barber", "MyBarber", "Hair", "Haircut", "Reservation"],
@@ -28,6 +37,7 @@ export const metadata: Metadata = {
   appleWebApp: {
     capable: true,
     statusBarStyle: "default",
+    title: APP_DEFAULT_TITLE,
     startupImage: [
       {
         media:
@@ -201,6 +211,23 @@ export const metadata: Metadata = {
       },
     ],
   },
+  openGraph: {
+    type: "website",
+    siteName: APP_NAME,
+    title: {
+      default: APP_DEFAULT_TITLE,
+      template: APP_TITLE_TEMPLATE,
+    },
+    description: APP_DESCRIPTION,
+  },
+  twitter: {
+    card: "summary",
+    title: {
+      default: APP_DEFAULT_TITLE,
+      template: APP_TITLE_TEMPLATE,
+    },
+    description: APP_DESCRIPTION,
+  },
 };
 
 export const viewport = {
@@ -223,7 +250,7 @@ export default function RootLayout({
       <html lang="en">
         <body
           className={cn(
-            "bg-background flex min-h-screen w-full font-sans antialiased",
+            "flex min-h-screen w-full bg-background font-sans antialiased",
             inter.variable,
           )}
         >

@@ -1,18 +1,10 @@
-import withPWAInit from "@ducanh2912/next-pwa";
+import withSerwistInit from "@serwist/next";
 
-const withPWA = withPWAInit({
-  dest: "public",
-  cacheOnFrontEndNav: true,
-  aggressiveFrontEndNavCaching: true,
-  reloadOnOnline: true,
-  disable: process.env.NODE_ENV === "development",
-  workboxOptions: {
-    disableDevLogs: true,
-  },
-  fallbacks: {
-    document: "/offline",
-  },
-  cacheStartUrl: true,
+const withSerwist = withSerwistInit({
+  // Note: This is only an example. If you use Pages Router,
+  // use something else that works, such as "service-worker/index.ts".
+  swSrc: "app/sw.ts",
+  swDest: "public/sw.js",
 });
 
 /** @type {import("next").NextConfig} */
@@ -35,4 +27,4 @@ const config = {
   },
 };
 
-export default withPWA(config);
+export default withSerwist(config);

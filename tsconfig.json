@@ -14,9 +14,14 @@
     "strict": true,
     "noUncheckedIndexedAccess": true,
     "checkJs": true,
+    "types": [
+      // Other types...
+      // This allows Serwist to type `window.serwist`.
+      "@serwist/next/typings",
+    ],
 
     /* Bundled projects */
-    "lib": ["dom", "dom.iterable", "ES2022"],
+    "lib": ["dom", "dom.iterable", "ES2022", "webworker"],
     "noEmit": true,
     "module": "ESNext",
     "moduleResolution": "Bundler",
