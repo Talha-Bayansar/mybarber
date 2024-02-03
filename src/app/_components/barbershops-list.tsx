@@ -52,7 +52,7 @@ export const BarbershopsList = ({ initialData }: Props) => {
   return (
     <List>
       <p className="mb-4 text-center text-gray-500">
-        Result(s) for "{name || zip}"
+        Result(s) for &quot;{name || zip}&quot;
       </p>
       <List className="md:grid md:grid-cols-2">
         {barbershops.records.map((barbershop) => (
