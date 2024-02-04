@@ -1,7 +1,7 @@
 "use client";
 
 import { useTranslations } from "next-intl";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import { useState } from "react";
 import {
   SearchInput,
@@ -13,6 +13,7 @@ import {
   Skeleton,
 } from "~/components";
 import { routes } from "~/lib";
+import { useRouter } from "~/navigation";
 
 type Filter = "name" | "zip";
 

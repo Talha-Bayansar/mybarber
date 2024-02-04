@@ -8,7 +8,7 @@ import type {
 
 const tables = [
   {
-    name: "nextauth_verificationToken",
+    name: "nextauth_verificationTokens",
     columns: [
       { name: "identifier", type: "string" },
       { name: "token", type: "string" },
@@ -16,7 +16,7 @@ const tables = [
     ],
   },
   {
-    name: "nextauth_user",
+    name: "nextauth_users",
     columns: [
       { name: "email", type: "email" },
       { name: "emailVerified", type: "datetime" },
@@ -24,52 +24,12 @@ const tables = [
       { name: "image", type: "string" },
     ],
     revLinks: [
-      { column: "user", table: "nextauth_account" },
-      { column: "user", table: "nextauth_user_account" },
-      { column: "user", table: "nextauth_user_session" },
-      { column: "user", table: "nextauth_session" },
       { column: "user", table: "favorite_barbershop" },
+      { column: "user", table: "nextauth_accounts" },
+      { column: "user", table: "nextauth_users_accounts" },
+      { column: "user", table: "nextauth_users_sessions" },
+      { column: "user", table: "nextauth_sessions" },
     ],
-  },
-  {
-    name: "nextauth_account",
-    columns: [
-      { name: "user", type: "link", link: { table: "nextauth_user" } },
-      { name: "type", type: "string" },
-      { name: "provider", type: "string" },
-      { name: "providerAccountId", type: "string" },
-      { name: "refresh_token", type: "string" },
-      { name: "access_token", type: "string" },
-      { name: "expires_at", type: "int" },
-      { name: "token_type", type: "string" },
-      { name: "scope", type: "string" },
-      { name: "id_token", type: "text" },
-      { name: "session_state", type: "string" },
-    ],
-    revLinks: [{ column: "account", table: "nextauth_user_account" }],
-  },
-  {
-    name: "nextauth_user_account",
-    columns: [
-      { name: "user", type: "link", link: { table: "nextauth_user" } },
-      { name: "account", type: "link", link: { table: "nextauth_account" } },
-    ],
-  },
-  {
-    name: "nextauth_user_session",
-    columns: [
-      { name: "user", type: "link", link: { table: "nextauth_user" } },
-      { name: "session", type: "link", link: { table: "nextauth_session" } },
-    ],
-  },
-  {
-    name: "nextauth_session",
-    columns: [
-      { name: "sessionToken", type: "string" },
-      { name: "expires", type: "datetime" },
-      { name: "user", type: "link", link: { table: "nextauth_user" } },
-    ],
-    revLinks: [{ column: "session", table: "nextauth_user_session" }],
   },
   {
     name: "barbershop",
@@ -96,34 +56,62 @@ const tables = [
   {
     name: "favorite_barbershop",
     columns: [
-      { name: "user", type: "link", link: { table: "nextauth_user" } },
       { name: "barbershop", type: "link", link: { table: "barbershop" } },
+      { name: "user", type: "link", link: { table: "nextauth_users" } },
     ],
+  },
+  {
+    name: "nextauth_accounts",
+    columns: [
+      { name: "user", type: "link", link: { table: "nextauth_users" } },
+      { name: "type", type: "string" },
+      { name: "provider", type: "string" },
+      { name: "providerAccountId", type: "string" },
+      { name: "refresh_token", type: "string" },
+      { name: "access_token", type: "string" },
+      { name: "expires_at", type: "int" },
+      { name: "token_type", type: "string" },
+      { name: "scope", type: "string" },
+      { name: "id_token", type: "text" },
+      { name: "session_state", type: "string" },
+    ],
+    revLinks: [{ column: "account", table: "nextauth_users_accounts" }],
+  },
+  {
+    name: "nextauth_users_accounts",
+    columns: [
+      { name: "user", type: "link", link: { table: "nextauth_users" } },
+      { name: "account", type: "link", link: { table: "nextauth_accounts" } },
+    ],
+  },
+  {
+    name: "nextauth_users_sessions",
+    columns: [
+      { name: "user", type: "link", link: { table: "nextauth_users" } },
+      { name: "session", type: "link", link: { table: "nextauth_sessions" } },
+    ],
+  },
+  {
+    name: "nextauth_sessions",
+    columns: [
+      { name: "sessionToken", type: "string" },
+      { name: "expires", type: "datetime" },
+      { name: "user", type: "link", link: { table: "nextauth_users" } },
+    ],
+    revLinks: [{ column: "session", table: "nextauth_users_sessions" }],
   },
 ] as const;
 
 export type SchemaTables = typeof tables;
 export type InferredTypes = SchemaInference<SchemaTables>;
 
-export type NextauthVerificationToken =
-  InferredTypes["nextauth_verificationToken"];
-export type NextauthVerificationTokenRecord = NextauthVerificationToken &
+export type NextauthVerificationTokens =
+  InferredTypes["nextauth_verificationTokens"];
+export type NextauthVerificationTokensRecord = NextauthVerificationTokens &
   XataRecord;
 
-export type NextauthUser = InferredTypes["nextauth_user"];
-export type NextauthUserRecord = NextauthUser & XataRecord;
-
-export type NextauthAccount = InferredTypes["nextauth_account"];
-export type NextauthAccountRecord = NextauthAccount & XataRecord;
-
-export type NextauthUserAccount = InferredTypes["nextauth_user_account"];
-export type NextauthUserAccountRecord = NextauthUserAccount & XataRecord;
-
-export type NextauthUserSession = InferredTypes["nextauth_user_session"];
-export type NextauthUserSessionRecord = NextauthUserSession & XataRecord;
-
-export type NextauthSession = InferredTypes["nextauth_session"];
-export type NextauthSessionRecord = NextauthSession & XataRecord;
+export type NextauthUsers = InferredTypes["nextauth_users"];
+export type NextauthUsersRecord = NextauthUsers & XataRecord;
 
 export type Barbershop = InferredTypes["barbershop"];
 export type BarbershopRecord = Barbershop & XataRecord;
@@ -134,16 +122,28 @@ export type AddressRecord = Address & XataRecord;
 export type FavoriteBarbershop = InferredTypes["favorite_barbershop"];
 export type FavoriteBarbershopRecord = FavoriteBarbershop & XataRecord;
 
+export type NextauthAccounts = InferredTypes["nextauth_accounts"];
+export type NextauthAccountsRecord = NextauthAccounts & XataRecord;
+
+export type NextauthUsersAccounts = InferredTypes["nextauth_users_accounts"];
+export type NextauthUsersAccountsRecord = NextauthUsersAccounts & XataRecord;
+
+export type NextauthUsersSessions = InferredTypes["nextauth_users_sessions"];
+export type NextauthUsersSessionsRecord = NextauthUsersSessions & XataRecord;
+
+export type NextauthSessions = InferredTypes["nextauth_sessions"];
+export type NextauthSessionsRecord = NextauthSessions & XataRecord;
+
 export type DatabaseSchema = {
-  nextauth_verificationToken: NextauthVerificationTokenRecord;
-  nextauth_user: NextauthUserRecord;
-  nextauth_account: NextauthAccountRecord;
-  nextauth_user_account: NextauthUserAccountRecord;
-  nextauth_user_session: NextauthUserSessionRecord;
-  nextauth_session: NextauthSessionRecord;
+  nextauth_verificationTokens: NextauthVerificationTokensRecord;
+  nextauth_users: NextauthUsersRecord;
   barbershop: BarbershopRecord;
   address: AddressRecord;
   favorite_barbershop: FavoriteBarbershopRecord;
+  nextauth_accounts: NextauthAccountsRecord;
+  nextauth_users_accounts: NextauthUsersAccountsRecord;
+  nextauth_users_sessions: NextauthUsersSessionsRecord;
+  nextauth_sessions: NextauthSessionsRecord;
 };
 
 const DatabaseClient = buildClient();

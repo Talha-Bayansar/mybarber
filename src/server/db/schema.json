@@ -1,7 +1,7 @@
 {
   "tables": [
     {
-      "name": "nextauth_user",
+      "name": "nextauth_users",
       "columns": [
         {
           "name": "email",
@@ -22,13 +22,13 @@
       ]
     },
     {
-      "name": "nextauth_account",
+      "name": "nextauth_accounts",
       "columns": [
         {
           "name": "user",
           "type": "link",
           "link": {
-            "table": "nextauth_user"
+            "table": "nextauth_users"
           }
         },
         {
@@ -74,7 +74,7 @@
       ]
     },
     {
-      "name": "nextauth_verificationToken",
+      "name": "nextauth_verificationTokens",
       "columns": [
         {
           "name": "identifier",
@@ -91,45 +91,45 @@
       ]
     },
     {
-      "name": "nextauth_user_account",
+      "name": "nextauth_users_accounts",
       "columns": [
         {
           "name": "user",
           "type": "link",
           "link": {
-            "table": "nextauth_user"
+            "table": "nextauth_users"
           }
         },
         {
           "name": "account",
           "type": "link",
           "link": {
-            "table": "nextauth_account"
+            "table": "nextauth_accounts"
           }
         }
       ]
     },
     {
-      "name": "nextauth_user_session",
+      "name": "nextauth_users_sessions",
       "columns": [
         {
           "name": "user",
           "type": "link",
           "link": {
-            "table": "nextauth_user"
+            "table": "nextauth_users"
           }
         },
         {
           "name": "session",
           "type": "link",
           "link": {
-            "table": "nextauth_session"
+            "table": "nextauth_sessions"
           }
         }
       ]
     },
     {
-      "name": "nextauth_session",
+      "name": "nextauth_sessions",
       "columns": [
         {
           "name": "sessionToken",
@@ -143,7 +143,7 @@
           "name": "user",
           "type": "link",
           "link": {
-            "table": "nextauth_user"
+            "table": "nextauth_users"
           }
         }
       ]
@@ -211,7 +211,7 @@
           "name": "user",
           "type": "link",
           "link": {
-            "table": "nextauth_user"
+            "table": "nextauth_users"
           }
         },
         {

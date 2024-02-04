@@ -2,8 +2,7 @@
 "use client";
 
 import { Search, Settings } from "lucide-react";
-import Link from "next/link";
-// import { useTranslations } from "next-intl";
+import { useTranslations } from "next-intl";
 import { useParams, usePathname } from "next/navigation";
 import {
   NavigationBar,
@@ -14,12 +13,12 @@ import {
   TooltipTrigger,
 } from "~/components";
 import { cn, routes } from "~/lib";
-// import { Link } from "~/navigation";
+import { Link } from "~/navigation";
 
 export const RootNavBar = () => {
   const pathName = usePathname();
   const params = useParams<{ locale: string }>();
-  //   const t = useTranslations("global");
+    const t = useTranslations("global");
   const locale = params.locale;
   const currentPath =
     pathName.split(`/${locale}`)[pathName.split(`/${locale}`).length - 1] ||
@@ -29,12 +28,12 @@ export const RootNavBar = () => {
     {
       Icon: Search,
       href: routes.root,
-      tooltip: "Search",
+      tooltip: t("search"),
     },
     {
       Icon: Settings,
       href: routes.settings.root,
-      tooltip: "Settings",
+      tooltip: t("settings"),
     },
   ];
 

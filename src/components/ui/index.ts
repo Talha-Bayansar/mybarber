@@ -5,3 +5,5 @@ export * from "./skeleton";
 export * from "./card";
 export * from "./select";
 export * from "./sonner";
+export * from "./avatar";
+export * from "./alert-dialog";
