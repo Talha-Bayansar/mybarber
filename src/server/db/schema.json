@@ -1,0 +1,227 @@
+{
+  "tables": [
+    {
+      "name": "nextauth_user",
+      "columns": [
+        {
+          "name": "email",
+          "type": "email"
+        },
+        {
+          "name": "emailVerified",
+          "type": "datetime"
+        },
+        {
+          "name": "name",
+          "type": "string"
+        },
+        {
+          "name": "image",
+          "type": "string"
+        }
+      ]
+    },
+    {
+      "name": "nextauth_account",
+      "columns": [
+        {
+          "name": "user",
+          "type": "link",
+          "link": {
+            "table": "nextauth_user"
+          }
+        },
+        {
+          "name": "type",
+          "type": "string"
+        },
+        {
+          "name": "provider",
+          "type": "string"
+        },
+        {
+          "name": "providerAccountId",
+          "type": "string"
+        },
+        {
+          "name": "refresh_token",
+          "type": "string"
+        },
+        {
+          "name": "access_token",
+          "type": "string"
+        },
+        {
+          "name": "expires_at",
+          "type": "int"
+        },
+        {
+          "name": "token_type",
+          "type": "string"
+        },
+        {
+          "name": "scope",
+          "type": "string"
+        },
+        {
+          "name": "id_token",
+          "type": "text"
+        },
+        {
+          "name": "session_state",
+          "type": "string"
+        }
+      ]
+    },
+    {
+      "name": "nextauth_verificationToken",
+      "columns": [
+        {
+          "name": "identifier",
+          "type": "string"
+        },
+        {
+          "name": "token",
+          "type": "string"
+        },
+        {
+          "name": "expires",
+          "type": "datetime"
+        }
+      ]
+    },
+    {
+      "name": "nextauth_user_account",
+      "columns": [
+        {
+          "name": "user",
+          "type": "link",
+          "link": {
+            "table": "nextauth_user"
+          }
+        },
+        {
+          "name": "account",
+          "type": "link",
+          "link": {
+            "table": "nextauth_account"
+          }
+        }
+      ]
+    },
+    {
+      "name": "nextauth_user_session",
+      "columns": [
+        {
+          "name": "user",
+          "type": "link",
+          "link": {
+            "table": "nextauth_user"
+          }
+        },
+        {
+          "name": "session",
+          "type": "link",
+          "link": {
+            "table": "nextauth_session"
+          }
+        }
+      ]
+    },
+    {
+      "name": "nextauth_session",
+      "columns": [
+        {
+          "name": "sessionToken",
+          "type": "string"
+        },
+        {
+          "name": "expires",
+          "type": "datetime"
+        },
+        {
+          "name": "user",
+          "type": "link",
+          "link": {
+            "table": "nextauth_user"
+          }
+        }
+      ]
+    },
+    {
+      "name": "barbershop",
+      "columns": [
+        {
+          "name": "name",
+          "type": "string"
+        },
+        {
+          "name": "phone_number",
+          "type": "string"
+        },
+        {
+          "name": "email",
+          "type": "email"
+        },
+        {
+          "name": "logo",
+          "type": "file",
+          "file": {
+            "defaultPublicAccess": true
+          }
+        },
+        {
+          "name": "verified",
+          "type": "bool"
+        },
+        {
+          "name": "address",
+          "type": "link",
+          "link": {
+            "table": "address"
+          }
+        }
+      ]
+    },
+    {
+      "name": "address",
+      "columns": [
+        {
+          "name": "street",
+          "type": "string"
+        },
+        {
+          "name": "house_number",
+          "type": "string"
+        },
+        {
+          "name": "zip",
+          "type": "string"
+        },
+        {
+          "name": "city",
+          "type": "string"
+        }
+      ]
+    },
+    {
+      "name": "favorite_barbershop",
+      "columns": [
+        {
+          "name": "user",
+          "type": "link",
+          "link": {
+            "table": "nextauth_user"
+          }
+        },
+        {
+          "name": "barbershop",
+          "type": "link",
+          "link": {
+            "table": "barbershop"
+          }
+        }
+      ]
+    }
+  ]
+}
