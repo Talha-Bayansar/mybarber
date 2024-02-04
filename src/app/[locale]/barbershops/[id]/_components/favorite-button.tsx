@@ -1,6 +1,5 @@
 "use client";
 import { Heart } from "lucide-react";
-import React from "react";
 import { IconButton } from "~/components";
 import { cn } from "~/lib";
 import { api } from "~/trpc/react";
@@ -10,6 +9,7 @@ type Props = {
 };
 
 export const FavoriteButton = ({ barbershopId }: Props) => {
+  const utils = api.useUtils();
   const { refetch } = api.barbershop.getFavoriteBarbershops.useQuery();
   const {
     data: isFavorite,
@@ -19,6 +19,16 @@ export const FavoriteButton = ({ barbershopId }: Props) => {
     id: barbershopId,
   });
   const toggleFavorite = api.barbershop.toggleFavorite.useMutation({
+    onMutate({ barbershopId }) {
+      utils.barbershop.isFavorite.setData(
+        {
+          id: barbershopId,
+        },
+        (previousData) => {
+          return !previousData;
+        },
+      );
+    },
     onSuccess: async () => {
       await refetch();
       await refetchIsFavorite();
@@ -29,11 +39,11 @@ export const FavoriteButton = ({ barbershopId }: Props) => {
     <IconButton
       className="p-2"
       disabled={isLoading}
-      onClick={() =>
+      onClick={() => {
         toggleFavorite.mutate({
           barbershopId: barbershopId,
-        })
-      }
+        });
+      }}
     >
       <Heart
         className={cn({
