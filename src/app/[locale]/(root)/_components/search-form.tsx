@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
 import {
@@ -16,6 +17,7 @@ import { routes } from "~/lib";
 type Filter = "name" | "zip";
 
 export const SearchForm = () => {
+  const t = useTranslations();
   const params = useSearchParams();
   const name = params.get("name");
   const zip = params.get("zip");
@@ -39,7 +41,7 @@ export const SearchForm = () => {
     <form onSubmit={handleSubmit} className="relative">
       <SearchInput
         className="w-full"
-        placeholder="Search barbershops by"
+        placeholder={t("RootPage.search_placeholder")}
         value={query}
         onChange={(e) => setQuery(e.target.value)}
       />
@@ -51,8 +53,8 @@ export const SearchForm = () => {
           <SelectValue placeholder="Select filter" />
         </SelectTrigger>
         <SelectContent>
-          <SelectItem value="zip">ZIP</SelectItem>
-          <SelectItem value="name">Name</SelectItem>
+          <SelectItem value="zip">{t("global.zip")}</SelectItem>
+          <SelectItem value="name">{t("global.name")}</SelectItem>
         </SelectContent>
       </Select>
     </form>

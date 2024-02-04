@@ -1,5 +1,16 @@
 {
-  "Index": {
-    "title": "Hello world!"
+  "global": {
+    "name": "Name",
+    "zip": "ZIP",
+    "results_for": "Result(s) for \"{term}\"",
+    "next": "Next",
+    "no_results": "No results were found",
+    "offline": "It looks like you are offline"
+  },
+  "RootPage": {
+    "search_placeholder": "Search barbershops by",
+    "favorites_subtitle": "My favorites",
+    "not_searched": "Find barbers by ZIP code or name",
+    "no_favorites": "You don't have any favorite barbershops"
   }
 }

@@ -7,8 +7,10 @@ import { BarbershopItem } from ".";
 import { useSearchParams } from "next/navigation";
 import { api } from "~/trpc/react";
 import { Scissors } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 export const BarbershopsList = () => {
+  const t = useTranslations("global");
   const params = useSearchParams();
   const name = params.get("name");
   const zip = params.get("zip");
@@ -53,7 +55,9 @@ export const BarbershopsList = () => {
   return (
     <List>
       <p className="mb-4 text-center text-gray-500">
-        Result(s) for &quot;{name || zip}&quot;
+        {t("results_for", {
+          term: zip || name,
+        })}
       </p>
       <List className="md:grid md:grid-cols-2">
         {barbershops.records.map((barbershop) => (
@@ -63,7 +67,7 @@ export const BarbershopsList = () => {
       {barbershops.meta.page.more && (
         <Button asChild>
           <Link href={`${routes.root}?${getParamsURI(pageNumber + 1)}`}>
-            Next
+            {t("next")}
           </Link>
         </Button>
       )}
@@ -72,10 +76,11 @@ export const BarbershopsList = () => {
 };
 
 const NotSearched = () => {
+  const t = useTranslations("RootPage");
   return (
     <div className="mt-20 flex flex-col items-center gap-4">
       <Scissors className="text-primary" size={60} />
-      <p className="text-center">Find barbers by ZIP code or name</p>
+      <p className="text-center">{t("not_searched")}</p>
     </div>
   );
 };

@@ -2,9 +2,9 @@
 
 import { Heart } from "lucide-react";
 import Image from "next/image";
-import Link from "next/link";
 import { Card, IconButton } from "~/components";
 import { cn, routes } from "~/lib";
+import { Link } from "~/navigation";
 import type { BarbershopRecord } from "~/server/db";
 import { api } from "~/trpc/react";
 

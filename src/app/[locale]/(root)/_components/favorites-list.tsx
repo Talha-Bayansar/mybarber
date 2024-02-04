@@ -4,6 +4,7 @@ import { BarbershopItem, BarbershopsListSkeleton } from ".";
 import { api } from "~/trpc/react";
 import { List } from "~/components";
 import { HeartOff } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 type Props = {
   initialData: string;
@@ -33,10 +34,12 @@ export const FavoritesList = ({ initialData }: Props) => {
 };
 
 const NoFavorites = () => {
+  const t = useTranslations("RootPage");
+
   return (
     <div className="mt-20 flex w-full flex-col items-center gap-4">
       <HeartOff className="text-primary" size={60} />
-      <p className="text-center">You don't have any favorite barbershops.</p>
+      <p className="text-center">{t("no_favorites")}</p>
     </div>
   );
 };

@@ -2,6 +2,7 @@
 
 import { Main, Page, Title } from "~/components";
 import { FavoriteButton } from "./_components";
+import { getServerAuthSession } from "~/server/auth";
 
 type Props = {
   params: {
@@ -10,6 +11,7 @@ type Props = {
 };
 
 const BarbershopPage = async ({ params }: Props) => {
+  const session = await getServerAuthSession();
   const { id } = params;
   // const barbershop = api.barbershop.
 
@@ -17,9 +19,11 @@ const BarbershopPage = async ({ params }: Props) => {
     <Page>
       <Main>
         <Title>{id}</Title>
-        <div className="flex justify-end">
-          <FavoriteButton barbershopId={id} />
-        </div>
+        {session && (
+          <div className="flex justify-end">
+            <FavoriteButton barbershopId={id} />
+          </div>
+        )}
       </Main>
     </Page>
   );
