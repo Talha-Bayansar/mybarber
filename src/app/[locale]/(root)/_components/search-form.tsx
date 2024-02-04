@@ -31,7 +31,10 @@ export const SearchForm = () => {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (query) {
-      router.push(`${routes.root}?${selectedFilter}=${query}`);
+      const searchParams = new URLSearchParams();
+      searchParams.set(selectedFilter, query);
+
+      router.push(`${routes.root}?${searchParams.toString()}`);
     } else {
       router.push(routes.root);
     }
