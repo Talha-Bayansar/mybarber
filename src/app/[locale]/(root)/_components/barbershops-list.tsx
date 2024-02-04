@@ -6,7 +6,6 @@ import { generateArray, isArrayEmpty, routes } from "~/lib";
 import { BarbershopItem } from ".";
 import { useSearchParams } from "next/navigation";
 import { api } from "~/trpc/react";
-import { Scissors } from "lucide-react";
 import { useTranslations } from "next-intl";
 
 export const BarbershopsList = () => {
@@ -18,19 +17,12 @@ export const BarbershopsList = () => {
   const SIZE = 20;
   const pageNumber = Number(page ?? 1);
 
-  const hasSearched = !!(name || zip);
-
-  const { data: barbershops, isLoading } = api.barbershop.search.useQuery(
-    {
-      name: name,
-      zip: zip,
-      size: SIZE,
-      offset: (pageNumber - 1) * SIZE,
-    },
-    {
-      enabled: hasSearched,
-    },
-  );
+  const { data: barbershops, isLoading } = api.barbershop.search.useQuery({
+    name: name,
+    zip: zip,
+    size: SIZE,
+    offset: (pageNumber - 1) * SIZE,
+  });
 
   const getParamsURI = (page: number) => {
     let url = `page=${page}`;
@@ -45,8 +37,6 @@ export const BarbershopsList = () => {
 
     return url;
   };
-
-  if (!hasSearched) return <NotSearched />;
 
   if (isLoading) return <BarbershopsListSkeleton />;
 
@@ -72,16 +62,6 @@ export const BarbershopsList = () => {
         </Button>
       )}
     </List>
-  );
-};
-
-const NotSearched = () => {
-  const t = useTranslations("RootPage");
-  return (
-    <div className="mt-20 flex flex-col items-center gap-4">
-      <Scissors className="text-primary" size={60} />
-      <p className="text-center">{t("not_searched")}</p>
-    </div>
   );
 };
 
