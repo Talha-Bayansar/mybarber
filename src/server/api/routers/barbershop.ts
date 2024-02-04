@@ -15,7 +15,7 @@ export const barbershopRouter = createTRPCRouter({
         name: z.string().min(1).optional().nullable(),
         zip: z.string().min(1).optional().nullable(),
         size: z.number().min(1).max(20).optional(),
-        offset: z.number(),
+        cursor: z.string().optional(),
       }),
     )
     .query(async ({ ctx, input }) => {
@@ -45,7 +45,7 @@ export const barbershopRouter = createTRPCRouter({
         .getPaginated({
           pagination: {
             size: input.size,
-            offset: input.offset,
+            after: input.cursor,
           },
         });
 

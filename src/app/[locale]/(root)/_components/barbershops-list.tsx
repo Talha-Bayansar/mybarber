@@ -2,11 +2,12 @@
 
 import Link from "next/link";
 import { Button, Card, EmptyState, List, Skeleton } from "~/components";
-import { generateArray, isArrayEmpty, routes } from "~/lib";
+import { generateArray, isArrayEmpty, reducePages, routes } from "~/lib";
 import { BarbershopItem } from ".";
 import { useSearchParams } from "next/navigation";
 import { api } from "~/trpc/react";
 import { useTranslations } from "next-intl";
+import { PaginationButton } from "~/components/pagination-button";
 
 export const BarbershopsList = () => {
   const t = useTranslations("global");
@@ -17,12 +18,17 @@ export const BarbershopsList = () => {
   const SIZE = 20;
   const pageNumber = Number(page ?? 1);
 
-  const { data: barbershops, isLoading } = api.barbershop.search.useQuery({
-    name: name,
-    zip: zip,
-    size: SIZE,
-    offset: (pageNumber - 1) * SIZE,
-  });
+  const { data, isLoading, fetchNextPage, isFetchingNextPage } =
+    api.barbershop.search.useInfiniteQuery(
+      {
+        name: name,
+        zip: zip,
+        size: SIZE,
+      },
+      {
+        getNextPageParam: (previousPage) => previousPage.meta.page.cursor,
+      },
+    );
 
   const getParamsURI = (page: number) => {
     let url = `page=${page}`;
@@ -40,6 +46,8 @@ export const BarbershopsList = () => {
 
   if (isLoading) return <BarbershopsListSkeleton />;
 
+  const barbershops = data && reducePages(data.pages);
+
   if (!barbershops || isArrayEmpty(barbershops.records)) return <EmptyState />;
 
   return (
@@ -55,11 +63,12 @@ export const BarbershopsList = () => {
         ))}
       </List>
       {barbershops.meta.page.more && (
-        <Button asChild>
-          <Link href={`${routes.root}?${getParamsURI(pageNumber + 1)}`}>
-            {t("next")}
-          </Link>
-        </Button>
+        <PaginationButton
+          isLoading={isFetchingNextPage}
+          onClick={async () => {
+            await fetchNextPage();
+          }}
+        />
       )}
     </List>
   );

@@ -257,7 +257,7 @@ export default function LocaleLayout({
     <html lang={locale} suppressHydrationWarning>
       <body
         className={cn(
-          "flex min-h-screen w-full overflow-hidden bg-background font-sans antialiased",
+          "flex min-h-screen w-full overflow-x-hidden bg-background font-sans antialiased",
           inter.variable,
         )}
       >
