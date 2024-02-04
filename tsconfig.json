@@ -28,6 +28,7 @@
     "paths": {
       "~/*": ["./src/*"],
     },
+    "typeRoots": ["./src/types", "./types"],
   },
   "include": [
     ".eslintrc.cjs",
@@ -35,7 +36,7 @@
     "**/*.ts",
     "**/*.tsx",
     "**/*.cjs",
-    "**/*.js",
+    "**/*.mjs",
     ".next/types/**/*.ts",
     "next.config.mjs",
   ],
