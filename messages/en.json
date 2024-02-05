@@ -57,7 +57,8 @@
     "price_list": "Price list",
     "contact": "Contact",
     "not_specified": "Not specified",
-    "info": "Info"
+    "info": "Info",
+    "location": "Location"
   },
   "RootPage": {
     "search_placeholder": "Search barbershops by",

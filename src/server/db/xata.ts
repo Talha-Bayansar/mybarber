@@ -44,6 +44,7 @@ const tables = [
     revLinks: [
       { column: "barbershop", table: "favorite_barbershop" },
       { column: "barbershop", table: "price_list" },
+      { column: "barbershop", table: "opening_hours" },
     ],
   },
   {
@@ -120,6 +121,15 @@ const tables = [
       { name: "price_list", type: "link", link: { table: "price_list" } },
     ],
   },
+  {
+    name: "opening_hours",
+    columns: [
+      { name: "start_time", type: "int" },
+      { name: "duration", type: "int" },
+      { name: "day_of_week", type: "int" },
+      { name: "barbershop", type: "link", link: { table: "barbershop" } },
+    ],
+  },
 ] as const;
 
 export type SchemaTables = typeof tables;
@@ -160,6 +170,9 @@ export type PriceListRecord = PriceList & XataRecord;
 export type PriceListItem = InferredTypes["price_list_item"];
 export type PriceListItemRecord = PriceListItem & XataRecord;
 
+export type OpeningHours = InferredTypes["opening_hours"];
+export type OpeningHoursRecord = OpeningHours & XataRecord;
+
 export type DatabaseSchema = {
   nextauth_verificationTokens: NextauthVerificationTokensRecord;
   nextauth_users: NextauthUsersRecord;
@@ -172,6 +185,7 @@ export type DatabaseSchema = {
   nextauth_sessions: NextauthSessionsRecord;
   price_list: PriceListRecord;
   price_list_item: PriceListItemRecord;
+  opening_hours: OpeningHoursRecord;
 };
 
 const DatabaseClient = buildClient();

@@ -262,6 +262,30 @@
           }
         }
       ]
+    },
+    {
+      "name": "opening_hours",
+      "columns": [
+        {
+          "name": "start_time",
+          "type": "int"
+        },
+        {
+          "name": "duration",
+          "type": "int"
+        },
+        {
+          "name": "day_of_week",
+          "type": "int"
+        },
+        {
+          "name": "barbershop",
+          "type": "link",
+          "link": {
+            "table": "barbershop"
+          }
+        }
+      ]
     }
   ]
 }

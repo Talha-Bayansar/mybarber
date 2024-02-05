@@ -1,4 +1,8 @@
-import { barbershopRouter, priceListRouter } from "~/server/api/routers";
+import {
+  barbershopRouter,
+  openingHoursRouter,
+  priceListRouter,
+} from "~/server/api/routers";
 import { createTRPCRouter } from "~/server/api/trpc";
 
 /**
@@ -9,6 +13,7 @@ import { createTRPCRouter } from "~/server/api/trpc";
 export const appRouter = createTRPCRouter({
   barbershop: barbershopRouter,
   priceList: priceListRouter,
+  openingHours: openingHoursRouter,
 });
 
 // export type definition of API

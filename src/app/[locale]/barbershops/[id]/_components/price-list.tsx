@@ -28,7 +28,7 @@ export const PriceList = async ({ barbershop }: Props) => {
   if (!priceList || isArrayEmpty(priceList.items)) return <EmptyState />;
 
   return (
-    <List className="mt-4">
+    <List className="mt-8">
       {priceList.items.map((item) => (
         <div key={item.id} className="flex justify-between">
           <div className="flex flex-grow flex-col">

@@ -1,2 +1,3 @@
 export * from "./barbershop";
-export * from "./priceList";
+export * from "./price-list";
+export * from "./opening-hours";

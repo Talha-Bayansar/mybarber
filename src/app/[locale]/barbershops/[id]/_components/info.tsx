@@ -1,8 +1,9 @@
 import { LucideIcon, Mail, Phone } from "lucide-react";
 import { getTranslations } from "next-intl/server";
-import { List } from "~/components";
+import { List, Section } from "~/components";
 import { Link } from "~/navigation";
 import { BarbershopRecord } from "~/server/db";
+import { OpeningHours } from ".";
 
 type Props = {
   barbershop: BarbershopRecord;
@@ -31,26 +32,33 @@ export const Info = async ({ barbershop }: Props) => {
   ];
 
   return (
-    <List className="mt-4">
-      {contactLines.map((contactLine) => (
-        <div key={contactLine.value} className="flex items-center gap-4">
-          <contactLine.Icon />
-          <Link className="underline" href={contactLine.href}>
-            {contactLine.value}
-          </Link>
-        </div>
-      ))}
+    <List className="mt-8 gap-8">
+      <OpeningHours barbershopId={barbershop.id} />
+      <Section title={t("contact")}>
+        <List>
+          {contactLines.map((contactLine) => (
+            <div key={contactLine.value} className="flex items-center gap-4">
+              <contactLine.Icon />
+              <Link className="underline" href={contactLine.href}>
+                {contactLine.value}
+              </Link>
+            </div>
+          ))}
+        </List>
+      </Section>
       {address && (
-        <iframe
-          src={`https://maps.google.com/maps?&q="+${encodeURIComponent(`${address.street} ${address.house_number} ${address.city} ${address.zip}`)}"&output=embed`}
-          width="600"
-          height="450"
-          className="h-60 w-full md:h-80"
-          style={{ border: 0 }}
-          allowFullScreen={true}
-          loading="lazy"
-          referrerPolicy="no-referrer-when-downgrade"
-        />
+        <Section title={t("location")}>
+          <iframe
+            src={`https://maps.google.com/maps?&q="+${encodeURIComponent(`${address.street} ${address.house_number} ${address.city} ${address.zip}`)}"&output=embed`}
+            width="600"
+            height="450"
+            className="h-60 w-full md:h-80"
+            style={{ border: 0 }}
+            allowFullScreen={true}
+            loading="lazy"
+            referrerPolicy="no-referrer-when-downgrade"
+          />
+        </Section>
       )}
     </List>
   );
