@@ -55,7 +55,8 @@
     },
     "action_cannot_be_undone": "This action cannot be undone.",
     "price_list": "Price list",
-    "contact": "Contact"
+    "contact": "Contact",
+    "not_specified": "Not specified"
   },
   "RootPage": {
     "search_placeholder": "Search barbershops by",
