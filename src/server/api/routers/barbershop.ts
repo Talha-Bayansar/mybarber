@@ -69,6 +69,7 @@ export const barbershopRouter = createTRPCRouter({
         .filter({
           id: input.id,
         })
+        .select(["*", "address.*"])
         .getFirst();
 
       if (!response)
