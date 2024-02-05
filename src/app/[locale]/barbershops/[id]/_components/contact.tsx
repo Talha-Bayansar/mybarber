@@ -33,7 +33,7 @@ export const Contact = async ({ barbershop }: Props) => {
   return (
     <List className="mt-4">
       {contactLines.map((contactLine) => (
-        <div key={contactLine.value} className="flex gap-4">
+        <div key={contactLine.value} className="flex items-center gap-4">
           <contactLine.Icon />
           <Link className="underline" href={contactLine.href}>
             {contactLine.value}

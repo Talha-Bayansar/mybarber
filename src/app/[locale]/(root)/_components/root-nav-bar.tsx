@@ -18,7 +18,7 @@ import { Link } from "~/navigation";
 export const RootNavBar = () => {
   const pathName = usePathname();
   const params = useParams<{ locale: string }>();
-    const t = useTranslations("global");
+  const t = useTranslations("global");
   const locale = params.locale;
   const currentPath =
     pathName.split(`/${locale}`)[pathName.split(`/${locale}`).length - 1] ||
@@ -46,7 +46,7 @@ export const RootNavBar = () => {
               <Link
                 href={link.href}
                 className={cn({
-                  "bg-primary/20 rounded-full": currentPath === link.href,
+                  "rounded-full bg-primary/20": currentPath === link.href,
                 })}
               >
                 <IconButton>

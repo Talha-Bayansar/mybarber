@@ -41,7 +41,10 @@ const tables = [
       { name: "address", type: "link", link: { table: "address" } },
       { name: "logo", type: "file", file: { defaultPublicAccess: true } },
     ],
-    revLinks: [{ column: "barbershop", table: "favorite_barbershop" }],
+    revLinks: [
+      { column: "barbershop", table: "favorite_barbershop" },
+      { column: "barbershop", table: "price_list" },
+    ],
   },
   {
     name: "address",
@@ -100,6 +103,23 @@ const tables = [
     ],
     revLinks: [{ column: "session", table: "nextauth_users_sessions" }],
   },
+  {
+    name: "price_list",
+    columns: [
+      { name: "currency", type: "string" },
+      { name: "barbershop", type: "link", link: { table: "barbershop" } },
+    ],
+    revLinks: [{ column: "price_list", table: "price_list_item" }],
+  },
+  {
+    name: "price_list_item",
+    columns: [
+      { name: "name", type: "string" },
+      { name: "description", type: "string" },
+      { name: "price", type: "float" },
+      { name: "price_list", type: "link", link: { table: "price_list" } },
+    ],
+  },
 ] as const;
 
 export type SchemaTables = typeof tables;
@@ -134,6 +154,12 @@ export type NextauthUsersSessionsRecord = NextauthUsersSessions & XataRecord;
 export type NextauthSessions = InferredTypes["nextauth_sessions"];
 export type NextauthSessionsRecord = NextauthSessions & XataRecord;
 
+export type PriceList = InferredTypes["price_list"];
+export type PriceListRecord = PriceList & XataRecord;
+
+export type PriceListItem = InferredTypes["price_list_item"];
+export type PriceListItemRecord = PriceListItem & XataRecord;
+
 export type DatabaseSchema = {
   nextauth_verificationTokens: NextauthVerificationTokensRecord;
   nextauth_users: NextauthUsersRecord;
@@ -144,6 +170,8 @@ export type DatabaseSchema = {
   nextauth_users_accounts: NextauthUsersAccountsRecord;
   nextauth_users_sessions: NextauthUsersSessionsRecord;
   nextauth_sessions: NextauthSessionsRecord;
+  price_list: PriceListRecord;
+  price_list_item: PriceListItemRecord;
 };
 
 const DatabaseClient = buildClient();

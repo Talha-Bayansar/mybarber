@@ -222,6 +222,46 @@
           }
         }
       ]
+    },
+    {
+      "name": "price_list",
+      "columns": [
+        {
+          "name": "currency",
+          "type": "string"
+        },
+        {
+          "name": "barbershop",
+          "type": "link",
+          "link": {
+            "table": "barbershop"
+          }
+        }
+      ]
+    },
+    {
+      "name": "price_list_item",
+      "columns": [
+        {
+          "name": "name",
+          "type": "string"
+        },
+        {
+          "name": "description",
+          "type": "string"
+        },
+        {
+          "name": "price",
+          "type": "float"
+        },
+        {
+          "name": "price_list",
+          "type": "link",
+          "link": {
+            "table": "price_list"
+          }
+        }
+      ]
     }
   ]
 }

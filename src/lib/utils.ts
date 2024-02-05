@@ -1,6 +1,7 @@
 import { type PaginationQueryMeta } from "@xata.io/client";
 import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
+import { Currency, currencies } from "./currencies";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -49,6 +50,10 @@ export function getTimeFromMs(milliseconds: number) {
 
   return formattedTime;
 }
+
+export const getCurrencyByCode = (code: string): Currency | undefined => {
+  return currencies[code];
+};
 
 export function reducePages<T>(
   pages: {
