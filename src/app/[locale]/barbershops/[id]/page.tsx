@@ -10,7 +10,7 @@ import {
   TabsTrigger,
   Title,
 } from "~/components";
-import { Contact, FavoriteButton, PriceList } from "./_components";
+import { Info, FavoriteButton, PriceList } from "./_components";
 import { getServerAuthSession } from "~/server/auth";
 import { getTranslations } from "next-intl/server";
 import { RootNavBar } from "../../(root)/_components";
@@ -43,13 +43,13 @@ const BarbershopPage = async ({ params }: Props) => {
               <TabsTrigger value="pricelist">
                 {t("global.price_list")}
               </TabsTrigger>
-              <TabsTrigger value="contact">{t("global.contact")}</TabsTrigger>
+              <TabsTrigger value="info">{t("global.info")}</TabsTrigger>
             </TabsList>
             <TabsContent value="pricelist">
               <PriceList barbershop={barbershop} />
             </TabsContent>
-            <TabsContent value="contact">
-              <Contact barbershop={barbershop} />
+            <TabsContent value="info">
+              <Info barbershop={barbershop} />
             </TabsContent>
           </Tabs>
         </List>

@@ -14,7 +14,7 @@ type ContactLine = {
   value: string;
 };
 
-export const Contact = async ({ barbershop }: Props) => {
+export const Info = async ({ barbershop }: Props) => {
   const t = await getTranslations("global");
   const { address } = barbershop;
   const contactLines: ContactLine[] = [
