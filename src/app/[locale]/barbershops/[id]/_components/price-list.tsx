@@ -1,16 +1,29 @@
 import { EmptyState, List } from "~/components";
 import { getCurrencyByCode, isArrayEmpty } from "~/lib";
-import { BarbershopRecord } from "~/server/db";
+import type {
+  BarbershopRecord,
+  PriceListItemRecord,
+  PriceListRecord,
+} from "~/server/db";
 import { api } from "~/trpc/server";
 
 type Props = {
   barbershop: BarbershopRecord;
 };
 
+type PriceList = PriceListRecord & {
+  items: PriceListItemRecord[];
+};
+
 export const PriceList = async ({ barbershop }: Props) => {
-  const priceList = await api.priceList.getByBarbershopId.query({
-    barbershopId: barbershop.id,
-  });
+  let priceList: PriceList | null;
+  try {
+    priceList = (await api.priceList.getByBarbershopId.query({
+      barbershopId: barbershop.id,
+    })) as PriceList;
+  } catch (error) {
+    priceList = null;
+  }
 
   if (!priceList || isArrayEmpty(priceList.items)) return <EmptyState />;
 
@@ -23,7 +36,7 @@ export const PriceList = async ({ barbershop }: Props) => {
             <span className="text-sm text-gray-500">{item.description}</span>
           </div>
           <span>
-            {getCurrencyByCode(priceList.currency!)?.symbol}{" "}
+            {getCurrencyByCode(priceList!.currency!)?.symbol}{" "}
             {item.price?.toFixed(2)}
           </span>
         </div>
