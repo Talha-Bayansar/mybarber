@@ -56,6 +56,28 @@ export const barbershopRouter = createTRPCRouter({
 
       return response;
     }),
+  getById: publicProcedure
+    .input(
+      z.object({
+        id: z.string().min(1),
+      }),
+    )
+    .query(async ({ ctx, input }) => {
+      const { xata } = ctx;
+
+      const response = await xata.db.barbershop
+        .filter({
+          id: input.id,
+        })
+        .getFirst();
+
+      if (!response)
+        throw new TRPCError({
+          code: "NOT_FOUND",
+        });
+
+      return response;
+    }),
   getFavoriteBarbershops: protectedProcedure.query(async ({ ctx }) => {
     const { xata, session } = ctx;
 

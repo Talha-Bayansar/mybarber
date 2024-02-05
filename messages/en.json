@@ -53,7 +53,9 @@
       "5": "Saturday",
       "6": "Sunday"
     },
-    "action_cannot_be_undone": "This action cannot be undone."
+    "action_cannot_be_undone": "This action cannot be undone.",
+    "price_list": "Price list",
+    "contact": "Contact"
   },
   "RootPage": {
     "search_placeholder": "Search barbershops by",
@@ -71,5 +73,8 @@
     "dark": "Dark",
     "system": "System",
     "sign_out_confirmation": "By signing out, you will be logged out of your account and any unsaved changes may be lost."
+  },
+  "BarbershopPage": {
+    "new_reservation": "New reservation"
   }
 }

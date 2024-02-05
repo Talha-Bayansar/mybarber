@@ -1,8 +1,19 @@
-// import { api } from "~/trpc/server";
-
-import { Main, Page, Title } from "~/components";
-import { FavoriteButton } from "./_components";
+import { api } from "~/trpc/server";
+import {
+  Button,
+  List,
+  Main,
+  Page,
+  Tabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger,
+  Title,
+} from "~/components";
+import { Contact, FavoriteButton, PriceList } from "./_components";
 import { getServerAuthSession } from "~/server/auth";
+import { getTranslations } from "next-intl/server";
+import { RootNavBar } from "../../(root)/_components";
 
 type Props = {
   params: {
@@ -11,20 +22,39 @@ type Props = {
 };
 
 const BarbershopPage = async ({ params }: Props) => {
+  const t = await getTranslations();
   const session = await getServerAuthSession();
   const { id } = params;
-  // const barbershop = api.barbershop.
+  const barbershop = await api.barbershop.getById.query({
+    id,
+  });
 
   return (
     <Page>
       <Main>
-        <Title>{id}</Title>
-        {session && (
-          <div className="flex justify-end">
-            <FavoriteButton barbershopId={id} />
-          </div>
-        )}
+        <div className="flex items-start justify-between">
+          <Title className="flex-grow">{barbershop.name}</Title>
+          {session && <FavoriteButton barbershopId={id} />}
+        </div>
+        <List>
+          <Button>{t("BarbershopPage.new_reservation")}</Button>
+          <Tabs defaultValue="pricelist">
+            <TabsList className="grid w-full grid-cols-2">
+              <TabsTrigger value="pricelist">
+                {t("global.price_list")}
+              </TabsTrigger>
+              <TabsTrigger value="contact">{t("global.contact")}</TabsTrigger>
+            </TabsList>
+            <TabsContent value="pricelist">
+              <PriceList barbershop={barbershop} />
+            </TabsContent>
+            <TabsContent value="contact">
+              <Contact barbershop={barbershop} />
+            </TabsContent>
+          </Tabs>
+        </List>
       </Main>
+      <RootNavBar />
     </Page>
   );
 };
