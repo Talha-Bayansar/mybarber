@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { createTRPCRouter, protectedProcedure, publicProcedure } from "../trpc";
+import { createTRPCRouter, protectedProcedure } from "../trpc";
 import { TRPCError } from "@trpc/server";
 
 export const reservationRouter = createTRPCRouter({
@@ -34,6 +34,33 @@ export const reservationRouter = createTRPCRouter({
       if (!response)
         throw new TRPCError({
           code: "NOT_FOUND",
+        });
+
+      return response;
+    }),
+  getAllBetweenDates: protectedProcedure
+    .input(
+      z.object({
+        barbershopId: z.string().min(1),
+        startDate: z.string().min(1),
+        endDate: z.string().min(1),
+      }),
+    )
+    .query(async ({ ctx, input }) => {
+      const { xata } = ctx;
+
+      const response = await xata.db.reservation
+        .filter({
+          date: {
+            $ge: new Date(input.startDate),
+            $le: new Date(input.endDate),
+          },
+        })
+        .getAll();
+
+      if (!response)
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
         });
 
       return response;

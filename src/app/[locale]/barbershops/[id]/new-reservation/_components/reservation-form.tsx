@@ -1,7 +1,14 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { getDay } from "date-fns";
+import {
+  endOfDay,
+  endOfToday,
+  format,
+  getDay,
+  startOfDay,
+  startOfToday,
+} from "date-fns";
 import { useTranslations } from "next-intl";
 import { useParams } from "next/navigation";
 import { useForm } from "react-hook-form";
@@ -60,7 +67,7 @@ function generateTimeIntervals(startTime: string, endTime: string) {
     intervals.push(time);
 
     // Increment current time by 15 minutes
-    current.setTime(current.getTime() + 15 * 60 * 1000);
+    current.setTime(current.getTime() + 30 * 60 * 1000);
   }
 
   return intervals;
@@ -99,6 +106,7 @@ export const ReservationForm = () => {
     api.priceList.getByBarbershopId.useQuery({
       barbershopId,
     });
+
   const createReservation = api.reservation.create.useMutation({
     onSuccess: () => {
       utils.reservation.getPaginated.refetch();
@@ -110,11 +118,45 @@ export const ReservationForm = () => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      date: "",
+      date: format(startOfToday(), "yyyy-MM-dd"),
       time: "",
       priceListItemId: "",
     },
   });
+
+  const {
+    data: reservations,
+    isLoading: isLoadingReservations,
+    isRefetching,
+    refetch: refetchReservations,
+  } = api.reservation.getAllBetweenDates.useQuery({
+    barbershopId,
+    startDate: startOfDay(form.getValues().date).toISOString(),
+    endDate: endOfDay(form.getValues().date).toISOString(),
+  });
+
+  const getAvailableTimes = () => {
+    const reservedTimes = reservations?.map((reservation) =>
+      format(reservation.date!, "HH:mm"),
+    );
+    const availableTimes = openingHours!
+      .filter((oh) => oh.day_of_week! === getDay(form.getValues().date))
+      .map((oh) =>
+        generateTimeIntervals(
+          getTimeFromMs(oh.start_time!),
+          getTimeFromMs(oh.start_time! + oh.duration!),
+        ),
+      )
+      .reduce((previous, current) => [...previous, ...current], []);
+
+    if (reservedTimes) {
+      return availableTimes.filter(
+        (interval) => !reservedTimes.includes(interval),
+      );
+    } else {
+      return availableTimes;
+    }
+  };
 
   function onSubmit(values: z.infer<typeof formSchema>) {
     const { date, time, priceListItemId } = values;
@@ -138,13 +180,20 @@ export const ReservationForm = () => {
               <FormItem>
                 <FormLabel>{t("global.date")}</FormLabel>
                 <FormControl>
-                  <Input {...field} type="date" />
+                  <Input
+                    {...field}
+                    onChange={(e) => {
+                      refetchReservations();
+                      field.onChange(e);
+                    }}
+                    type="date"
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
             )}
           />
-          {isLoadingOpeningHours ? (
+          {isLoadingOpeningHours || isLoadingReservations || isRefetching ? (
             <InputSkeleton />
           ) : (
             <FormField
@@ -165,22 +214,11 @@ export const ReservationForm = () => {
                       </SelectTrigger>
                       <SelectContent>
                         {openingHours && !isArrayEmpty(openingHours) ? (
-                          openingHours
-                            .filter(
-                              (oh) =>
-                                oh.day_of_week! ===
-                                getDay(form.getValues().date),
-                            )
-                            .map((oh) => [
-                              ...generateTimeIntervals(
-                                getTimeFromMs(oh.start_time!),
-                                getTimeFromMs(oh.start_time! + oh.duration!),
-                              ).map((interval) => (
-                                <SelectItem key={interval} value={interval}>
-                                  {interval}
-                                </SelectItem>
-                              )),
-                            ])
+                          getAvailableTimes().map((interval) => (
+                            <SelectItem key={interval} value={interval}>
+                              {interval}
+                            </SelectItem>
+                          ))
                         ) : (
                           <SelectItem disabled value="not-available">
                             {t("global.not_available")}
