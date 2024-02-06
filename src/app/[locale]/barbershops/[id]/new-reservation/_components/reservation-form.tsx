@@ -55,8 +55,8 @@ function generateTimeIntervals(startTime: string, endTime: string) {
   // Initialize array to store time intervals
   const intervals = [];
 
-  // Iterate from start time to end time in 15-minute intervals
-  let current = new Date(start);
+  // Iterate from start time to end time in 30-minute intervals
+  const current = new Date(start);
   while (current <= end) {
     // Format current time as HH:mm
     const hours = String(current.getHours()).padStart(2, "0");
@@ -66,7 +66,7 @@ function generateTimeIntervals(startTime: string, endTime: string) {
     // Add formatted time to intervals array
     intervals.push(time);
 
-    // Increment current time by 15 minutes
+    // Increment current time by 30 minutes
     current.setTime(current.getTime() + 30 * 60 * 1000);
   }
 
@@ -108,9 +108,9 @@ export const ReservationForm = () => {
     });
 
   const createReservation = api.reservation.create.useMutation({
-    onSuccess: () => {
-      utils.reservation.getPaginated.refetch();
+    onSuccess: async () => {
       toast("Successfully created new reservation.");
+      utils.reservation.getPaginated.refetch();
       router.replace(routes.reservations.root);
     },
   });
@@ -140,7 +140,7 @@ export const ReservationForm = () => {
       format(reservation.date!, "HH:mm"),
     );
     const availableTimes = openingHours!
-      .filter((oh) => oh.day_of_week! === getDay(form.getValues().date))
+      .filter((oh) => oh.day_of_week === getDay(form.getValues().date))
       .map((oh) =>
         generateTimeIntervals(
           getTimeFromMs(oh.start_time!),
@@ -183,8 +183,8 @@ export const ReservationForm = () => {
                   <Input
                     {...field}
                     onChange={(e) => {
-                      refetchReservations();
                       field.onChange(e);
+                      refetchReservations();
                     }}
                     type="date"
                   />
