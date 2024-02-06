@@ -286,6 +286,36 @@
           }
         }
       ]
+    },
+    {
+      "name": "reservation",
+      "columns": [
+        {
+          "name": "date",
+          "type": "datetime"
+        },
+        {
+          "name": "user",
+          "type": "link",
+          "link": {
+            "table": "nextauth_users"
+          }
+        },
+        {
+          "name": "price_list_item",
+          "type": "link",
+          "link": {
+            "table": "price_list_item"
+          }
+        },
+        {
+          "name": "barbershop",
+          "type": "link",
+          "link": {
+            "table": "barbershop"
+          }
+        }
+      ]
     }
   ]
 }

@@ -2,6 +2,7 @@ import {
   barbershopRouter,
   openingHoursRouter,
   priceListRouter,
+  reservationRouter,
 } from "~/server/api/routers";
 import { createTRPCRouter } from "~/server/api/trpc";
 
@@ -14,6 +15,7 @@ export const appRouter = createTRPCRouter({
   barbershop: barbershopRouter,
   priceList: priceListRouter,
   openingHours: openingHoursRouter,
+  reservation: reservationRouter,
 });
 
 // export type definition of API

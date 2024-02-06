@@ -29,6 +29,7 @@ const tables = [
       { column: "user", table: "nextauth_users_accounts" },
       { column: "user", table: "nextauth_users_sessions" },
       { column: "user", table: "nextauth_sessions" },
+      { column: "user", table: "reservation" },
     ],
   },
   {
@@ -45,6 +46,7 @@ const tables = [
       { column: "barbershop", table: "favorite_barbershop" },
       { column: "barbershop", table: "price_list" },
       { column: "barbershop", table: "opening_hours" },
+      { column: "barbershop", table: "reservation" },
     ],
   },
   {
@@ -120,6 +122,7 @@ const tables = [
       { name: "price", type: "float" },
       { name: "price_list", type: "link", link: { table: "price_list" } },
     ],
+    revLinks: [{ column: "price_list_item", table: "reservation" }],
   },
   {
     name: "opening_hours",
@@ -127,6 +130,19 @@ const tables = [
       { name: "start_time", type: "int" },
       { name: "duration", type: "int" },
       { name: "day_of_week", type: "int" },
+      { name: "barbershop", type: "link", link: { table: "barbershop" } },
+    ],
+  },
+  {
+    name: "reservation",
+    columns: [
+      { name: "date", type: "datetime" },
+      { name: "user", type: "link", link: { table: "nextauth_users" } },
+      {
+        name: "price_list_item",
+        type: "link",
+        link: { table: "price_list_item" },
+      },
       { name: "barbershop", type: "link", link: { table: "barbershop" } },
     ],
   },
@@ -173,6 +189,9 @@ export type PriceListItemRecord = PriceListItem & XataRecord;
 export type OpeningHours = InferredTypes["opening_hours"];
 export type OpeningHoursRecord = OpeningHours & XataRecord;
 
+export type Reservation = InferredTypes["reservation"];
+export type ReservationRecord = Reservation & XataRecord;
+
 export type DatabaseSchema = {
   nextauth_verificationTokens: NextauthVerificationTokensRecord;
   nextauth_users: NextauthUsersRecord;
@@ -186,6 +205,7 @@ export type DatabaseSchema = {
   price_list: PriceListRecord;
   price_list_item: PriceListItemRecord;
   opening_hours: OpeningHoursRecord;
+  reservation: ReservationRecord;
 };
 
 const DatabaseClient = buildClient();
