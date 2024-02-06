@@ -60,7 +60,10 @@
     "info": "Info",
     "location": "Location",
     "reservations": "Reservations",
-    "auth_required": "You need to be authenticated to see your reservations"
+    "date": "Date",
+    "time": "Time",
+    "not_available": "Not available",
+    "treatment": "Treatment"
   },
   "RootPage": {
     "search_placeholder": "Search barbershops by",
@@ -81,5 +84,13 @@
   },
   "BarbershopPage": {
     "new_reservation": "New reservation"
+  },
+  "ReservationsPage": {
+    "auth_required": "You need to be authenticated to see your reservations"
+  },
+  "NewReservationPage": {
+    "title": "New reservation",
+    "select_time": "Select time",
+    "select_treatment": "Select treatment"
   }
 }

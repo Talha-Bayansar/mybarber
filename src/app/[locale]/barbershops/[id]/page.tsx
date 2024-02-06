@@ -14,6 +14,8 @@ import { Info, FavoriteButton, PriceList } from "./_components";
 import { getServerAuthSession } from "~/server/auth";
 import { getTranslations } from "next-intl/server";
 import { RootNavBar } from "../../(root)/_components";
+import { Link } from "~/navigation";
+import { routes } from "~/lib";
 
 type Props = {
   params: {
@@ -37,7 +39,11 @@ const BarbershopPage = async ({ params }: Props) => {
           {session && <FavoriteButton barbershopId={id} />}
         </div>
         <List>
-          <Button>{t("BarbershopPage.new_reservation")}</Button>
+          <Button asChild>
+            <Link href={`${routes.barbershops.root}/${id}/new-reservation`}>
+              {t("BarbershopPage.new_reservation")}
+            </Link>
+          </Button>
           <Tabs defaultValue="pricelist">
             <TabsList className="grid w-full grid-cols-2">
               <TabsTrigger value="pricelist">

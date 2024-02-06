@@ -1,5 +1,5 @@
 import { Main, Page, Title, TitleSkeleton } from "~/components";
-import { RootNavBar } from "../_components";
+import { RootNavBar } from "../(root)/_components";
 import { getTranslations } from "next-intl/server";
 import { ReservationsListSkeleton } from "./_components";
 

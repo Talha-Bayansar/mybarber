@@ -28,5 +28,5 @@ export const ReservationItem = ({ reservation }: Props) => {
 };
 
 export const ReservationItemSkeleton = () => {
-  return <Skeleton className="h-12 w-full" />;
+  return <Skeleton className="h-32 w-full" />;
 };
