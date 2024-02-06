@@ -14,10 +14,16 @@ export const reservationRouter = createTRPCRouter({
       const { xata, session } = ctx;
 
       const response = await xata.db.reservation
+        .sort("date", "desc")
         .filter({
           "user.id": session.user.id,
         })
-        .select(["*", "barbershop.*", "price_list_item.*"])
+        .select([
+          "barbershop.name",
+          "*",
+          "price_list_item.*",
+          "price_list_item.price_list.currency",
+        ])
         .getPaginated({
           pagination: {
             size: input.size,

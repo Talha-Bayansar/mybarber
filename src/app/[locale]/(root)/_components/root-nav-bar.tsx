@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/prefer-nullish-coalescing */
 "use client";
 
-import { Search, Settings } from "lucide-react";
+import { CalendarClock, Search, Settings } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useParams, usePathname } from "next/navigation";
 import {
@@ -29,6 +29,11 @@ export const RootNavBar = () => {
       Icon: Search,
       href: routes.root,
       tooltip: t("search"),
+    },
+    {
+      Icon: CalendarClock,
+      href: routes.reservations.root,
+      tooltip: t("reservations"),
     },
     {
       Icon: Settings,

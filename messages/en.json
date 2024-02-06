@@ -58,7 +58,8 @@
     "contact": "Contact",
     "not_specified": "Not specified",
     "info": "Info",
-    "location": "Location"
+    "location": "Location",
+    "reservations": "Reservations"
   },
   "RootPage": {
     "search_placeholder": "Search barbershops by",

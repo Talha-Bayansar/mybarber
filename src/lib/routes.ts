@@ -6,4 +6,7 @@ export const routes = {
   barbershops: {
     root: "/barbershops",
   },
+  reservations: {
+    root: "/reservations",
+  },
 };
