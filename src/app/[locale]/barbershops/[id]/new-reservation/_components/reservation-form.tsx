@@ -11,7 +11,6 @@ import {
   Button,
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -25,7 +24,13 @@ import {
   SelectTrigger,
   SelectValue,
 } from "~/components";
-import { getDateFromTime, getTimeFromMs, isArrayEmpty, routes } from "~/lib";
+import {
+  generateArray,
+  getDateFromTime,
+  getTimeFromMs,
+  isArrayEmpty,
+  routes,
+} from "~/lib";
 import { useRouter } from "~/navigation";
 import { api } from "~/trpc/react";
 
@@ -96,9 +101,9 @@ export const ReservationForm = () => {
     });
   const createReservation = api.reservation.create.useMutation({
     onSuccess: () => {
-      toast("Successfully created new reservation.");
       utils.reservation.getPaginated.refetch();
-      router.push(routes.reservations.root);
+      toast("Successfully created new reservation.");
+      router.replace(routes.reservations.root);
     },
   });
 
@@ -145,7 +150,7 @@ export const ReservationForm = () => {
             <FormField
               control={form.control}
               name="time"
-              render={({ field }) => (
+              render={() => (
                 <FormItem>
                   <FormLabel>{t("global.time")}</FormLabel>
                   <FormControl>
@@ -177,7 +182,7 @@ export const ReservationForm = () => {
                               )),
                             ])
                         ) : (
-                          <SelectItem value="not-available">
+                          <SelectItem disabled value="not-available">
                             {t("global.not_available")}
                           </SelectItem>
                         )}
@@ -195,7 +200,7 @@ export const ReservationForm = () => {
             <FormField
               control={form.control}
               name="priceListItemId"
-              render={({ field }) => (
+              render={() => (
                 <FormItem>
                   <FormLabel>{t("global.treatment")}</FormLabel>
                   <FormControl>
@@ -215,7 +220,7 @@ export const ReservationForm = () => {
                             </SelectItem>
                           ))
                         ) : (
-                          <SelectItem value="not-available">
+                          <SelectItem disabled value="not-available">
                             {t("global.not_available")}
                           </SelectItem>
                         )}
@@ -233,5 +238,18 @@ export const ReservationForm = () => {
         </Button>
       </form>
     </Form>
+  );
+};
+
+export const ReservationFormSkeleton = () => {
+  return (
+    <List className="flex-grow justify-between gap-8 md:justify-start">
+      <List className="gap-8">
+        {generateArray(3).map((v) => (
+          <InputSkeleton key={v} />
+        ))}
+      </List>
+      <InputSkeleton />
+    </List>
   );
 };

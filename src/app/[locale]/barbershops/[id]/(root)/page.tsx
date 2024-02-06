@@ -10,10 +10,10 @@ import {
   TabsTrigger,
   Title,
 } from "~/components";
-import { Info, FavoriteButton, PriceList } from "./_components";
+import { Info, FavoriteButton, PriceList } from "../_components";
 import { getServerAuthSession } from "~/server/auth";
 import { getTranslations } from "next-intl/server";
-import { RootNavBar } from "../../(root)/_components";
+import { RootNavBar } from "../../../(root)/_components";
 import { Link } from "~/navigation";
 import { routes } from "~/lib";
 
