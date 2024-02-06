@@ -8,7 +8,7 @@ const ReservationsLoading = async () => {
   return (
     <Page>
       <Main>
-        <Title>{t("Reservations")}</Title>
+        <Title>{t("reservations")}</Title>
         <ReservationsListSkeleton />
       </Main>
       <RootNavBar />

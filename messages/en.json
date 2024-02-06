@@ -59,7 +59,8 @@
     "not_specified": "Not specified",
     "info": "Info",
     "location": "Location",
-    "reservations": "Reservations"
+    "reservations": "Reservations",
+    "auth_required": "You need to be authenticated to see your reservations"
   },
   "RootPage": {
     "search_placeholder": "Search barbershops by",
