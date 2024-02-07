@@ -146,6 +146,7 @@ const tables = [
         link: { table: "price_list_item" },
       },
       { name: "barbershop", type: "link", link: { table: "barbershop" } },
+      { name: "barber", type: "link", link: { table: "barber" } },
     ],
   },
   {
@@ -156,7 +157,10 @@ const tables = [
       { name: "user", type: "link", link: { table: "nextauth_users" } },
       { name: "barbershop", type: "link", link: { table: "barbershop" } },
     ],
-    revLinks: [{ column: "barber", table: "barber_hair_type" }],
+    revLinks: [
+      { column: "barber", table: "barber_hair_type" },
+      { column: "barber", table: "reservation" },
+    ],
   },
   {
     name: "hair_type",

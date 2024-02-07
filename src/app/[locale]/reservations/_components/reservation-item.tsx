@@ -3,12 +3,18 @@ import { format } from "date-fns";
 import { getCurrencyByCode } from "~/lib/utils";
 import { Card } from "~/components/ui/card";
 import { Skeleton } from "~/components/ui/skeleton";
+import { useTranslations } from "next-intl";
 
 type Props = {
   reservation: ReservationRecord;
 };
 
 export const ReservationItem = ({ reservation }: Props) => {
+  const t = useTranslations("global");
+  const fullName = reservation.barber
+    ? `${reservation.barber?.first_name} ${reservation.barber?.last_name}`
+    : undefined;
+
   return (
     <Card className="p-4">
       <p className="text-xl font-medium">
@@ -16,6 +22,7 @@ export const ReservationItem = ({ reservation }: Props) => {
         {format(reservation.date!, "HH:mm")}
       </p>
       <p>{reservation.barbershop?.name}</p>
+      <p>{fullName ?? t("not_specified")}</p>
       <p>{reservation.price_list_item?.name}</p>
       <p>
         {

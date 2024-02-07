@@ -90,11 +90,12 @@ export const ReservationForm = () => {
   });
 
   function onSubmit(values: z.infer<typeof formSchema>) {
-    const { date, time, priceListItemId } = values;
+    const { date, time, priceListItemId, barberId } = values;
     createReservation.mutate({
       barbershopId,
       date: combineDateAndTime({ date, time }).toISOString(),
       priceListItemId,
+      barberId,
     });
   }
 

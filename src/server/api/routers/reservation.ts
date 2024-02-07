@@ -23,6 +23,7 @@ export const reservationRouter = createTRPCRouter({
           "*",
           "price_list_item.*",
           "price_list_item.price_list.currency",
+          "barber.*",
         ])
         .getPaginated({
           pagination: {
@@ -68,6 +69,7 @@ export const reservationRouter = createTRPCRouter({
   create: protectedProcedure
     .input(
       z.object({
+        barberId: z.string().optional(),
         date: z.string().min(1),
         priceListItemId: z.string().min(1),
         barbershopId: z.string().min(1),
@@ -81,6 +83,7 @@ export const reservationRouter = createTRPCRouter({
         date: input.date,
         price_list_item: input.priceListItemId,
         user: session.user.id,
+        barber: input.barberId,
       });
 
       if (!response)

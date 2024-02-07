@@ -364,6 +364,13 @@
           }
         },
         {
+          "name": "barber",
+          "type": "link",
+          "link": {
+            "table": "barber"
+          }
+        },
+        {
           "name": "barbershop",
           "type": "link",
           "link": {
