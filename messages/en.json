@@ -93,6 +93,8 @@
     "title": "New reservation",
     "select_time": "Select time",
     "select_treatment": "Select treatment",
-    "select_date": "Select date"
+    "select_date": "Select date",
+    "select_barber": "Select barber",
+    "no_preference": "No preference"
   }
 }
