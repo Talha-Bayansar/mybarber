@@ -1,7 +1,7 @@
 "use client";
 import { Heart } from "lucide-react";
-import { IconButton } from "~/components";
-import { cn } from "~/lib";
+import { IconButton } from "~/components/icon-button";
+import { cn } from "~/lib/utils";
 import { api } from "~/trpc/react";
 
 type Props = {

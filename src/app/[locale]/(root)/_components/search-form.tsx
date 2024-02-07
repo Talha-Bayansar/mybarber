@@ -3,16 +3,16 @@
 import { useTranslations } from "next-intl";
 import { useSearchParams } from "next/navigation";
 import { useState } from "react";
+import { SearchInput } from "~/components/search-input";
 import {
-  SearchInput,
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-  Skeleton,
-} from "~/components";
-import { routes } from "~/lib";
+} from "~/components/ui/select";
+import { Skeleton } from "~/components/ui/skeleton";
+import { routes } from "~/lib/routes";
 import { useRouter } from "~/navigation";
 
 type Filter = "name" | "zip";

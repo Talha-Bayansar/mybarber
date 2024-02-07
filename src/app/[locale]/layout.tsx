@@ -1,14 +1,14 @@
 import "~/styles/globals.css";
 
 import { Inter } from "next/font/google";
-import { cookies } from "next/headers";
 
 import { TRPCReactProvider } from "~/trpc/react";
-import { cn } from "~/lib";
-import { NextAuthProvider, ThemeProvider } from "~/providers";
+import { cn } from "~/lib/utils";
 import { type Metadata } from "next";
 import { NextIntlClientProvider, useMessages } from "next-intl";
-import { Toaster } from "~/components";
+import { Toaster } from "~/components/ui/sonner";
+import { ThemeProvider } from "~/providers/ThemeProvider";
+import { NextAuthProvider } from "~/providers/NextAuthProvider";
 
 const inter = Inter({
   subsets: ["latin"],

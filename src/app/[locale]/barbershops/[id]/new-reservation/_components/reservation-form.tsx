@@ -7,28 +7,17 @@ import { useParams } from "next/navigation";
 import { type UseFormReturn, useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
-import {
-  Button,
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-  Input,
-  InputFieldSkeleton,
-  InputSkeleton,
-  List,
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "~/components";
-import { generateArray, getCurrencyByCode, isArrayEmpty, routes } from "~/lib";
+import { List } from "~/components/layout/list";
+import { Button } from "~/components/ui/button";
+import { Form } from "~/components/ui/form";
+import { InputFieldSkeleton, InputSkeleton } from "~/components/ui/input";
+import { routes } from "~/lib/routes";
+import { generateArray } from "~/lib/utils";
 import { useRouter } from "~/navigation";
 import { api } from "~/trpc/react";
-import { DateField, TimeField, TreatmentField } from ".";
+import { DateField } from "./date-field";
+import { TimeField } from "./time-field";
+import { TreatmentField } from "./treatment-field";
 
 const formSchema = z.object({
   date: z.string().min(1),

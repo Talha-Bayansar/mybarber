@@ -1,9 +1,11 @@
 "use server";
-import { Section } from "~/components";
-import { BarbershopsList, FavoritesList, NotSearched } from ".";
+import { Section } from "~/components/layout/section";
 import { api } from "~/trpc/server";
 import { getServerAuthSession } from "~/server/auth";
 import { getTranslations } from "next-intl/server";
+import { BarbershopsList } from "./barbershops-list";
+import { FavoritesList } from "./favorites-list";
+import { NotSearched } from "./not-searched";
 
 type Props = {
   searchParams: {

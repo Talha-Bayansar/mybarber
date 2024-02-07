@@ -1,5 +1,8 @@
-import { Main, Page, Skeleton, TitleSkeleton } from "~/components";
-import { RootNavBar } from "../../../(root)/_components";
+import { Main } from "~/components/layout/main";
+import { Page } from "~/components/layout/page";
+import { TitleSkeleton } from "~/components/layout/title";
+import { RootNavBar } from "~/components/root-nav-bar";
+import { Skeleton } from "~/components/ui/skeleton";
 
 const BarbershopLoading = () => {
   return (

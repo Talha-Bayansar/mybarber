@@ -1,14 +1,14 @@
+import { api } from "~/trpc/react";
+import { NewReservationForm } from "./reservation-form";
+import { useTranslations } from "next-intl";
 import {
-  FormControl,
   FormField,
   FormItem,
   FormLabel,
+  FormControl,
   FormMessage,
-  Input,
-} from "~/components";
-import { api } from "~/trpc/react";
-import { NewReservationForm } from ".";
-import { useTranslations } from "next-intl";
+} from "~/components/ui/form";
+import { Input } from "~/components/ui/input";
 
 type Props = {
   form: NewReservationForm;

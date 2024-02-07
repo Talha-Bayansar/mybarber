@@ -1,8 +1,10 @@
 import { getTranslations } from "next-intl/server";
-import { generateArray, getTimeFromMs, isArrayEmpty } from "~/lib";
+import { generateArray, getTimeFromMs, isArrayEmpty } from "~/lib/utils";
 import { api } from "~/trpc/server";
-import { Card, CardContent, List, Section } from "~/components";
-import { OpeningHoursRecord } from "~/server/db";
+import type { OpeningHoursRecord } from "~/server/db/xata";
+import { Section } from "~/components/layout/section";
+import { Card, CardContent } from "~/components/ui/card";
+import { List } from "~/components/layout/list";
 
 type Props = {
   barbershopId: string;

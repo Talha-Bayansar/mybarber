@@ -1,21 +1,18 @@
 import { api } from "~/trpc/server";
-import {
-  Button,
-  List,
-  Main,
-  Page,
-  Tabs,
-  TabsContent,
-  TabsList,
-  TabsTrigger,
-  Title,
-} from "~/components";
-import { Info, FavoriteButton, PriceList } from "../_components";
 import { getServerAuthSession } from "~/server/auth";
 import { getTranslations } from "next-intl/server";
-import { RootNavBar } from "../../../(root)/_components";
 import { Link } from "~/navigation";
-import { routes } from "~/lib";
+import { routes } from "~/lib/routes";
+import { Page } from "~/components/layout/page";
+import { Main } from "~/components/layout/main";
+import { List } from "~/components/layout/list";
+import { Title } from "~/components/layout/title";
+import { RootNavBar } from "~/components/root-nav-bar";
+import { Button } from "~/components/ui/button";
+import { FavoriteButton } from "../_components/favorite-button";
+import { PriceList } from "../_components/price-list";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "~/components/ui/tabs";
+import { Info } from "../_components/info";
 
 type Props = {
   params: {

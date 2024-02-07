@@ -3,7 +3,6 @@ import {
   type DefaultSession,
   type NextAuthOptions,
 } from "next-auth";
-import GoogleProvider from "next-auth/providers/google";
 import { XataAdapter } from "@next-auth/xata-adapter";
 
 import { env } from "~/env";

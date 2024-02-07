@@ -1,5 +1,6 @@
 import { type ReactNode } from "react";
-import { Card, CardDescription, Skeleton } from "~/components";
+import { Card, CardDescription } from "./ui/card";
+import { Skeleton } from "./ui/skeleton";
 
 type Props = {
   title?: string;

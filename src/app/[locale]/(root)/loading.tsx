@@ -1,9 +1,9 @@
-import { Header, Main, Page } from "~/components";
-import {
-  BarbershopsListSkeleton,
-  RootNavBar,
-  SearchFormSkeleton,
-} from "./_components";
+import { Header } from "~/components/layout/header";
+import { Main } from "~/components/layout/main";
+import { Page } from "~/components/layout/page";
+import { SearchFormSkeleton } from "./_components/search-form";
+import { RootNavBar } from "~/components/root-nav-bar";
+import { BarbershopsListSkeleton } from "./_components/barbershops-list";
 
 const RootLoading = () => {
   return (

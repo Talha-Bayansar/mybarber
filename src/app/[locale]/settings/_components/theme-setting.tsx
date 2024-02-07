@@ -1,15 +1,14 @@
 "use client";
 import { useTranslations } from "next-intl";
 import { useTheme } from "next-themes";
-import React from "react";
+import { SettingCard } from "~/components/setting-card";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-  SettingCard,
-} from "~/components";
+} from "~/components/ui/select";
 
 export const ThemeSetting = () => {
   const { themes, setTheme, theme } = useTheme();

@@ -1,10 +1,11 @@
 "use client";
-import { isArrayEmpty } from "~/lib";
-import { BarbershopItem, BarbershopsListSkeleton } from ".";
+import { isArrayEmpty } from "~/lib/utils";
 import { api } from "~/trpc/react";
-import { List } from "~/components";
+import { List } from "~/components/layout/list";
 import { HeartOff } from "lucide-react";
 import { useTranslations } from "next-intl";
+import { BarbershopsListSkeleton } from "./barbershops-list";
+import { BarbershopItem } from "./barbershop-item";
 
 type Props = {
   initialData: string;

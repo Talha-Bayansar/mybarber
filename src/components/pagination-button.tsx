@@ -1,6 +1,6 @@
 "use client";
 import { useTranslations } from "next-intl";
-import { Button, type ButtonProps } from ".";
+import { Button, type ButtonProps } from "./ui/button";
 
 type Props = {
   isLoading?: boolean;

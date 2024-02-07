@@ -1,6 +1,6 @@
 import { type ReactNode } from "react";
-import { cn } from "~/lib";
-import { Skeleton } from "..";
+import { cn } from "~/lib/utils";
+import { Skeleton } from "../ui/skeleton";
 
 type Props = {
   className?: string;

@@ -1,13 +1,15 @@
 "use client";
 
-import Link from "next/link";
-import { Button, Card, EmptyState, List, Skeleton } from "~/components";
-import { generateArray, isArrayEmpty, reducePages, routes } from "~/lib";
-import { BarbershopItem } from ".";
+import { generateArray, isArrayEmpty, reducePages } from "~/lib/utils";
+import { BarbershopItem } from "./barbershop-item";
 import { useSearchParams } from "next/navigation";
 import { api } from "~/trpc/react";
 import { useTranslations } from "next-intl";
 import { PaginationButton } from "~/components/pagination-button";
+import { EmptyState } from "~/components/empty-state";
+import { List } from "~/components/layout/list";
+import { Card } from "~/components/ui/card";
+import { Skeleton } from "~/components/ui/skeleton";
 
 export const BarbershopsList = () => {
   const t = useTranslations("global");

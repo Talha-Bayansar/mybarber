@@ -1,5 +1,6 @@
 "use server";
-import { Avatar, AvatarImage, AvatarFallback, Card } from "~/components";
+import { Avatar, AvatarImage, AvatarFallback } from "~/components/ui/avatar";
+import { Card } from "~/components/ui/card";
 import { getServerAuthSession } from "~/server/auth";
 
 export const CurrentUser = async () => {

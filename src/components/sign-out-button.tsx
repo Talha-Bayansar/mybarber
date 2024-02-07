@@ -1,5 +1,6 @@
 "use client";
 import { useTranslations } from "next-intl";
+import { signOut } from "next-auth/react";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -10,9 +11,8 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
-  Button,
-} from ".";
-import { signOut } from "next-auth/react";
+} from "./ui/alert-dialog";
+import { Button } from "./ui/button";
 
 export const SignOutButton = () => {
   const t = useTranslations();

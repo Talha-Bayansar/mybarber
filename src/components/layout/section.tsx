@@ -1,5 +1,5 @@
 import { ReactNode } from "react";
-import { Subtitle } from ".";
+import { Subtitle } from "./subtitle";
 
 type Props = {
   title: string;

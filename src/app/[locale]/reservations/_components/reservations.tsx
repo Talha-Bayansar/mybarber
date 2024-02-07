@@ -2,7 +2,8 @@
 import { getTranslations } from "next-intl/server";
 import { getServerAuthSession } from "~/server/auth";
 import { ReservationsList } from "./reservations-list";
-import { List, SignInButton } from "~/components";
+import { List } from "~/components/layout/list";
+import { SignInButton } from "~/components/sign-in-button";
 
 export const Reservations = async () => {
   const session = await getServerAuthSession();

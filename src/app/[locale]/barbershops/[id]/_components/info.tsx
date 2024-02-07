@@ -1,9 +1,10 @@
 import { LucideIcon, Mail, Phone } from "lucide-react";
 import { getTranslations } from "next-intl/server";
-import { List, Section } from "~/components";
+import { List } from "~/components/layout/list";
 import { Link } from "~/navigation";
-import { BarbershopRecord } from "~/server/db";
-import { OpeningHours } from ".";
+import type { BarbershopRecord } from "~/server/db/xata";
+import { OpeningHours } from "./opening-hours";
+import { Section } from "~/components/layout/section";
 
 type Props = {
   barbershop: BarbershopRecord;

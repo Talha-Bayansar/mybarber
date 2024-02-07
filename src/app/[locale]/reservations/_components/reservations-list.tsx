@@ -1,11 +1,12 @@
 "use client";
 
-import { EmptyState, List } from "~/components";
-import { generateArray, isArrayEmpty, reducePages } from "~/lib";
-import { ReservationItem, ReservationItemSkeleton } from ".";
+import { generateArray, isArrayEmpty, reducePages } from "~/lib/utils";
 import { api } from "~/trpc/react";
-import type { ReservationRecord } from "~/server/db";
+import type { ReservationRecord } from "~/server/db/xata";
 import { PaginationButton } from "~/components/pagination-button";
+import { EmptyState } from "~/components/empty-state";
+import { ReservationItem, ReservationItemSkeleton } from "./reservation-item";
+import { List } from "~/components/layout/list";
 
 export const ReservationsList = () => {
   const { data, isLoading, fetchNextPage, isFetchingNextPage } =

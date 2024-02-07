@@ -1,12 +1,13 @@
-import { List, Main, Page, Title } from "~/components";
 import { getTranslations } from "next-intl/server";
-import {
-  AuthButton,
-  CurrentUser,
-  LanguageSetting,
-  ThemeSetting,
-} from "./_components";
-import { RootNavBar } from "../(root)/_components";
+import { Page } from "~/components/layout/page";
+import { Main } from "~/components/layout/main";
+import { Title } from "~/components/layout/title";
+import { List } from "~/components/layout/list";
+import { CurrentUser } from "./_components/current-user";
+import { LanguageSetting } from "./_components/language-setting";
+import { ThemeSetting } from "./_components/theme-setting";
+import { AuthButton } from "./_components/auth-button";
+import { RootNavBar } from "~/components/root-nav-bar";
 
 const SettingsPage = async () => {
   const t = await getTranslations("global");

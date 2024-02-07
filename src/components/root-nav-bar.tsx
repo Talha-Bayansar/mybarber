@@ -4,16 +4,17 @@
 import { CalendarClock, Search, Settings } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useParams, usePathname } from "next/navigation";
+import { routes } from "~/lib/routes";
+import { Link } from "~/navigation";
+import { NavigationBar } from "./layout/navigation-bar";
 import {
-  NavigationBar,
-  IconButton,
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
-} from "~/components";
-import { cn, routes } from "~/lib";
-import { Link } from "~/navigation";
+} from "./ui/tooltip";
+import { cn } from "~/lib/utils";
+import { IconButton } from "./icon-button";
 
 export const RootNavBar = () => {
   const pathName = usePathname();

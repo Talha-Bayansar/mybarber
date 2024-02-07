@@ -1,7 +1,7 @@
 "use client";
 import { useTranslations } from "next-intl";
-import { Button } from ".";
 import { signIn } from "next-auth/react";
+import { Button } from "./ui/button";
 
 export const SignInButton = () => {
   const t = useTranslations("global");

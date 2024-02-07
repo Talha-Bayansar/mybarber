@@ -1,24 +1,26 @@
 "use client";
 
+import { getDateFromTime, getTimeFromMs, isArrayEmpty } from "~/lib/utils";
+import { type NewReservationForm } from "./reservation-form";
+import { useTranslations } from "next-intl";
+import { api } from "~/trpc/react";
+import { useParams } from "next/navigation";
+import { endOfDay, format, getDay, startOfDay } from "date-fns";
+import { InputFieldSkeleton } from "~/components/ui/input";
 import {
+  FormControl,
   FormField,
   FormItem,
   FormLabel,
-  FormControl,
   FormMessage,
+} from "~/components/ui/form";
+import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-  InputFieldSkeleton,
-} from "~/components";
-import { getDateFromTime, getTimeFromMs, isArrayEmpty } from "~/lib";
-import { type NewReservationForm } from ".";
-import { useTranslations } from "next-intl";
-import { api } from "~/trpc/react";
-import { useParams } from "next/navigation";
-import { endOfDay, format, getDay, startOfDay } from "date-fns";
+} from "~/components/ui/select";
 
 type Props = {
   form: NewReservationForm;

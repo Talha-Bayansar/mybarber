@@ -1,10 +1,11 @@
-import { EmptyState, List } from "~/components";
-import { getCurrencyByCode, isArrayEmpty } from "~/lib";
+import { EmptyState } from "~/components/empty-state";
+import { List } from "~/components/layout/list";
+import { getCurrencyByCode, isArrayEmpty } from "~/lib/utils";
 import type {
   BarbershopRecord,
   PriceListItemRecord,
   PriceListRecord,
-} from "~/server/db";
+} from "~/server/db/xata";
 import { api } from "~/trpc/server";
 
 type Props = {

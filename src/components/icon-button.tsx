@@ -1,5 +1,5 @@
-import { cn } from "~/lib";
-import { Button, ButtonProps } from ".";
+import { cn } from "~/lib/utils";
+import { Button, type ButtonProps } from "./ui/button";
 import { type ReactNode } from "react";
 
 type Props = {

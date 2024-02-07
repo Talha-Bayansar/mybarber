@@ -2,10 +2,12 @@
 
 import { Heart } from "lucide-react";
 import Image from "next/image";
-import { Card, IconButton } from "~/components";
-import { cn, routes } from "~/lib";
+import { IconButton } from "~/components/icon-button";
+import { Card } from "~/components/ui/card";
+import { routes } from "~/lib/routes";
+import { cn } from "~/lib/utils";
 import { Link } from "~/navigation";
-import type { BarbershopRecord } from "~/server/db";
+import type { BarbershopRecord } from "~/server/db/xata";
 import { api } from "~/trpc/react";
 
 type BarbershopItemProps = {

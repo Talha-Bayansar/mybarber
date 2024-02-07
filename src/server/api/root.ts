@@ -1,10 +1,8 @@
-import {
-  barbershopRouter,
-  openingHoursRouter,
-  priceListRouter,
-  reservationRouter,
-} from "~/server/api/routers";
 import { createTRPCRouter } from "~/server/api/trpc";
+import { barbershopRouter } from "./routers/barbershop";
+import { priceListRouter } from "./routers/price-list";
+import { openingHoursRouter } from "./routers/opening-hours";
+import { reservationRouter } from "./routers/reservation";
 
 /**
  * This is the primary router for your server.

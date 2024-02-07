@@ -1,23 +1,15 @@
 "use client";
 
 import {
-  Select,
-  SelectTrigger,
-  SelectValue,
-  SelectContent,
-  SelectItem,
-} from "@radix-ui/react-select";
-import {
+  FormControl,
   FormField,
   FormItem,
   FormLabel,
-  FormControl,
   FormMessage,
-  Input,
-} from "~/components";
-import { isArrayEmpty } from "~/lib";
-import { type NewReservationForm } from ".";
+} from "~/components/ui/form";
+import { type NewReservationForm } from "./reservation-form";
 import { useTranslations } from "next-intl";
+import { Input } from "~/components/ui/input";
 
 type Props = {
   form: NewReservationForm;
@@ -36,7 +28,10 @@ export const BarberSelection = ({ form }: Props) => {
         <FormItem>
           <FormLabel>{t("global.time")}</FormLabel>
           <FormControl>
-            <Input placeholder="Select barber" {...field} />
+            <Input
+              placeholder={t("NewReservationPage.select_barber")}
+              {...field}
+            />
           </FormControl>
           <FormMessage />
         </FormItem>

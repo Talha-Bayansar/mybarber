@@ -1,23 +1,25 @@
 "use client";
 
+import { isArrayEmpty, getCurrencyByCode } from "~/lib/utils";
+import { type NewReservationForm } from "./reservation-form";
+import { api } from "~/trpc/react";
+import { useParams } from "next/navigation";
+import { useTranslations } from "next-intl";
+import { InputFieldSkeleton } from "~/components/ui/input";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "~/components/ui/select";
 import {
   FormField,
   FormItem,
   FormLabel,
   FormControl,
   FormMessage,
-  Select,
-  SelectTrigger,
-  SelectValue,
-  SelectContent,
-  SelectItem,
-  InputFieldSkeleton,
-} from "~/components";
-import { isArrayEmpty, getCurrencyByCode } from "~/lib";
-import { type NewReservationForm } from ".";
-import { api } from "~/trpc/react";
-import { useParams } from "next/navigation";
-import { useTranslations } from "next-intl";
+} from "~/components/ui/form";
 
 type Props = {
   form: NewReservationForm;

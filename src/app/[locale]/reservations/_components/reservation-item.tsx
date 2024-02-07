@@ -1,7 +1,8 @@
-import { Card, Skeleton } from "~/components";
-import { type ReservationRecord } from "~/server/db";
+import { type ReservationRecord } from "~/server/db/xata";
 import { format } from "date-fns";
-import { getCurrencyByCode } from "~/lib";
+import { getCurrencyByCode } from "~/lib/utils";
+import { Card } from "~/components/ui/card";
+import { Skeleton } from "~/components/ui/skeleton";
 
 type Props = {
   reservation: ReservationRecord;

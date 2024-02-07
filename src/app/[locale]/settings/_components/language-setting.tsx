@@ -1,15 +1,15 @@
 "use client";
 import { useTranslations } from "next-intl";
 import { useParams } from "next/navigation";
+import { SettingCard } from "~/components/setting-card";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-  SettingCard,
-} from "~/components";
-import { routes } from "~/lib";
+} from "~/components/ui/select";
+import { routes } from "~/lib/routes";
 import { locales, useRouter } from "~/navigation";
 
 export const LanguageSetting = () => {
