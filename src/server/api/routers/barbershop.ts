@@ -6,7 +6,7 @@ import {
   protectedProcedure,
   publicProcedure,
 } from "~/server/api/trpc";
-import { type BarbershopRecord } from "~/server/db";
+import { type BarbershopRecord } from "~/server/db/xata";
 
 export const barbershopRouter = createTRPCRouter({
   search: publicProcedure
