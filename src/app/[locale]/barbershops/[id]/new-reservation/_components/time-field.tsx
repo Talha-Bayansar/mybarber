@@ -111,7 +111,7 @@ export const TimeField = ({ form }: Props) => {
           <FormControl>
             <Select
               onValueChange={(v) => form.setValue("time", v)}
-              disabled={!(form.getValues().date.length > 0)}
+              disabled={!form.getValues().date}
             >
               <SelectTrigger>
                 <SelectValue

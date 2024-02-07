@@ -20,28 +20,30 @@ import { TimeField } from "./time-field";
 import { TreatmentField } from "./treatment-field";
 
 const formSchema = z.object({
-  date: z.string().min(1),
+  date: z.date(),
   time: z.string().min(1),
   priceListItemId: z.string().min(1),
 });
 
 export type NewReservationForm = UseFormReturn<
   {
-    date: string;
+    date: Date;
     priceListItemId: string;
     time: string;
   },
   any,
   {
-    date: string;
+    date: Date;
     priceListItemId: string;
     time: string;
   }
 >;
 
-function combineDateAndTime(dateTimeObject: { date: string; time: string }) {
+function combineDateAndTime(dateTimeObject: { date: Date; time: string }) {
   // Parse date and time strings
-  const dateParts = dateTimeObject.date.split("-").map(Number);
+  const dateParts = format(dateTimeObject.date, "yyyy-MM-dd")
+    .split("-")
+    .map(Number);
   const timeParts = dateTimeObject.time.split(":").map(Number);
 
   // Create a new Date object with the parsed date
@@ -76,7 +78,7 @@ export const ReservationForm = () => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      date: format(startOfToday(), "yyyy-MM-dd"),
+      date: startOfToday(),
       time: "",
       priceListItemId: "",
     },
