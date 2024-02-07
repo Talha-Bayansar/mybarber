@@ -30,6 +30,7 @@ const tables = [
       { column: "user", table: "nextauth_users_sessions" },
       { column: "user", table: "nextauth_sessions" },
       { column: "user", table: "reservation" },
+      { column: "user", table: "barber" },
     ],
   },
   {
@@ -146,6 +147,27 @@ const tables = [
       { name: "barbershop", type: "link", link: { table: "barbershop" } },
     ],
   },
+  {
+    name: "barber",
+    columns: [
+      { name: "first_name", type: "string" },
+      { name: "last_name", type: "string" },
+      { name: "user", type: "link", link: { table: "nextauth_users" } },
+    ],
+    revLinks: [{ column: "barber", table: "barber_hair_type" }],
+  },
+  {
+    name: "hair_type",
+    columns: [{ name: "name", type: "string" }],
+    revLinks: [{ column: "hair_type", table: "barber_hair_type" }],
+  },
+  {
+    name: "barber_hair_type",
+    columns: [
+      { name: "barber", type: "link", link: { table: "barber" } },
+      { name: "hair_type", type: "link", link: { table: "hair_type" } },
+    ],
+  },
 ] as const;
 
 export type SchemaTables = typeof tables;
@@ -192,6 +214,15 @@ export type OpeningHoursRecord = OpeningHours & XataRecord;
 export type Reservation = InferredTypes["reservation"];
 export type ReservationRecord = Reservation & XataRecord;
 
+export type Barber = InferredTypes["barber"];
+export type BarberRecord = Barber & XataRecord;
+
+export type HairType = InferredTypes["hair_type"];
+export type HairTypeRecord = HairType & XataRecord;
+
+export type BarberHairType = InferredTypes["barber_hair_type"];
+export type BarberHairTypeRecord = BarberHairType & XataRecord;
+
 export type DatabaseSchema = {
   nextauth_verificationTokens: NextauthVerificationTokensRecord;
   nextauth_users: NextauthUsersRecord;
@@ -206,6 +237,9 @@ export type DatabaseSchema = {
   price_list_item: PriceListItemRecord;
   opening_hours: OpeningHoursRecord;
   reservation: ReservationRecord;
+  barber: BarberRecord;
+  hair_type: HairTypeRecord;
+  barber_hair_type: BarberHairTypeRecord;
 };
 
 const DatabaseClient = buildClient();

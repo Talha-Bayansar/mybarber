@@ -23,7 +23,7 @@ export const BarberSelection = ({ form }: Props) => {
   return (
     <FormField
       control={form.control}
-      name="time"
+      name="barberId"
       render={({ field }) => (
         <FormItem>
           <FormLabel>{t("global.time")}</FormLabel>

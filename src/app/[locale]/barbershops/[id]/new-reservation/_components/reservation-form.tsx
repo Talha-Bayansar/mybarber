@@ -18,8 +18,10 @@ import { api } from "~/trpc/react";
 import { DateField } from "./date-field";
 import { TimeField } from "./time-field";
 import { TreatmentField } from "./treatment-field";
+import { BarberSelection } from "./barber-selection";
 
 const formSchema = z.object({
+  barberId: z.string(),
   date: z.date(),
   time: z.string().min(1),
   priceListItemId: z.string().min(1),
@@ -27,12 +29,14 @@ const formSchema = z.object({
 
 export type NewReservationForm = UseFormReturn<
   {
+    barberId: string;
     date: Date;
     priceListItemId: string;
     time: string;
   },
   any,
   {
+    barberId: string;
     date: Date;
     priceListItemId: string;
     time: string;
@@ -78,6 +82,7 @@ export const ReservationForm = () => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
+      barberId: "",
       date: startOfToday(),
       time: "",
       priceListItemId: "",
@@ -100,6 +105,7 @@ export const ReservationForm = () => {
         className="flex flex-grow flex-col justify-between gap-8 md:justify-start"
       >
         <List className="gap-8">
+          <BarberSelection form={form} />
           <DateField form={form} />
           <TimeField form={form} />
           <TreatmentField form={form} />
