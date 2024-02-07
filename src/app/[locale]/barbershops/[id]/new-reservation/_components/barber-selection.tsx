@@ -15,6 +15,8 @@ import { RadioGroup, RadioGroupItem } from "~/components/ui/radio-group";
 import { List } from "~/components/layout/list";
 import { Skeleton } from "~/components/ui/skeleton";
 import { generateArray } from "~/lib/utils";
+import Image from "next/image";
+import { Avatar, AvatarFallback, AvatarImage } from "~/components/ui/avatar";
 
 type Props = {
   form: NewReservationForm;
@@ -41,29 +43,47 @@ export const BarberSelection = ({ form }: Props) => {
             <RadioGroup
               onValueChange={field.onChange}
               defaultValue={field.value}
-              className="flex flex-col space-y-1"
+              className="grid grid-cols-2 gap-8"
             >
-              <FormItem className="flex items-center space-x-3 space-y-0">
+              <FormItem className="flex flex-col items-center justify-end text-center">
+                <FormLabel className="flex flex-grow flex-col justify-end font-normal">
+                  {t("no_preference")}
+                </FormLabel>
                 <FormControl>
                   <RadioGroupItem value="" />
                 </FormControl>
-                <FormLabel className="font-normal">
-                  {t("no_preference")}
-                </FormLabel>
               </FormItem>
-              {barbers?.map((barber) => (
-                <FormItem
-                  key={barber.id}
-                  className="flex items-center space-x-3 space-y-0"
-                >
-                  <FormControl>
-                    <RadioGroupItem value={barber.id} />
-                  </FormControl>
-                  <FormLabel className="font-normal">
-                    {barber.first_name} {barber.last_name}
-                  </FormLabel>
-                </FormItem>
-              ))}
+              {barbers?.map((barber) => {
+                const searchParams = new URLSearchParams();
+                searchParams.set(
+                  "name",
+                  `${barber.first_name} ${barber.last_name}`,
+                );
+
+                return (
+                  <FormItem
+                    key={barber.id}
+                    className="flex flex-col items-center"
+                  >
+                    <FormLabel className="flex flex-grow flex-col items-center gap-2">
+                      <Avatar>
+                        <AvatarImage
+                          src={`https://eu.ui-avatars.com/api/?${searchParams.toString()}&size=250`}
+                        />
+                        <AvatarFallback>
+                          {barber.first_name?.at(0)} {barber.last_name?.at(0)}
+                        </AvatarFallback>
+                      </Avatar>
+                      <span className="flex flex-grow flex-col justify-center text-center font-normal">
+                        {barber.first_name} {barber.last_name}
+                      </span>
+                    </FormLabel>
+                    <FormControl>
+                      <RadioGroupItem value={barber.id} />
+                    </FormControl>
+                  </FormItem>
+                );
+              })}
             </RadioGroup>
           </FormControl>
           <FormMessage />

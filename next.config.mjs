@@ -30,6 +30,12 @@ const config = {
       },
       {
         protocol: "https",
+        hostname: "eu.ui-avatars.com",
+        port: "",
+        pathname: "/**",
+      },
+      {
+        protocol: "https",
         hostname: "eu-central-1.storage.xata.sh",
         port: "",
         pathname: "/**",
