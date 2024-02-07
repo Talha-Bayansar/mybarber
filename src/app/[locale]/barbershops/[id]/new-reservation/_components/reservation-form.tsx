@@ -95,7 +95,7 @@ export const ReservationForm = () => {
       barbershopId,
       date: combineDateAndTime({ date, time }).toISOString(),
       priceListItemId,
-      barberId,
+      barberId: barberId || undefined,
     });
   }
 

@@ -22,6 +22,7 @@ import { Calendar } from "~/components/ui/calendar";
 import { cn } from "~/lib/utils";
 import { type Locale, format, startOfToday } from "date-fns";
 import { useParams } from "next/navigation";
+import { useState } from "react";
 
 const locales: Record<string, Locale> = {
   en: enUS,
@@ -37,6 +38,7 @@ export const DateField = ({ form }: Props) => {
   const t = useTranslations();
   const utils = api.useUtils();
   const { locale } = useParams<{ locale: string }>();
+  const [isPickerOpen, setIsPickerOpen] = useState<boolean>(false);
 
   return (
     <FormField
@@ -45,7 +47,7 @@ export const DateField = ({ form }: Props) => {
       render={({ field }) => (
         <FormItem className="flex flex-col">
           <FormLabel>{t("global.date")}</FormLabel>
-          <Popover>
+          <Popover onOpenChange={setIsPickerOpen} open={isPickerOpen}>
             <PopoverTrigger asChild>
               <FormControl>
                 <Button
@@ -73,6 +75,7 @@ export const DateField = ({ form }: Props) => {
                 onSelect={(e) => {
                   utils.reservation.getAllBetweenDates.refetch();
                   field.onChange(e);
+                  setIsPickerOpen(false);
                 }}
                 disabled={(date) => date < startOfToday()}
                 initialFocus
