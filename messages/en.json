@@ -63,7 +63,8 @@
     "date": "Date",
     "time": "Time",
     "not_available": "Not available",
-    "treatment": "Treatment"
+    "treatment": "Treatment",
+    "auth_required": "You need to be authenticated to continue."
   },
   "RootPage": {
     "search_placeholder": "Search barbershops by",
