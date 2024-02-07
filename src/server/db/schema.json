@@ -200,6 +200,13 @@
           "link": {
             "table": "nextauth_users"
           }
+        },
+        {
+          "name": "barbershop",
+          "type": "link",
+          "link": {
+            "table": "barbershop"
+          }
         }
       ]
     },
