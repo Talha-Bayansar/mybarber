@@ -1,17 +1,10 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import {
-  endOfDay,
-  endOfToday,
-  format,
-  getDay,
-  startOfDay,
-  startOfToday,
-} from "date-fns";
+import { format, startOfToday } from "date-fns";
 import { useTranslations } from "next-intl";
 import { useParams } from "next/navigation";
-import { useForm } from "react-hook-form";
+import { type UseFormReturn, useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
 import {
@@ -23,6 +16,7 @@ import {
   FormLabel,
   FormMessage,
   Input,
+  InputFieldSkeleton,
   InputSkeleton,
   List,
   Select,
@@ -31,15 +25,10 @@ import {
   SelectTrigger,
   SelectValue,
 } from "~/components";
-import {
-  generateArray,
-  getDateFromTime,
-  getTimeFromMs,
-  isArrayEmpty,
-  routes,
-} from "~/lib";
+import { generateArray, getCurrencyByCode, isArrayEmpty, routes } from "~/lib";
 import { useRouter } from "~/navigation";
 import { api } from "~/trpc/react";
+import { DateField, TimeField, TreatmentField } from ".";
 
 const formSchema = z.object({
   date: z.string().min(1),
@@ -47,31 +36,19 @@ const formSchema = z.object({
   priceListItemId: z.string().min(1),
 });
 
-function generateTimeIntervals(startTime: string, endTime: string) {
-  // Parse start and end times
-  const start = getDateFromTime(startTime);
-  const end = getDateFromTime(endTime);
-
-  // Initialize array to store time intervals
-  const intervals = [];
-
-  // Iterate from start time to end time in 30-minute intervals
-  const current = new Date(start);
-  while (current <= end) {
-    // Format current time as HH:mm
-    const hours = String(current.getHours()).padStart(2, "0");
-    const minutes = String(current.getMinutes()).padStart(2, "0");
-    const time = `${hours}:${minutes}`;
-
-    // Add formatted time to intervals array
-    intervals.push(time);
-
-    // Increment current time by 30 minutes
-    current.setTime(current.getTime() + 30 * 60 * 1000);
+export type NewReservationForm = UseFormReturn<
+  {
+    date: string;
+    priceListItemId: string;
+    time: string;
+  },
+  any,
+  {
+    date: string;
+    priceListItemId: string;
+    time: string;
   }
-
-  return intervals;
-}
+>;
 
 function combineDateAndTime(dateTimeObject: { date: string; time: string }) {
   // Parse date and time strings
@@ -98,14 +75,6 @@ export const ReservationForm = () => {
   const params = useParams<{ id: string }>();
   const barbershopId = params.id;
   const utils = api.useUtils();
-  const { data: openingHours, isLoading: isLoadingOpeningHours } =
-    api.openingHours.getAllByBarbershopId.useQuery({
-      barbershopId,
-    });
-  const { data: priceList, isLoading: isLoadingPriceList } =
-    api.priceList.getByBarbershopId.useQuery({
-      barbershopId,
-    });
 
   const createReservation = api.reservation.create.useMutation({
     onSuccess: async () => {
@@ -124,40 +93,6 @@ export const ReservationForm = () => {
     },
   });
 
-  const {
-    data: reservations,
-    isLoading: isLoadingReservations,
-    isRefetching,
-    refetch: refetchReservations,
-  } = api.reservation.getAllBetweenDates.useQuery({
-    barbershopId,
-    startDate: startOfDay(form.getValues().date).toISOString(),
-    endDate: endOfDay(form.getValues().date).toISOString(),
-  });
-
-  const getAvailableTimes = () => {
-    const reservedTimes = reservations?.map((reservation) =>
-      format(reservation.date!, "HH:mm"),
-    );
-    const availableTimes = openingHours!
-      .filter((oh) => oh.day_of_week === getDay(form.getValues().date))
-      .map((oh) =>
-        generateTimeIntervals(
-          getTimeFromMs(oh.start_time!),
-          getTimeFromMs(oh.start_time! + oh.duration!),
-        ),
-      )
-      .reduce((previous, current) => [...previous, ...current], []);
-
-    if (reservedTimes) {
-      return availableTimes.filter(
-        (interval) => !reservedTimes.includes(interval),
-      );
-    } else {
-      return availableTimes;
-    }
-  };
-
   function onSubmit(values: z.infer<typeof formSchema>) {
     const { date, time, priceListItemId } = values;
     createReservation.mutate({
@@ -166,6 +101,7 @@ export const ReservationForm = () => {
       priceListItemId,
     });
   }
+
   return (
     <Form {...form}>
       <form
@@ -173,103 +109,9 @@ export const ReservationForm = () => {
         className="flex flex-grow flex-col justify-between gap-8 md:justify-start"
       >
         <List className="gap-8">
-          <FormField
-            control={form.control}
-            name="date"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>{t("global.date")}</FormLabel>
-                <FormControl>
-                  <Input
-                    {...field}
-                    onChange={(e) => {
-                      field.onChange(e);
-                      refetchReservations();
-                    }}
-                    type="date"
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          {isLoadingOpeningHours || isLoadingReservations || isRefetching ? (
-            <InputSkeleton />
-          ) : (
-            <FormField
-              control={form.control}
-              name="time"
-              render={() => (
-                <FormItem>
-                  <FormLabel>{t("global.time")}</FormLabel>
-                  <FormControl>
-                    <Select
-                      onValueChange={(v) => form.setValue("time", v)}
-                      disabled={!(form.getValues().date.length > 0)}
-                    >
-                      <SelectTrigger>
-                        <SelectValue
-                          placeholder={t("NewReservationPage.select_time")}
-                        />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {openingHours && !isArrayEmpty(openingHours) ? (
-                          getAvailableTimes().map((interval) => (
-                            <SelectItem key={interval} value={interval}>
-                              {interval}
-                            </SelectItem>
-                          ))
-                        ) : (
-                          <SelectItem disabled value="not-available">
-                            {t("global.not_available")}
-                          </SelectItem>
-                        )}
-                      </SelectContent>
-                    </Select>
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          )}
-          {isLoadingPriceList ? (
-            <InputSkeleton />
-          ) : (
-            <FormField
-              control={form.control}
-              name="priceListItemId"
-              render={() => (
-                <FormItem>
-                  <FormLabel>{t("global.treatment")}</FormLabel>
-                  <FormControl>
-                    <Select
-                      onValueChange={(v) => form.setValue("priceListItemId", v)}
-                    >
-                      <SelectTrigger>
-                        <SelectValue
-                          placeholder={t("NewReservationPage.select_treatment")}
-                        />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {priceList && !isArrayEmpty(priceList.items) ? (
-                          priceList.items.map((item) => (
-                            <SelectItem key={item.id} value={item.id}>
-                              {item.name}
-                            </SelectItem>
-                          ))
-                        ) : (
-                          <SelectItem disabled value="not-available">
-                            {t("global.not_available")}
-                          </SelectItem>
-                        )}
-                      </SelectContent>
-                    </Select>
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          )}
+          <DateField form={form} />
+          <TimeField form={form} />
+          <TreatmentField form={form} />
         </List>
         <Button className="w-full" type="submit">
           {t("global.submit")}
@@ -284,7 +126,7 @@ export const ReservationFormSkeleton = () => {
     <List className="flex-grow justify-between gap-8 md:justify-start">
       <List className="gap-8">
         {generateArray(3).map((v) => (
-          <InputSkeleton key={v} />
+          <InputFieldSkeleton key={v} />
         ))}
       </List>
       <InputSkeleton />

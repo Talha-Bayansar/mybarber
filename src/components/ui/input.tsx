@@ -27,4 +27,13 @@ const InputSkeleton = () => {
   return <Skeleton className="h-10 w-full" />;
 };
 
+export const InputFieldSkeleton = () => {
+  return (
+    <div className="flex flex-col gap-2">
+      <Skeleton className="h-4 w-12" />
+      <InputSkeleton />
+    </div>
+  );
+};
+
 export { Input, InputSkeleton };
