@@ -26,6 +26,12 @@ type Props = {
   form: NewReservationForm;
 };
 
+const getDayOfWeek = (date: string | number | Date) => {
+  const day = getDay(date);
+  if (day === 0) return 6;
+  else return day - 1;
+};
+
 function generateTimeIntervals(startTime: string, endTime: string) {
   // Parse start and end times
   const start = getDateFromTime(startTime);
@@ -74,7 +80,7 @@ export const TimeField = ({ form }: Props) => {
       format(reservation.date!, "HH:mm"),
     );
     const availableTimes = openingHours!
-      .filter((oh) => oh.day_of_week === getDay(form.getValues().date))
+      .filter((oh) => oh.day_of_week === getDayOfWeek(form.getValues().date))
       .map((oh) =>
         generateTimeIntervals(
           getTimeFromMs(oh.start_time!),
@@ -113,7 +119,9 @@ export const TimeField = ({ form }: Props) => {
                 />
               </SelectTrigger>
               <SelectContent>
-                {openingHours && !isArrayEmpty(openingHours) ? (
+                {openingHours &&
+                !isArrayEmpty(openingHours) &&
+                !isArrayEmpty(getAvailableTimes()) ? (
                   getAvailableTimes().map((interval) => (
                     <SelectItem key={interval} value={interval}>
                       {interval}
