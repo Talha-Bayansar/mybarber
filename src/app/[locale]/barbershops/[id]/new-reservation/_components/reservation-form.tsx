@@ -111,7 +111,11 @@ export const ReservationForm = () => {
           <TimeField form={form} />
           <TreatmentField form={form} />
         </List>
-        <Button className="w-full" type="submit">
+        <Button
+          className="w-full"
+          type="submit"
+          disabled={createReservation.isLoading}
+        >
           {t("global.submit")}
         </Button>
       </form>

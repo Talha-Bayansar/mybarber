@@ -78,6 +78,18 @@ export const reservationRouter = createTRPCRouter({
     .mutation(async ({ ctx, input }) => {
       const { xata, session } = ctx;
 
+      const reservation = await xata.db.reservation
+        .filter({
+          "barbershop.id": input.barbershopId,
+          date: input.date,
+        })
+        .getFirst();
+
+      if (!!reservation)
+        throw new TRPCError({
+          code: "BAD_REQUEST",
+        });
+
       const response = await xata.db.reservation.create({
         barbershop: input.barbershopId,
         date: input.date,
