@@ -1,4 +1,4 @@
-import { LucideIcon, Mail, Phone } from "lucide-react";
+import { type LucideIcon, Mail, Phone } from "lucide-react";
 import { getTranslations } from "next-intl/server";
 import { List } from "~/components/layout/list";
 import { Link } from "~/navigation";

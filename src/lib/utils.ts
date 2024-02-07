@@ -1,7 +1,7 @@
 import { type PaginationQueryMeta } from "@xata.io/client";
 import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
-import { Currency, currencies } from "./currencies";
+import { type Currency, currencies } from "./currencies";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));

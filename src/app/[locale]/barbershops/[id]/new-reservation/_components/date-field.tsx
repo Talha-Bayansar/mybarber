@@ -1,5 +1,5 @@
 import { api } from "~/trpc/react";
-import { NewReservationForm } from "./reservation-form";
+import { type NewReservationForm } from "./reservation-form";
 import { useTranslations } from "next-intl";
 import { enUS } from "date-fns/locale/en-US";
 import { nl } from "date-fns/locale/nl";
@@ -20,12 +20,10 @@ import { Button } from "~/components/ui/button";
 import { CalendarIcon } from "lucide-react";
 import { Calendar } from "~/components/ui/calendar";
 import { cn } from "~/lib/utils";
-import { type Locale, format } from "date-fns";
+import { type Locale, format, startOfToday } from "date-fns";
 import { useParams } from "next/navigation";
 
-const locales: {
-  [key: string]: Locale;
-} = {
+const locales: Record<string, Locale> = {
   en: enUS,
   nl: nl,
   fr: fr,
@@ -76,7 +74,7 @@ export const DateField = ({ form }: Props) => {
                   utils.reservation.getAllBetweenDates.refetch();
                   field.onChange(e);
                 }}
-                disabled={(date) => date < new Date()}
+                disabled={(date) => date < startOfToday()}
                 initialFocus
               />
             </PopoverContent>

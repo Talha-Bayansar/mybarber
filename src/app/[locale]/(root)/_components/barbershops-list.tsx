@@ -16,9 +16,7 @@ export const BarbershopsList = () => {
   const params = useSearchParams();
   const name = params.get("name");
   const zip = params.get("zip");
-  const page = params.get("page");
   const SIZE = 20;
-  const pageNumber = Number(page ?? 1);
 
   const { data, isLoading, fetchNextPage, isFetchingNextPage } =
     api.barbershop.search.useInfiniteQuery(
@@ -31,20 +29,6 @@ export const BarbershopsList = () => {
         getNextPageParam: (previousPage) => previousPage.meta.page.cursor,
       },
     );
-
-  const getParamsURI = (page: number) => {
-    let url = `page=${page}`;
-
-    if (!!name || !!zip) {
-      if (!!name) {
-        url += `&name=${name}`;
-      } else {
-        url += `&zip=${zip}`;
-      }
-    }
-
-    return url;
-  };
 
   if (isLoading) return <BarbershopsListSkeleton />;
 
