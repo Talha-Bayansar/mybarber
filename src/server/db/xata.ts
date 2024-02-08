@@ -156,6 +156,7 @@ const tables = [
       { name: "last_name", type: "string" },
       { name: "user", type: "link", link: { table: "nextauth_users" } },
       { name: "barbershop", type: "link", link: { table: "barbershop" } },
+      { name: "image", type: "file", file: { defaultPublicAccess: true } },
     ],
     revLinks: [
       { column: "barber", table: "barber_hair_type" },

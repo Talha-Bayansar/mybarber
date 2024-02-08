@@ -202,6 +202,13 @@
           }
         },
         {
+          "name": "image",
+          "type": "file",
+          "file": {
+            "defaultPublicAccess": true
+          }
+        },
+        {
           "name": "barbershop",
           "type": "link",
           "link": {

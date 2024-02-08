@@ -15,7 +15,6 @@ import { RadioGroup, RadioGroupItem } from "~/components/ui/radio-group";
 import { List } from "~/components/layout/list";
 import { Skeleton } from "~/components/ui/skeleton";
 import { generateArray } from "~/lib/utils";
-import Image from "next/image";
 import { Avatar, AvatarFallback, AvatarImage } from "~/components/ui/avatar";
 
 type Props = {
@@ -66,9 +65,11 @@ export const BarberSelection = ({ form }: Props) => {
                     className="flex flex-col items-center"
                   >
                     <FormLabel className="flex flex-grow flex-col items-center gap-2">
-                      <Avatar>
+                      <Avatar className="h-20 w-20">
                         <AvatarImage
-                          src={`https://eu.ui-avatars.com/api/?${searchParams.toString()}&size=250`}
+                          className="object-cover"
+                          src={barber.image?.url}
+                          alt={`picture of ${barber.first_name} ${barber.last_name}`}
                         />
                         <AvatarFallback>
                           {barber.first_name?.at(0)} {barber.last_name?.at(0)}
