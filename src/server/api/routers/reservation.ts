@@ -43,6 +43,7 @@ export const reservationRouter = createTRPCRouter({
     .input(
       z.object({
         barbershopId: z.string().min(1),
+        barberId: z.string().optional(),
         startDate: z.string().min(1),
         endDate: z.string().min(1),
       }),
@@ -56,7 +57,10 @@ export const reservationRouter = createTRPCRouter({
             $ge: new Date(input.startDate),
             $le: new Date(input.endDate),
           },
+          "barbershop.id": input.barbershopId,
+          "barber.id": input.barberId || undefined,
         })
+        .select(["barber.id", "id", "date"])
         .getAll();
 
       if (!response)
@@ -66,6 +70,45 @@ export const reservationRouter = createTRPCRouter({
 
       return response;
     }),
+  // getAvailableTimesBetweenDates: protectedProcedure
+  //   .input(
+  //     z.object({
+  //       barbershopId: z.string().min(1),
+  //       barberId: z.string().optional(),
+  //       startDate: z.string().min(1),
+  //       endDate: z.string().min(1),
+  //     }),
+  //   )
+  //   .query(async ({ ctx, input }) => {
+  //     const { xata } = ctx;
+
+  //     const reservations = await xata.db.reservation
+  //       .filter({
+  //         date: {
+  //           $ge: new Date(input.startDate),
+  //           $le: new Date(input.endDate),
+  //         },
+  //         "barbershop.id": input.barbershopId,
+  //         "barber.id": input.barberId || undefined,
+  //       })
+  //       .select(["barber.id", "id", "date"])
+  //       .getAll();
+
+  //     if (!input.barberId) {
+  //       const barbers = await xata.db.barber
+  //         .filter({
+  //           "barbershop.id": input.barbershopId,
+  //         })
+  //         .getAll();
+  //     }
+
+  //     if (!response)
+  //       throw new TRPCError({
+  //         code: "INTERNAL_SERVER_ERROR",
+  //       });
+
+  //     return response;
+  //   }),
   create: protectedProcedure
     .input(
       z.object({
@@ -95,7 +138,7 @@ export const reservationRouter = createTRPCRouter({
         date: input.date,
         price_list_item: input.priceListItemId,
         user: session.user.id,
-        barber: input.barberId,
+        barber: input.barberId || undefined,
       });
 
       if (!response)

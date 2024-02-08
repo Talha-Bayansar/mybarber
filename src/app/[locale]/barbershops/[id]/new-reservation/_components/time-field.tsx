@@ -71,8 +71,9 @@ export const TimeField = ({ form }: Props) => {
     isRefetching,
   } = api.reservation.getAllBetweenDates.useQuery({
     barbershopId,
-    startDate: startOfDay(form.getValues().date).toISOString(),
-    endDate: endOfDay(form.getValues().date).toISOString(),
+    barberId: form.getValues("barberId") || undefined,
+    startDate: startOfDay(form.getValues("date")).toISOString(),
+    endDate: endOfDay(form.getValues("date")).toISOString(),
   });
 
   const getAvailableTimes = () => {
@@ -80,7 +81,7 @@ export const TimeField = ({ form }: Props) => {
       format(reservation.date!, "HH:mm"),
     );
     const availableTimes = openingHours!
-      .filter((oh) => oh.day_of_week === getDayOfWeek(form.getValues().date))
+      .filter((oh) => oh.day_of_week === getDayOfWeek(form.getValues("date")))
       .map((oh) =>
         generateTimeIntervals(
           getTimeFromMs(oh.start_time!),
@@ -111,7 +112,7 @@ export const TimeField = ({ form }: Props) => {
           <FormControl>
             <Select
               onValueChange={(v) => form.setValue("time", v)}
-              disabled={!form.getValues().date}
+              disabled={!form.getValues("date")}
             >
               <SelectTrigger>
                 <SelectValue
