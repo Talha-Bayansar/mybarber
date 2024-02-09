@@ -1,12 +1,17 @@
 import { TRPCError } from "@trpc/server";
 import { z } from "zod";
+import { generateMsIntervals, getDayOfWeek, isArrayEmpty } from "~/lib/utils";
 
 import {
   createTRPCRouter,
   protectedProcedure,
   publicProcedure,
 } from "~/server/api/trpc";
-import { type BarbershopRecord } from "~/server/db/xata";
+import type {
+  BarbershopRecord,
+  OpeningHoursRecord,
+  ReservationRecord,
+} from "~/server/db/xata";
 
 export const barbershopRouter = createTRPCRouter({
   search: publicProcedure
@@ -78,6 +83,45 @@ export const barbershopRouter = createTRPCRouter({
         });
 
       return response;
+    }),
+  getAvailableIntervals: protectedProcedure
+    .input(
+      z.object({
+        barbershopId: z.string().min(1),
+        barberId: z.string().min(1).optional(),
+        date: z.string().min(10),
+      }),
+    )
+    .query(async ({ ctx, input }) => {
+      const { xata } = ctx;
+      const dayOfWeek = getDayOfWeek(input.date);
+      const availableTimes: number[] = [];
+
+      const openingHours = await xata.db.opening_hours
+        .filter({
+          day_of_week: dayOfWeek,
+          "barbershop.id": input.barbershopId,
+        })
+        .getAll();
+
+      if (!openingHours || isArrayEmpty(openingHours)) return availableTimes;
+
+      const reservations = await xata.db.reservation
+        .filter({
+          "barber.id": input.barberId || undefined,
+          "barbershop.id": input.barbershopId,
+          date: input.date,
+        })
+        .select(["start_time", "price_list_item.duration"])
+        .sort("start_time", "asc")
+        .getAll();
+
+      const availableIntervals = getAvailableIntervals(
+        openingHours as OpeningHoursRecord[],
+        reservations as ReservationRecord[],
+      );
+
+      return availableIntervals;
     }),
   getFavoriteBarbershops: protectedProcedure.query(async ({ ctx }) => {
     const { xata, session } = ctx;
@@ -175,3 +219,58 @@ export const barbershopRouter = createTRPCRouter({
       return response;
     }),
 });
+
+type Time = {
+  start_time: number;
+  duration: number;
+};
+
+function getAvailableIntervals(
+  openingHours: OpeningHoursRecord[],
+  reservations: ReservationRecord[],
+) {
+  const bookedTimes = filterBookedTimes(reservations);
+  let availableIntervals: number[] = [];
+
+  for (const hours of openingHours) {
+    const generatedIntervals = generateMsIntervals(
+      hours.start_time!,
+      hours.start_time! + hours.duration!,
+    );
+    availableIntervals = [...availableIntervals, ...generatedIntervals];
+  }
+
+  for (const bookedTime of bookedTimes) {
+    const bookedIntervals = generateMsIntervals(
+      bookedTime.start_time,
+      bookedTime.start_time + bookedTime.duration,
+    );
+
+    bookedIntervals.pop();
+
+    for (const interval of availableIntervals) {
+      const isBooked = bookedIntervals.includes(interval);
+
+      if (isBooked) {
+        availableIntervals = availableIntervals.filter(
+          (availableInterval) => availableInterval !== interval,
+        );
+      }
+    }
+  }
+
+  return availableIntervals;
+}
+
+function filterBookedTimes(reservations: ReservationRecord[]) {
+  const bookedTimes: Time[] = [];
+
+  reservations.forEach((reservation) => {
+    bookedTimes.push({
+      start_time: reservation.start_time!,
+      duration: reservation.price_list_item!.duration!,
+    });
+  });
+
+  return bookedTimes;
+}

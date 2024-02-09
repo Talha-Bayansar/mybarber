@@ -29,8 +29,8 @@ const tables = [
       { column: "user", table: "nextauth_users_accounts" },
       { column: "user", table: "nextauth_users_sessions" },
       { column: "user", table: "nextauth_sessions" },
-      { column: "user", table: "reservation" },
       { column: "user", table: "barber" },
+      { column: "user", table: "reservation" },
     ],
   },
   {
@@ -47,8 +47,8 @@ const tables = [
       { column: "barbershop", table: "favorite_barbershop" },
       { column: "barbershop", table: "price_list" },
       { column: "barbershop", table: "opening_hours" },
-      { column: "barbershop", table: "reservation" },
       { column: "barbershop", table: "barber" },
+      { column: "barbershop", table: "reservation" },
     ],
   },
   {
@@ -123,6 +123,7 @@ const tables = [
       { name: "description", type: "string" },
       { name: "price", type: "float" },
       { name: "price_list", type: "link", link: { table: "price_list" } },
+      { name: "duration", type: "int" },
     ],
     revLinks: [{ column: "price_list_item", table: "reservation" }],
   },
@@ -133,20 +134,6 @@ const tables = [
       { name: "duration", type: "int" },
       { name: "day_of_week", type: "int" },
       { name: "barbershop", type: "link", link: { table: "barbershop" } },
-    ],
-  },
-  {
-    name: "reservation",
-    columns: [
-      { name: "date", type: "datetime" },
-      { name: "user", type: "link", link: { table: "nextauth_users" } },
-      {
-        name: "price_list_item",
-        type: "link",
-        link: { table: "price_list_item" },
-      },
-      { name: "barbershop", type: "link", link: { table: "barbershop" } },
-      { name: "barber", type: "link", link: { table: "barber" } },
     ],
   },
   {
@@ -173,6 +160,21 @@ const tables = [
     columns: [
       { name: "barber", type: "link", link: { table: "barber" } },
       { name: "hair_type", type: "link", link: { table: "hair_type" } },
+    ],
+  },
+  {
+    name: "reservation",
+    columns: [
+      { name: "date", type: "string" },
+      { name: "start_time", type: "int" },
+      { name: "user", type: "link", link: { table: "nextauth_users" } },
+      {
+        name: "price_list_item",
+        type: "link",
+        link: { table: "price_list_item" },
+      },
+      { name: "barber", type: "link", link: { table: "barber" } },
+      { name: "barbershop", type: "link", link: { table: "barbershop" } },
     ],
   },
 ] as const;
@@ -218,9 +220,6 @@ export type PriceListItemRecord = PriceListItem & XataRecord;
 export type OpeningHours = InferredTypes["opening_hours"];
 export type OpeningHoursRecord = OpeningHours & XataRecord;
 
-export type Reservation = InferredTypes["reservation"];
-export type ReservationRecord = Reservation & XataRecord;
-
 export type Barber = InferredTypes["barber"];
 export type BarberRecord = Barber & XataRecord;
 
@@ -229,6 +228,9 @@ export type HairTypeRecord = HairType & XataRecord;
 
 export type BarberHairType = InferredTypes["barber_hair_type"];
 export type BarberHairTypeRecord = BarberHairType & XataRecord;
+
+export type Reservation = InferredTypes["reservation"];
+export type ReservationRecord = Reservation & XataRecord;
 
 export type DatabaseSchema = {
   nextauth_verificationTokens: NextauthVerificationTokensRecord;
@@ -243,10 +245,10 @@ export type DatabaseSchema = {
   price_list: PriceListRecord;
   price_list_item: PriceListItemRecord;
   opening_hours: OpeningHoursRecord;
-  reservation: ReservationRecord;
   barber: BarberRecord;
   hair_type: HairTypeRecord;
   barber_hair_type: BarberHairTypeRecord;
+  reservation: ReservationRecord;
 };
 
 const DatabaseClient = buildClient();

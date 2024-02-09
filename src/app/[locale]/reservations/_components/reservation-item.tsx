@@ -1,6 +1,6 @@
 import { type ReservationRecord } from "~/server/db/xata";
 import { format } from "date-fns";
-import { getCurrencyByCode } from "~/lib/utils";
+import { getCurrencyByCode, getTimeFromMs } from "~/lib/utils";
 import { Card } from "~/components/ui/card";
 import { Skeleton } from "~/components/ui/skeleton";
 import { useTranslations } from "next-intl";
@@ -19,12 +19,22 @@ export const ReservationItem = ({ reservation }: Props) => {
     <Card className="p-4">
       <p className="text-xl font-medium">
         {format(reservation.date!, "dd/MM/yyyy")} -{" "}
-        {format(reservation.date!, "HH:mm")}
+        {getTimeFromMs(reservation.start_time!)}
       </p>
-      <p>{reservation.barbershop?.name}</p>
-      <p>{fullName ?? t("not_specified")}</p>
-      <p>{reservation.price_list_item?.name}</p>
       <p>
+        <span className="font-medium">{t("barbershop")}: </span>
+        {reservation.barbershop?.name}
+      </p>
+      <p>
+        <span className="font-medium">{t("barber")}: </span>
+        {fullName ?? t("not_specified")}
+      </p>
+      <p>
+        <span className="font-medium">{t("treatment")}: </span>
+        {reservation.price_list_item?.name}
+      </p>
+      <p>
+        <span className="font-medium">{t("price")}: </span>
         {
           getCurrencyByCode(reservation.price_list_item!.price_list!.currency!)
             ?.symbol

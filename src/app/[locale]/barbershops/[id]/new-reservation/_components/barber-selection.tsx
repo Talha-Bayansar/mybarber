@@ -23,6 +23,7 @@ type Props = {
 
 export const BarberSelection = ({ form }: Props) => {
   const t = useTranslations("NewReservationPage");
+  const utils = api.useUtils();
   const { id: barbershopId } = useParams<{ id: string }>();
   const { data: barbers, isLoading: isLoadingBarbers } =
     api.barber.getByBarbershopId.useQuery({
@@ -40,7 +41,10 @@ export const BarberSelection = ({ form }: Props) => {
           <FormLabel>{t("select_barber")}</FormLabel>
           <FormControl>
             <RadioGroup
-              onValueChange={field.onChange}
+              onValueChange={(e) => {
+                utils.barbershop.getAvailableIntervals.refetch();
+                field.onChange(e);
+              }}
               defaultValue={field.value}
               className="grid grid-cols-2 gap-8"
             >

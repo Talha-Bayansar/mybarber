@@ -64,6 +64,9 @@
     "time": "Time",
     "not_available": "Not available",
     "treatment": "Treatment",
+    "barbershop": "Barbershop",
+    "barber": "Barber",
+    "price": "Price",
     "auth_required": "You need to be authenticated to continue."
   },
   "RootPage": {

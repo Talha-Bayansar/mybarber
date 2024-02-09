@@ -317,6 +317,10 @@
           "type": "float"
         },
         {
+          "name": "duration",
+          "type": "int"
+        },
+        {
           "name": "price_list",
           "type": "link",
           "link": {
@@ -354,7 +358,11 @@
       "columns": [
         {
           "name": "date",
-          "type": "datetime"
+          "type": "string"
+        },
+        {
+          "name": "start_time",
+          "type": "int"
         },
         {
           "name": "user",

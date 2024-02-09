@@ -73,8 +73,10 @@ export const DateField = ({ form }: Props) => {
                 weekStartsOn={1}
                 selected={field.value}
                 onSelect={(e) => {
-                  utils.reservation.getAllBetweenDates.refetch();
-                  field.onChange(e);
+                  if (e) {
+                    utils.barbershop.getAvailableIntervals.refetch();
+                    field.onChange(e);
+                  }
                   setIsPickerOpen(false);
                 }}
                 disabled={(date) => date < startOfToday()}

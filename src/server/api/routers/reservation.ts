@@ -1,6 +1,7 @@
 import { z } from "zod";
 import { createTRPCRouter, protectedProcedure } from "../trpc";
 import { TRPCError } from "@trpc/server";
+import { isValidDateFormat } from "~/lib/utils";
 
 export const reservationRouter = createTRPCRouter({
   getPaginated: protectedProcedure
@@ -39,13 +40,12 @@ export const reservationRouter = createTRPCRouter({
 
       return response;
     }),
-  getAllBetweenDates: protectedProcedure
+  getAllByDate: protectedProcedure
     .input(
       z.object({
         barbershopId: z.string().min(1),
         barberId: z.string().optional(),
-        startDate: z.string().min(1),
-        endDate: z.string().min(1),
+        date: z.string().min(10),
       }),
     )
     .query(async ({ ctx, input }) => {
@@ -53,14 +53,11 @@ export const reservationRouter = createTRPCRouter({
 
       const response = await xata.db.reservation
         .filter({
-          date: {
-            $ge: new Date(input.startDate),
-            $le: new Date(input.endDate),
-          },
+          date: input.date,
           "barbershop.id": input.barbershopId,
           "barber.id": input.barberId || undefined,
         })
-        .select(["barber.id", "id", "date"])
+        .select(["barber.id", "id", "date", "start_time"])
         .getAll();
 
       if (!response)
@@ -70,50 +67,12 @@ export const reservationRouter = createTRPCRouter({
 
       return response;
     }),
-  // getAvailableTimesBetweenDates: protectedProcedure
-  //   .input(
-  //     z.object({
-  //       barbershopId: z.string().min(1),
-  //       barberId: z.string().optional(),
-  //       startDate: z.string().min(1),
-  //       endDate: z.string().min(1),
-  //     }),
-  //   )
-  //   .query(async ({ ctx, input }) => {
-  //     const { xata } = ctx;
-
-  //     const reservations = await xata.db.reservation
-  //       .filter({
-  //         date: {
-  //           $ge: new Date(input.startDate),
-  //           $le: new Date(input.endDate),
-  //         },
-  //         "barbershop.id": input.barbershopId,
-  //         "barber.id": input.barberId || undefined,
-  //       })
-  //       .select(["barber.id", "id", "date"])
-  //       .getAll();
-
-  //     if (!input.barberId) {
-  //       const barbers = await xata.db.barber
-  //         .filter({
-  //           "barbershop.id": input.barbershopId,
-  //         })
-  //         .getAll();
-  //     }
-
-  //     if (!response)
-  //       throw new TRPCError({
-  //         code: "INTERNAL_SERVER_ERROR",
-  //       });
-
-  //     return response;
-  //   }),
   create: protectedProcedure
     .input(
       z.object({
         barberId: z.string().optional(),
         date: z.string().min(1),
+        startTime: z.number(),
         priceListItemId: z.string().min(1),
         barbershopId: z.string().min(1),
       }),
@@ -125,10 +84,12 @@ export const reservationRouter = createTRPCRouter({
         .filter({
           "barbershop.id": input.barbershopId,
           date: input.date,
+          start_time: input.startTime,
+          "barber.id": input.barberId,
         })
         .getFirst();
 
-      if (!!reservation)
+      if (!!reservation || !isValidDateFormat(input.date))
         throw new TRPCError({
           code: "BAD_REQUEST",
         });
@@ -136,6 +97,7 @@ export const reservationRouter = createTRPCRouter({
       const response = await xata.db.reservation.create({
         barbershop: input.barbershopId,
         date: input.date,
+        start_time: input.startTime,
         price_list_item: input.priceListItemId,
         user: session.user.id,
         barber: input.barberId || undefined,

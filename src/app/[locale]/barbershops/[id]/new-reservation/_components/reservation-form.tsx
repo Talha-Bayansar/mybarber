@@ -12,7 +12,11 @@ import { Button } from "~/components/ui/button";
 import { Form } from "~/components/ui/form";
 import { InputFieldSkeleton, InputSkeleton } from "~/components/ui/input";
 import { routes } from "~/lib/routes";
-import { generateArray } from "~/lib/utils";
+import {
+  generateArray,
+  getDateFromTime,
+  getMsSinceMidnight,
+} from "~/lib/utils";
 import { useRouter } from "~/navigation";
 import { api } from "~/trpc/react";
 import { DateField } from "./date-field";
@@ -43,27 +47,6 @@ export type NewReservationForm = UseFormReturn<
   }
 >;
 
-function combineDateAndTime(dateTimeObject: { date: Date; time: string }) {
-  // Parse date and time strings
-  const dateParts = format(dateTimeObject.date, "yyyy-MM-dd")
-    .split("-")
-    .map(Number);
-  const timeParts = dateTimeObject.time.split(":").map(Number);
-
-  // Create a new Date object with the parsed date
-  const combinedDateTime = new Date(
-    dateParts[0]!,
-    dateParts[1]! - 1,
-    dateParts[2],
-  );
-
-  // Set the time components of the Date object
-  combinedDateTime.setHours(timeParts[0]!);
-  combinedDateTime.setMinutes(timeParts[1]!);
-
-  return combinedDateTime;
-}
-
 export const ReservationForm = () => {
   const t = useTranslations();
   const router = useRouter();
@@ -91,9 +74,11 @@ export const ReservationForm = () => {
 
   function onSubmit(values: z.infer<typeof formSchema>) {
     const { date, time, priceListItemId, barberId } = values;
+    const startTime = getMsSinceMidnight(getDateFromTime(time));
     createReservation.mutate({
       barbershopId,
-      date: combineDateAndTime({ date, time }).toISOString(),
+      date: format(date, "yyyy-MM-dd"),
+      startTime,
       priceListItemId,
       barberId: barberId || undefined,
     });
