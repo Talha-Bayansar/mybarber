@@ -1,7 +1,6 @@
 "use client";
 
 import { getTimeFromMs, isArrayEmpty } from "~/lib/utils";
-import { type NewReservationForm } from "./reservation-form";
 import { useTranslations } from "next-intl";
 import { api } from "~/trpc/react";
 import { useParams } from "next/navigation";
@@ -21,9 +20,10 @@ import {
   SelectTrigger,
   SelectValue,
 } from "~/components/ui/select";
+import { type DateForm } from "./date-form";
 
 type Props = {
-  form: NewReservationForm;
+  form: DateForm;
 };
 
 export const TimeField = ({ form }: Props) => {
@@ -37,7 +37,6 @@ export const TimeField = ({ form }: Props) => {
     isRefetching,
   } = api.barbershop.getAvailableIntervals.useQuery({
     barbershopId,
-    barberId: form.getValues("barberId") || undefined,
     date: date ? format(date, "yyyy-MM-dd") : undefined,
   });
 

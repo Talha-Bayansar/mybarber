@@ -1,5 +1,4 @@
 import { api } from "~/trpc/react";
-import { type NewReservationForm } from "./reservation-form";
 import { useTranslations } from "next-intl";
 import { enUS } from "date-fns/locale/en-US";
 import { nl } from "date-fns/locale/nl";
@@ -24,6 +23,7 @@ import { type Locale, format, startOfToday } from "date-fns";
 import { useParams } from "next/navigation";
 import { useState } from "react";
 import { InputFieldSkeleton } from "~/components/ui/input";
+import { type DateForm } from "./date-form";
 
 const locales: Record<string, Locale> = {
   en: enUS,
@@ -32,7 +32,7 @@ const locales: Record<string, Locale> = {
 };
 
 type Props = {
-  form: NewReservationForm;
+  form: DateForm;
 };
 
 export const DateField = ({ form }: Props) => {
@@ -56,7 +56,7 @@ export const DateField = ({ form }: Props) => {
 
   return (
     <FormField
-    shouldUnregister
+      shouldUnregister
       control={form.control}
       name="date"
       render={({ field }) => (

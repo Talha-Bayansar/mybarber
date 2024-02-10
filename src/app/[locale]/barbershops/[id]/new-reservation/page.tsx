@@ -7,7 +7,16 @@ import { RootNavBar } from "~/components/root-nav-bar";
 import { getServerAuthSession } from "~/server/auth";
 import { AuthRequired } from "~/components/auth-required";
 
-const NewReservationPage = async () => {
+type Props = {
+  searchParams: {
+    barber?: string;
+    date?: string;
+    time?: string;
+    treatment?: string;
+  };
+};
+
+const NewReservationPage = async ({ searchParams }: Props) => {
   const t = await getTranslations("NewReservationPage");
   const session = await getServerAuthSession();
 
@@ -15,7 +24,11 @@ const NewReservationPage = async () => {
     <Page>
       <Main>
         <Title>{t("title")}</Title>
-        {session ? <ReservationForm /> : <AuthRequired />}
+        {session ? (
+          <ReservationForm searchParams={searchParams} />
+        ) : (
+          <AuthRequired />
+        )}
       </Main>
       <RootNavBar />
     </Page>

@@ -95,6 +95,7 @@
   },
   "NewReservationPage": {
     "title": "New reservation",
+    "select_date_time": "Select date and time",
     "select_time": "Select time",
     "select_treatment": "Select treatment",
     "select_date": "Select date",
