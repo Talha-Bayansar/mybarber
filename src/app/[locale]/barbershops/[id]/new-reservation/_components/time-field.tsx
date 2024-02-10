@@ -28,6 +28,8 @@ type Props = {
 
 export const TimeField = ({ form }: Props) => {
   const t = useTranslations();
+  const date = form.getValues("date");
+
   const { id: barbershopId } = useParams<{ id: string }>();
   const {
     data: availableIntervals,
@@ -36,7 +38,7 @@ export const TimeField = ({ form }: Props) => {
   } = api.barbershop.getAvailableIntervals.useQuery({
     barbershopId,
     barberId: form.getValues("barberId") || undefined,
-    date: format(form.getValues("date"), "yyyy-MM-dd"),
+    date: date ? format(date, "yyyy-MM-dd") : undefined,
   });
 
   if (isLoadingAvailableIntervals || isRefetching)
@@ -44,9 +46,10 @@ export const TimeField = ({ form }: Props) => {
 
   return (
     <FormField
+      shouldUnregister
       control={form.control}
       name="time"
-      render={({ field }) => (
+      render={() => (
         <FormItem>
           <FormLabel>{t("global.time")}</FormLabel>
           <FormControl>

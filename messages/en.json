@@ -4,6 +4,7 @@
     "zip": "ZIP",
     "results_for": "Result(s) for \"{term}\"",
     "next": "Next",
+    "previous": "Previous",
     "offline": "It looks like you are offline",
     "email": "Email",
     "phone_number": "Phone number",
@@ -98,6 +99,7 @@
     "select_treatment": "Select treatment",
     "select_date": "Select date",
     "select_barber": "Select barber",
-    "no_preference": "No preference"
+    "no_preference": "No preference",
+    "success_message": "Successfully created new reservation."
   }
 }

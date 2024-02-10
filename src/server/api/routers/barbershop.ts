@@ -90,11 +90,13 @@ export const barbershopRouter = createTRPCRouter({
       z.object({
         barbershopId: z.string().min(1),
         barberId: z.string().min(1).optional(),
-        date: z.string().min(10),
+        date: z.string().min(10).optional(),
       }),
     )
     .query(async ({ ctx, input }) => {
       const { xata } = ctx;
+
+      if (!input.date) return [];
       const dayOfWeek = getDayOfWeek(input.date);
       const availableTimes: number[] = [];
 

@@ -19,10 +19,11 @@ import {
 import { Button } from "~/components/ui/button";
 import { CalendarIcon } from "lucide-react";
 import { Calendar } from "~/components/ui/calendar";
-import { cn } from "~/lib/utils";
+import { cn, getDayOfWeek } from "~/lib/utils";
 import { type Locale, format, startOfToday } from "date-fns";
 import { useParams } from "next/navigation";
 import { useState } from "react";
+import { InputFieldSkeleton } from "~/components/ui/input";
 
 const locales: Record<string, Locale> = {
   en: enUS,
@@ -37,11 +38,25 @@ type Props = {
 export const DateField = ({ form }: Props) => {
   const t = useTranslations();
   const utils = api.useUtils();
-  const { locale } = useParams<{ locale: string }>();
+  const { locale, id } = useParams<{ locale: string; id: string }>();
   const [isPickerOpen, setIsPickerOpen] = useState<boolean>(false);
+  const { data, isLoading } = api.openingHours.getAllByBarbershopId.useQuery({
+    barbershopId: id,
+  });
+
+  if (isLoading) return <InputFieldSkeleton />;
+
+  const isClosed = (date: Date) => {
+    const dayOfWeek = getDayOfWeek(date);
+    const hasOpeningHours = data?.find(
+      (openingHours) => openingHours.day_of_week === dayOfWeek,
+    );
+    return !hasOpeningHours;
+  };
 
   return (
     <FormField
+    shouldUnregister
       control={form.control}
       name="date"
       render={({ field }) => (
@@ -74,13 +89,14 @@ export const DateField = ({ form }: Props) => {
                 selected={field.value}
                 onSelect={(e) => {
                   if (e) {
-                    utils.barbershop.getAvailableIntervals.refetch();
+                    if (e) {
+                      utils.barbershop.getAvailableIntervals.refetch();
+                    }
                     field.onChange(e);
                   }
                   setIsPickerOpen(false);
                 }}
-                disabled={(date) => date < startOfToday()}
-                initialFocus
+                disabled={(date) => date < startOfToday() || isClosed(date)}
               />
             </PopoverContent>
           </Popover>

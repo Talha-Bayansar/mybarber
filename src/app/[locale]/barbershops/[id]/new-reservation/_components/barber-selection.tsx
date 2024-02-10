@@ -37,12 +37,12 @@ export const BarberSelection = ({ form }: Props) => {
       control={form.control}
       name="barberId"
       render={({ field }) => (
-        <FormItem className="space-y-3">
+        <FormItem className=" flex-grow space-y-3">
           <FormLabel>{t("select_barber")}</FormLabel>
           <FormControl>
             <RadioGroup
               onValueChange={(e) => {
-                utils.barbershop.getAvailableIntervals.refetch();
+                // utils.barbershop.getAvailableIntervals.refetch();
                 field.onChange(e);
               }}
               defaultValue={field.value}

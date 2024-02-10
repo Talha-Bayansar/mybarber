@@ -37,6 +37,7 @@ export const TreatmentField = ({ form }: Props) => {
 
   return (
     <FormField
+      shouldUnregister
       control={form.control}
       name="priceListItemId"
       render={() => (

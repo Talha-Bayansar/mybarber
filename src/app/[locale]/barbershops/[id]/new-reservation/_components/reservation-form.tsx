@@ -23,6 +23,7 @@ import { DateField } from "./date-field";
 import { TimeField } from "./time-field";
 import { TreatmentField } from "./treatment-field";
 import { BarberSelection } from "./barber-selection";
+import { useMemo, useState } from "react";
 
 const formSchema = z.object({
   barberId: z.string(),
@@ -30,6 +31,8 @@ const formSchema = z.object({
   time: z.string().min(1),
   priceListItemId: z.string().min(1),
 });
+
+type FormKey = "barberId" | "date" | "time" | "priceListItemId";
 
 export type NewReservationForm = UseFormReturn<
   {
@@ -47,16 +50,46 @@ export type NewReservationForm = UseFormReturn<
   }
 >;
 
+const getFormField = (currentStep: number, form: NewReservationForm) => {
+  switch (currentStep) {
+    case 0:
+      return <BarberSelection form={form} />;
+    case 1:
+      return (
+        <List className="gap-8">
+          <DateField form={form} />
+          <TreatmentField form={form} />
+          <TimeField form={form} />
+        </List>
+      );
+    default:
+      return null;
+  }
+};
+
 export const ReservationForm = () => {
   const t = useTranslations();
   const router = useRouter();
   const params = useParams<{ id: string }>();
   const barbershopId = params.id;
   const utils = api.useUtils();
+  const [currentStep, setCurrentStep] = useState<number>(0);
+  const validationKeys: FormKey[][] = [
+    ["barberId"],
+    ["date", "time", "priceListItemId"],
+  ];
+
+  const hasPreviousStep = useMemo(() => {
+    return currentStep > 0;
+  }, [currentStep]);
+
+  const isLastStep = useMemo(() => {
+    return currentStep >= validationKeys.length - 1;
+  }, [currentStep]);
 
   const createReservation = api.reservation.create.useMutation({
     onSuccess: async () => {
-      toast("Successfully created new reservation.");
+      toast(t("NewReservationPage.success_message"));
       utils.reservation.getPaginated.refetch();
       router.replace(routes.reservations.root);
     },
@@ -66,14 +99,16 @@ export const ReservationForm = () => {
     resolver: zodResolver(formSchema),
     defaultValues: {
       barberId: "",
-      date: startOfToday(),
+      date: undefined,
       time: "",
       priceListItemId: "",
     },
+    // shouldUnregister: true,
   });
 
   function onSubmit(values: z.infer<typeof formSchema>) {
     const { date, time, priceListItemId, barberId } = values;
+    console.log(values);
     const startTime = getMsSinceMidnight(getDateFromTime(time));
     createReservation.mutate({
       barbershopId,
@@ -90,19 +125,37 @@ export const ReservationForm = () => {
         onSubmit={form.handleSubmit(onSubmit)}
         className="flex flex-grow flex-col justify-between gap-8 md:justify-start"
       >
-        <List className="gap-8">
-          <BarberSelection form={form} />
-          <DateField form={form} />
-          <TimeField form={form} />
-          <TreatmentField form={form} />
-        </List>
-        <Button
-          className="w-full"
-          type="submit"
-          disabled={createReservation.isLoading}
-        >
-          {t("global.submit")}
-        </Button>
+        {getFormField(currentStep, form)}
+
+        <div className="flex justify-between">
+          <Button
+            disabled={!hasPreviousStep}
+            onClick={() => setCurrentStep((v) => v - 1)}
+          >
+            {t("global.previous")}
+          </Button>
+
+          {isLastStep ? (
+            <Button type="submit" disabled={createReservation.isLoading}>
+              {t("global.submit")}
+            </Button>
+          ) : (
+            <Button
+              type="button"
+              onClick={async () => {
+                const isValid = await form.trigger([
+                  ...validationKeys[currentStep]!,
+                ]);
+
+                if (isValid) {
+                  setCurrentStep((v) => v + 1);
+                }
+              }}
+            >
+              {t("global.next")}
+            </Button>
+          )}
+        </div>
       </form>
     </Form>
   );
