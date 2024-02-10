@@ -84,7 +84,7 @@ export const getDayOfWeek = (date: string | number | Date) => {
 export function generateMsIntervals(
   startTimeInMs: number,
   endTimeInMs: number,
-  interval: number = 15,
+  interval = 15,
 ) {
   // Parse start and end times
   const start = getDateFromTime(getTimeFromMs(startTimeInMs));

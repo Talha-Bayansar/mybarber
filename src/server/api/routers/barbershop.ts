@@ -8,6 +8,7 @@ import {
   publicProcedure,
 } from "~/server/api/trpc";
 import type {
+  BarberRecord,
   BarbershopRecord,
   OpeningHoursRecord,
   ReservationRecord,
@@ -112,14 +113,30 @@ export const barbershopRouter = createTRPCRouter({
           "barbershop.id": input.barbershopId,
           date: input.date,
         })
-        .select(["start_time", "price_list_item.duration"])
+        .select(["start_time", "price_list_item.duration", "barber.id"])
         .sort("start_time", "asc")
         .getAll();
 
-      const availableIntervals = getAvailableIntervals(
-        openingHours as OpeningHoursRecord[],
-        reservations as ReservationRecord[],
-      );
+      let availableIntervals: number[] = [];
+
+      if (input.barberId) {
+        availableIntervals = getAvailableIntervals(
+          openingHours as OpeningHoursRecord[],
+          reservations as ReservationRecord[],
+        );
+      } else {
+        const barbers = await xata.db.barber
+          .filter({
+            "barbershop.id": input.barbershopId,
+          })
+          .getAll();
+
+        availableIntervals = getAvailableIntervals(
+          openingHours as OpeningHoursRecord[],
+          reservations as ReservationRecord[],
+          barbers as BarberRecord[],
+        );
+      }
 
       return availableIntervals;
     }),
@@ -220,16 +237,12 @@ export const barbershopRouter = createTRPCRouter({
     }),
 });
 
-type Time = {
-  start_time: number;
-  duration: number;
-};
-
 function getAvailableIntervals(
   openingHours: OpeningHoursRecord[],
   reservations: ReservationRecord[],
+  barbers?: BarberRecord[],
 ) {
-  const bookedTimes = filterBookedTimes(reservations);
+  const bookedIntervals = filterBookedIntervals(reservations, barbers);
   let availableIntervals: number[] = [];
 
   for (const hours of openingHours) {
@@ -240,37 +253,76 @@ function getAvailableIntervals(
     availableIntervals = [...availableIntervals, ...generatedIntervals];
   }
 
-  for (const bookedTime of bookedTimes) {
-    const bookedIntervals = generateMsIntervals(
-      bookedTime.start_time,
-      bookedTime.start_time + bookedTime.duration,
-    );
+  for (const interval of availableIntervals) {
+    const isBooked = bookedIntervals.includes(interval);
 
-    bookedIntervals.pop();
-
-    for (const interval of availableIntervals) {
-      const isBooked = bookedIntervals.includes(interval);
-
-      if (isBooked) {
-        availableIntervals = availableIntervals.filter(
-          (availableInterval) => availableInterval !== interval,
-        );
-      }
+    if (isBooked) {
+      availableIntervals = availableIntervals.filter(
+        (availableInterval) => availableInterval !== interval,
+      );
     }
   }
 
   return availableIntervals;
 }
 
-function filterBookedTimes(reservations: ReservationRecord[]) {
-  const bookedTimes: Time[] = [];
+function filterBookedIntervals(
+  reservations: ReservationRecord[],
+  barbers?: BarberRecord[],
+) {
+  let bookedIntervals: number[] = [];
 
-  reservations.forEach((reservation) => {
-    bookedTimes.push({
-      start_time: reservation.start_time!,
-      duration: reservation.price_list_item!.duration!,
+  if (barbers) {
+    const barbersBookedIntervals: number[][] = [];
+
+    const barbersReservations = barbers.map((barber) => {
+      return reservations.filter(
+        (reservation) => reservation.barber?.id === barber.id,
+      );
     });
-  });
 
-  return bookedTimes;
+    barbersReservations.forEach((barberReservations) => {
+      let intervals: number[] = [];
+      barberReservations.forEach(({ start_time, price_list_item }) => {
+        const generatedIntervals = generateMsIntervals(
+          start_time!,
+          start_time! + price_list_item!.duration!,
+        );
+        generatedIntervals.pop();
+        intervals = [...intervals, ...generatedIntervals];
+      });
+      barbersBookedIntervals.push(intervals);
+    });
+
+    bookedIntervals = intersectArrays(barbersBookedIntervals);
+  } else {
+    reservations.forEach(({ start_time, price_list_item }) => {
+      const generatedIntervals = generateMsIntervals(
+        start_time!,
+        start_time! + price_list_item!.duration!,
+      );
+      generatedIntervals.pop();
+      bookedIntervals = [...bookedIntervals, ...generatedIntervals];
+    });
+  }
+
+  return bookedIntervals;
+}
+
+function intersectArrays(arrays: number[][]): number[] {
+  // Check if arrays is not empty
+  if (arrays.length === 0) return [];
+
+  // Copy the first array to start with
+  let intersection: number[] = arrays[0]!.slice();
+
+  // Iterate over the rest of the arrays
+  for (let i = 1; i < arrays.length; i++) {
+    // Filter the intersection array to keep only the elements present in the current array
+    intersection = intersection.filter((element) =>
+      arrays[i]!.includes(element),
+    );
+  }
+
+  return intersection;
 }
