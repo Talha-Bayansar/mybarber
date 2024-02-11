@@ -76,7 +76,7 @@ export const TreatmentSelection = ({ date, time, barberId }: Props) => {
       date,
       startTime: Number(time),
       priceListItemId,
-      barberId: barberId === "no-preference" ? undefined : barberId,
+      barberId: barberId,
     });
   }
 

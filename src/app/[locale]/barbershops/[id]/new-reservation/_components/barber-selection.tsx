@@ -14,7 +14,7 @@ import { useParams } from "next/navigation";
 import { RadioGroup, RadioGroupItem } from "~/components/ui/radio-group";
 import { List } from "~/components/layout/list";
 import { Skeleton } from "~/components/ui/skeleton";
-import { generateArray } from "~/lib/utils";
+import { generateArray, isArrayEmpty } from "~/lib/utils";
 import { Avatar, AvatarFallback, AvatarImage } from "~/components/ui/avatar";
 import { Button } from "~/components/ui/button";
 import { Link, useRouter } from "~/navigation";
@@ -39,8 +39,10 @@ export const BarberSelection = ({ date, time }: Props) => {
   const router = useRouter();
   const { id: barbershopId } = useParams<{ id: string }>();
   const { data: barbers, isLoading: isLoadingBarbers } =
-    api.barber.getByBarbershopId.useQuery({
+    api.barber.getAllAvailable.useQuery({
       barbershopId,
+      date,
+      time: Number(time),
     });
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -58,11 +60,24 @@ export const BarberSelection = ({ date, time }: Props) => {
     const searchParams = new URLSearchParams();
     searchParams.set("date", date);
     searchParams.set("time", time);
-    searchParams.set("barber", barberId);
+    if (barbers && !isArrayEmpty(barbers)) {
+      searchParams.set(
+        "barber",
+        barberId === "no-preference" ? getRandomItem(barbers)!.id : barberId,
+      );
+    }
 
     router.push(
       `${routes.barbershops.root}/${barbershopId}/new-reservation?${searchParams.toString()}`,
     );
+  }
+
+  function getRandomItem<T>(array: T[]): T | undefined {
+    if (array.length === 0) {
+      return undefined;
+    }
+    const randomIndex = Math.floor(Math.random() * array.length);
+    return array[randomIndex];
   }
 
   if (isLoadingBarbers) return <BarberSelectionSkeleton />;

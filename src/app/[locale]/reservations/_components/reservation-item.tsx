@@ -33,14 +33,14 @@ export const ReservationItem = ({ reservation }: Props) => {
         <span className="font-medium">{t("treatment")}: </span>
         {reservation.price_list_item?.name}
       </p>
-      <p>
+      {/* <p>
         <span className="font-medium">{t("price")}: </span>
         {
           getCurrencyByCode(reservation.price_list_item!.price_list!.currency!)
             ?.symbol
         }{" "}
         {reservation.price_list_item?.price?.toFixed(2)}
-      </p>
+      </p> */}
     </Card>
   );
 };

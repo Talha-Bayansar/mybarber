@@ -16,16 +16,11 @@ export const reservationRouter = createTRPCRouter({
 
       const response = await xata.db.reservation
         .sort("date", "desc")
+        .sort("start_time", "desc")
         .filter({
           "user.id": session.user.id,
         })
-        .select([
-          "barbershop.name",
-          "*",
-          "price_list_item.*",
-          "price_list_item.price_list.currency",
-          "barber.*",
-        ])
+        .select(["barbershop.name", "*", "price_list_item.*", "barber.*"])
         .getPaginated({
           pagination: {
             size: input.size,
@@ -70,7 +65,7 @@ export const reservationRouter = createTRPCRouter({
   create: protectedProcedure
     .input(
       z.object({
-        barberId: z.string().optional(),
+        barberId: z.string(),
         date: z.string().min(1),
         startTime: z.number(),
         priceListItemId: z.string().min(1),
@@ -100,7 +95,7 @@ export const reservationRouter = createTRPCRouter({
         start_time: input.startTime,
         price_list_item: input.priceListItemId,
         user: session.user.id,
-        barber: input.barberId || undefined,
+        barber: input.barberId,
       });
 
       if (!response)
