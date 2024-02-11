@@ -61,7 +61,7 @@ export const barberRouter = createTRPCRouter({
 
       const filteredReservations = reservations.filter(
         (reservation) =>
-          reservation.start_time! === input.time ||
+          input.time === reservation.start_time! ||
           reservation.start_time! + reservation.price_list_item!.duration! >
             input.time,
       );
