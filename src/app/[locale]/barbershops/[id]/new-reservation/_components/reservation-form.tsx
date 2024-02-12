@@ -12,12 +12,11 @@ type Props = {
     barber?: string;
     date?: string;
     time?: string;
-    treatment?: string;
   };
 };
 
 export const ReservationForm = ({
-  searchParams: { barber, date, time, treatment },
+  searchParams: { barber, date, time },
 }: Props) => {
   if (date && time && barber)
     return <TreatmentSelection date={date} time={time} barberId={barber} />;
