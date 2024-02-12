@@ -49,6 +49,9 @@ export const TreatmentSelection = ({ date, time, barberId }: Props) => {
       utils.reservation.getPaginated.refetch();
       router.replace(routes.reservations.root);
     },
+    onError: () => {
+      toast(t("NewReservationPage.error_message"));
+    },
   });
 
   const getSearchParams = () => {

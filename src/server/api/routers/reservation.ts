@@ -2,6 +2,7 @@ import { z } from "zod";
 import { createTRPCRouter, protectedProcedure } from "../trpc";
 import { TRPCError } from "@trpc/server";
 import { isValidDateFormat } from "~/lib/utils";
+import { getAvailableIntervals } from "../lib/barbershop";
 
 export const reservationRouter = createTRPCRouter({
   getPaginated: protectedProcedure
@@ -88,6 +89,19 @@ export const reservationRouter = createTRPCRouter({
         throw new TRPCError({
           code: "BAD_REQUEST",
         });
+
+      const availableIntervals = await getAvailableIntervals({
+        xata,
+        barbershopId: input.barbershopId,
+        barberId: input.barberId,
+        date: input.date,
+      });
+
+      if (!availableIntervals.includes(input.startTime)) {
+        throw new TRPCError({
+          code: "BAD_REQUEST",
+        });
+      }
 
       const response = await xata.db.reservation.create({
         barbershop: input.barbershopId,

@@ -13,6 +13,7 @@ import type {
   OpeningHoursRecord,
   ReservationRecord,
 } from "~/server/db/xata";
+import { getAvailableIntervals } from "../lib/barbershop";
 
 export const barbershopRouter = createTRPCRouter({
   search: publicProcedure
@@ -97,49 +98,10 @@ export const barbershopRouter = createTRPCRouter({
       const { xata } = ctx;
 
       if (!input.date) return [];
-      const dayOfWeek = getDayOfWeek(input.date);
-      const availableTimes: number[] = [];
-
-      const openingHours = await xata.db.opening_hours
-        .filter({
-          day_of_week: dayOfWeek,
-          "barbershop.id": input.barbershopId,
-        })
-        .getAll();
-
-      if (!openingHours || isArrayEmpty(openingHours)) return availableTimes;
-
-      const reservations = await xata.db.reservation
-        .filter({
-          "barber.id": input.barberId || undefined,
-          "barbershop.id": input.barbershopId,
-          date: input.date,
-        })
-        .select(["start_time", "price_list_item.duration", "barber.id"])
-        .sort("start_time", "asc")
-        .getAll();
-
-      let availableIntervals: number[] = [];
-
-      if (input.barberId) {
-        availableIntervals = getAvailableIntervals(
-          openingHours as OpeningHoursRecord[],
-          reservations as ReservationRecord[],
-        );
-      } else {
-        const barbers = await xata.db.barber
-          .filter({
-            "barbershop.id": input.barbershopId,
-          })
-          .getAll();
-
-        availableIntervals = getAvailableIntervals(
-          openingHours as OpeningHoursRecord[],
-          reservations as ReservationRecord[],
-          barbers as BarberRecord[],
-        );
-      }
-
+      const availableIntervals = await getAvailableIntervals({
+        xata,
+        ...input,
+      });
       return availableIntervals;
     }),
   getFavoriteBarbershops: protectedProcedure.query(async ({ ctx }) => {
@@ -238,93 +200,3 @@ export const barbershopRouter = createTRPCRouter({
       return response;
     }),
 });
-
-function getAvailableIntervals(
-  openingHours: OpeningHoursRecord[],
-  reservations: ReservationRecord[],
-  barbers?: BarberRecord[],
-) {
-  const bookedIntervals = filterBookedIntervals(reservations, barbers);
-  let availableIntervals: number[] = [];
-
-  for (const hours of openingHours) {
-    const generatedIntervals = generateMsIntervals(
-      hours.start_time!,
-      hours.start_time! + hours.duration!,
-    );
-    availableIntervals = [...availableIntervals, ...generatedIntervals];
-  }
-
-  for (const interval of availableIntervals) {
-    const isBooked = bookedIntervals.includes(interval);
-
-    if (isBooked) {
-      availableIntervals = availableIntervals.filter(
-        (availableInterval) => availableInterval !== interval,
-      );
-    }
-  }
-
-  return availableIntervals;
-}
-
-function filterBookedIntervals(
-  reservations: ReservationRecord[],
-  barbers?: BarberRecord[],
-) {
-  let bookedIntervals: number[] = [];
-
-  if (barbers) {
-    const barbersBookedIntervals: number[][] = [];
-
-    const barbersReservations = barbers.map((barber) => {
-      return reservations.filter(
-        (reservation) => reservation.barber?.id === barber.id,
-      );
-    });
-
-    barbersReservations.forEach((barberReservations) => {
-      let intervals: number[] = [];
-      barberReservations.forEach(({ start_time, price_list_item }) => {
-        const generatedIntervals = generateMsIntervals(
-          start_time!,
-          start_time! + price_list_item!.duration!,
-        );
-        generatedIntervals.pop();
-        intervals = [...intervals, ...generatedIntervals];
-      });
-      barbersBookedIntervals.push(intervals);
-    });
-
-    bookedIntervals = intersectArrays(barbersBookedIntervals);
-  } else {
-    reservations.forEach(({ start_time, price_list_item }) => {
-      const generatedIntervals = generateMsIntervals(
-        start_time!,
-        start_time! + price_list_item!.duration!,
-      );
-      generatedIntervals.pop();
-      bookedIntervals = [...bookedIntervals, ...generatedIntervals];
-    });
-  }
-
-  return bookedIntervals;
-}
-
-function intersectArrays(arrays: number[][]): number[] {
-  // Check if arrays is not empty
-  if (arrays.length === 0) return [];
-
-  // Copy the first array to start with
-  let intersection: number[] = arrays[0]!.slice();
-
-  // Iterate over the rest of the arrays
-  for (let i = 1; i < arrays.length; i++) {
-    // Filter the intersection array to keep only the elements present in the current array
-    intersection = intersection.filter((element) =>
-      arrays[i]!.includes(element),
-    );
-  }
-
-  return intersection;
-}

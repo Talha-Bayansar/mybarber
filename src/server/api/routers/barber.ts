@@ -65,18 +65,15 @@ export const barberRouter = createTRPCRouter({
           reservation.start_time! + reservation.price_list_item!.duration! >
             input.time,
       );
-      console.log("filteredReservations");
 
       const bookedBarberIds = [
         ...new Set(
           filteredReservations.map((reservation) => reservation.barber!.id),
         ),
       ];
-      console.log("bookedBarberIds", bookedBarberIds);
       const availableBarbers = barbers.filter(
         (barber) => !bookedBarberIds.includes(barber.id),
       );
-      console.log(availableBarbers);
 
       return availableBarbers;
     }),
