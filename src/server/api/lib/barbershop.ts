@@ -124,6 +124,7 @@ export const getAvailableIntervals = async ({
       "barber.id": barberId || undefined,
       "barbershop.id": barbershopId,
       date: date,
+      is_paid: true,
     })
     .select(["start_time", "price_list_item.duration", "barber.id"])
     .sort("start_time", "asc")

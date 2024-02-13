@@ -365,6 +365,10 @@
           "type": "int"
         },
         {
+          "name": "is_paid",
+          "type": "bool"
+        },
+        {
           "name": "user",
           "type": "link",
           "link": {

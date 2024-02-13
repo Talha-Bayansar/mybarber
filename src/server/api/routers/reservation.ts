@@ -3,6 +3,7 @@ import { createTRPCRouter, protectedProcedure } from "../trpc";
 import { TRPCError } from "@trpc/server";
 import { isValidDateFormat } from "~/lib/utils";
 import { getAvailableIntervals } from "../lib/barbershop";
+import { truncate } from "fs";
 
 export const reservationRouter = createTRPCRouter({
   getPaginated: protectedProcedure
@@ -20,6 +21,7 @@ export const reservationRouter = createTRPCRouter({
         .sort("start_time", "desc")
         .filter({
           "user.id": session.user.id,
+          is_paid: true,
         })
         .select(["barbershop.name", "*", "price_list_item.*", "barber.*"])
         .getPaginated({
@@ -52,6 +54,7 @@ export const reservationRouter = createTRPCRouter({
           date: input.date,
           "barbershop.id": input.barbershopId,
           "barber.id": input.barberId || undefined,
+          is_paid: true,
         })
         .select(["barber.id", "id", "date", "start_time"])
         .getAll();
@@ -66,7 +69,7 @@ export const reservationRouter = createTRPCRouter({
   create: protectedProcedure
     .input(
       z.object({
-        barberId: z.string(),
+        barberId: z.string().min(1),
         date: z.string().min(1),
         startTime: z.number(),
         priceListItemId: z.string().min(1),
@@ -82,6 +85,7 @@ export const reservationRouter = createTRPCRouter({
           date: input.date,
           start_time: input.startTime,
           "barber.id": input.barberId,
+          is_paid: true,
         })
         .getFirst();
 
@@ -110,11 +114,33 @@ export const reservationRouter = createTRPCRouter({
         price_list_item: input.priceListItemId,
         user: session.user.id,
         barber: input.barberId,
+        is_paid: false,
       });
 
       if (!response)
         throw new TRPCError({
           code: "INTERNAL_SERVER_ERROR",
+        });
+
+      return response;
+    }),
+  confirmReservation: protectedProcedure
+    .input(
+      z.object({
+        id: z.string().min(1),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      const { xata } = ctx;
+
+      const response = await xata.db.reservation.update({
+        id: input.id,
+        is_paid: true,
+      });
+
+      if (!response)
+        throw new TRPCError({
+          code: "BAD_REQUEST",
         });
 
       return response;

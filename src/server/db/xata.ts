@@ -175,6 +175,7 @@ const tables = [
       },
       { name: "barber", type: "link", link: { table: "barber" } },
       { name: "barbershop", type: "link", link: { table: "barbershop" } },
+      { name: "is_paid", type: "bool" },
     ],
   },
 ] as const;
