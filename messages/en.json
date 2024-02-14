@@ -102,6 +102,8 @@
     "select_barber": "Select barber",
     "no_preference": "No preference",
     "success_message": "Successfully created new reservation.",
-    "error_message": "Something went wrong while creating new reservation."
+    "error_message": "Something went wrong while creating new reservation.",
+    "your_reservation": "Your reservation",
+    "checkout": "Go to checkout"
   }
 }

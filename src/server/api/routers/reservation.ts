@@ -6,6 +6,29 @@ import { getAvailableIntervals } from "../lib/barbershop";
 import { truncate } from "fs";
 
 export const reservationRouter = createTRPCRouter({
+  getById: protectedProcedure
+    .input(
+      z.object({
+        id: z.string().min(1),
+      }),
+    )
+    .query(async ({ ctx, input }) => {
+      const { xata } = ctx;
+
+      const response = await xata.db.reservation
+        .filter({
+          id: input.id,
+        })
+        .select(["*", "barber.*", "price_list_item.*", "barbershop.*"])
+        .getFirst();
+
+      if (!response)
+        throw new TRPCError({
+          code: "BAD_REQUEST",
+        });
+
+      return response;
+    }),
   getPaginated: protectedProcedure
     .input(
       z.object({
@@ -124,7 +147,7 @@ export const reservationRouter = createTRPCRouter({
 
       return response;
     }),
-  confirmReservation: protectedProcedure
+  checkout: protectedProcedure
     .input(
       z.object({
         id: z.string().min(1),

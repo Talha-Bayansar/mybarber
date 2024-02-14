@@ -6,18 +6,22 @@ import { BarberSelection } from "./barber-selection";
 import { DateForm } from "./date-form";
 import { Skeleton } from "~/components/ui/skeleton";
 import { TreatmentSelection } from "./treatment-selection";
+import { Checkout } from "./checkout";
 
 type Props = {
   searchParams: {
     barber?: string;
     date?: string;
     time?: string;
+    reservation?: string;
   };
 };
 
 export const ReservationForm = ({
-  searchParams: { barber, date, time },
+  searchParams: { barber, date, time, reservation },
 }: Props) => {
+  if (reservation) return <Checkout reservation={reservation} />;
+
   if (date && time && barber)
     return <TreatmentSelection date={date} time={time} barberId={barber} />;
 

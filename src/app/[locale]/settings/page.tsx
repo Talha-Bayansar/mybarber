@@ -1,5 +1,5 @@
 import { getTranslations } from "next-intl/server";
-import { Page } from "~/components/layout/page";
+import { PageWrapper } from "~/components/layout/page-wrapper";
 import { Main } from "~/components/layout/main";
 import { Title } from "~/components/layout/title";
 import { List } from "~/components/layout/list";
@@ -13,7 +13,7 @@ const SettingsPage = async () => {
   const t = await getTranslations("global");
 
   return (
-    <Page>
+    <PageWrapper>
       <Main>
         <Title>{t("settings")}</Title>
         <List>
@@ -24,7 +24,7 @@ const SettingsPage = async () => {
         </List>
       </Main>
       <RootNavBar />
-    </Page>
+    </PageWrapper>
   );
 };
 

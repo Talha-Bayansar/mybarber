@@ -7,7 +7,7 @@ type Props = {
   hasNavigationBar?: boolean;
 };
 
-export const Page = ({
+export const PageWrapper = ({
   className,
   children,
   hasNavigationBar = true,

@@ -37,17 +37,20 @@ type Props = {
 export const TreatmentSelection = ({ date, time, barberId }: Props) => {
   const t = useTranslations();
   const router = useRouter();
-  const utils = api.useUtils();
+  // const utils = api.useUtils();
   const { id: barbershopId } = useParams<{ id: string }>();
   const { data: priceList, isLoading: isLoading } =
     api.priceList.getByBarbershopId.useQuery({
       barbershopId,
     });
   const createReservation = api.reservation.create.useMutation({
-    onSuccess: () => {
+    onSuccess: (reservation) => {
       toast(t("NewReservationPage.success_message"));
-      utils.reservation.getPaginated.refetch();
-      router.replace(routes.reservations.root);
+      const searchParams = new URLSearchParams();
+      searchParams.set("reservation", reservation.id);
+      router.push(
+        `${routes.barbershops.root}/${barbershopId}/new-reservation?${searchParams.toString()}`,
+      );
     },
     onError: () => {
       toast(t("NewReservationPage.error_message"));

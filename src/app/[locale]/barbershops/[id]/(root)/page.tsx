@@ -3,7 +3,7 @@ import { getServerAuthSession } from "~/server/auth";
 import { getTranslations } from "next-intl/server";
 import { Link } from "~/navigation";
 import { routes } from "~/lib/routes";
-import { Page } from "~/components/layout/page";
+import { PageWrapper } from "~/components/layout/page-wrapper";
 import { Main } from "~/components/layout/main";
 import { List } from "~/components/layout/list";
 import { Title } from "~/components/layout/title";
@@ -29,7 +29,7 @@ const BarbershopPage = async ({ params }: Props) => {
   });
 
   return (
-    <Page>
+    <PageWrapper>
       <Main>
         <div className="flex items-start justify-between">
           <Title className="flex-grow">{barbershop.name}</Title>
@@ -58,7 +58,7 @@ const BarbershopPage = async ({ params }: Props) => {
         </List>
       </Main>
       <RootNavBar />
-    </Page>
+    </PageWrapper>
   );
 };
 
