@@ -1,7 +1,6 @@
 import { z } from "zod";
 import { createTRPCRouter, protectedProcedure, publicProcedure } from "../trpc";
 import { TRPCError } from "@trpc/server";
-import { generateMsIntervals, getDayOfWeek } from "~/lib/utils";
 
 export const barberRouter = createTRPCRouter({
   getByBarbershopId: publicProcedure
@@ -53,6 +52,9 @@ export const barberRouter = createTRPCRouter({
               start_time: {
                 $le: input.time,
               },
+            },
+            {
+              is_paid: true,
             },
           ],
         })

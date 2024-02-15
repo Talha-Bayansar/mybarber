@@ -3,7 +3,8 @@ import { createTRPCRouter, protectedProcedure } from "../trpc";
 import { TRPCError } from "@trpc/server";
 import { isValidDateFormat } from "~/lib/utils";
 import { getAvailableIntervals } from "../lib/barbershop";
-import { truncate } from "fs";
+import { stripe } from "~/lib/stripe";
+import { routes } from "~/lib/routes";
 
 export const reservationRouter = createTRPCRouter({
   getById: protectedProcedure
@@ -154,18 +155,58 @@ export const reservationRouter = createTRPCRouter({
       }),
     )
     .mutation(async ({ ctx, input }) => {
-      const { xata } = ctx;
+      const { xata, headers } = ctx;
+      const referer = headers.get("referer");
+      const origin = headers.get("origin");
+      const cookie = headers.get("cookie");
 
-      const response = await xata.db.reservation.update({
-        id: input.id,
-        is_paid: true,
-      });
+      const locale =
+        cookie
+          ?.split(";")
+          .find((substring) => substring.includes("NEXT_LOCALE"))
+          ?.split("=")[1] ?? "en";
 
-      if (!response)
+      const reservation = await xata.db.reservation
+        .filter({
+          id: input.id,
+        })
+        .select(["*", "barbershop.*"])
+        .getFirst();
+
+      if (!reservation)
         throw new TRPCError({
-          code: "BAD_REQUEST",
+          code: "INTERNAL_SERVER_ERROR",
         });
 
-      return response;
+      const session = await stripe.checkout.sessions.create(
+        {
+          mode: "payment",
+          line_items: [
+            {
+              price_data: {
+                currency: "eur",
+                product_data: {
+                  name: "Voorschot reservatie",
+                },
+                unit_amount: 100,
+              },
+              quantity: 1,
+            },
+          ],
+          payment_intent_data: {
+            application_fee_amount: 150,
+          },
+          metadata: {
+            reservation_id: reservation.id,
+          },
+          success_url: `${origin}/${locale}${routes.reservations.root}`,
+          cancel_url: referer ?? `${origin}/${locale}`,
+        },
+        {
+          stripeAccount: "acct_1OjWyTQYkSiAfvdP",
+        },
+      );
+
+      return session;
     }),
 });

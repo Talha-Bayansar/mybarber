@@ -1,5 +1,6 @@
 import { format } from "date-fns";
 import { useTranslations } from "next-intl";
+import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { EmptyState } from "~/components/empty-state";
 import { List } from "~/components/layout/list";
@@ -15,12 +16,13 @@ type Props = {
 
 export const Checkout = ({ reservation: reservationId }: Props) => {
   const t = useTranslations();
+  const router = useRouter();
   const { data: reservation, isLoading } = api.reservation.getById.useQuery({
     id: reservationId,
   });
   const checkout = api.reservation.checkout.useMutation({
-    onSuccess: () => {
-      toast(t("NewReservationPage.success_message"));
+    onSuccess: (session) => {
+      if (session.url) router.push(session.url);
     },
     onError: () => {
       toast(t("NewReservationPage.error_message"));

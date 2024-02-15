@@ -45,7 +45,7 @@ export const TreatmentSelection = ({ date, time, barberId }: Props) => {
     });
   const createReservation = api.reservation.create.useMutation({
     onSuccess: (reservation) => {
-      toast(t("NewReservationPage.success_message"));
+      // toast(t("NewReservationPage.success_message"));
       const searchParams = new URLSearchParams();
       searchParams.set("reservation", reservation.id);
       router.push(
