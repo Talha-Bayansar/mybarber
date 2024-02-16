@@ -10,6 +10,7 @@ import { EmptyState } from "~/components/empty-state";
 import { List } from "~/components/layout/list";
 import { Card } from "~/components/ui/card";
 import { Skeleton } from "~/components/ui/skeleton";
+import { BarbershopRecord } from "~/server/db/xata";
 
 export const BarbershopsList = () => {
   const t = useTranslations("global");
@@ -45,7 +46,10 @@ export const BarbershopsList = () => {
       </p>
       <List className="md:grid md:grid-cols-2">
         {barbershops.records.map((barbershop) => (
-          <BarbershopItem key={barbershop.id} barbershop={barbershop} />
+          <BarbershopItem
+            key={barbershop.id}
+            barbershop={barbershop as BarbershopRecord}
+          />
         ))}
       </List>
       {barbershops.meta.page.more && (
