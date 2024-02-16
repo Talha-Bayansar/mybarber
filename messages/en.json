@@ -107,5 +107,8 @@
     "your_reservation": "Your reservation",
     "payment_button": "Proceed to Payment",
     "review_button": "Review & Pay"
+  },
+  "OwnerPage": {
+    "title": "Owner portal"
   }
 }
