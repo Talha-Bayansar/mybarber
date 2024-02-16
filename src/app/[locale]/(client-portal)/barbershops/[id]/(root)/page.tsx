@@ -13,6 +13,7 @@ import { FavoriteButton } from "../_components/favorite-button";
 import { PriceList } from "../_components/price-list";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "~/components/ui/tabs";
 import { Info } from "../_components/info";
+import type { BarbershopRecord } from "~/server/db/xata";
 
 type Props = {
   params: {
@@ -49,10 +50,10 @@ const BarbershopPage = async ({ params }: Props) => {
               <TabsTrigger value="info">{t("global.info")}</TabsTrigger>
             </TabsList>
             <TabsContent value="pricelist">
-              <PriceList barbershop={barbershop} />
+              <PriceList barbershop={barbershop as BarbershopRecord} />
             </TabsContent>
             <TabsContent value="info">
-              <Info barbershop={barbershop} />
+              <Info barbershop={barbershop as BarbershopRecord} />
             </TabsContent>
           </Tabs>
         </List>

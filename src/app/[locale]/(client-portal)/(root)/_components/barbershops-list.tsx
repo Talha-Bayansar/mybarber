@@ -10,7 +10,7 @@ import { EmptyState } from "~/components/empty-state";
 import { List } from "~/components/layout/list";
 import { Card } from "~/components/ui/card";
 import { Skeleton } from "~/components/ui/skeleton";
-import { BarbershopRecord } from "~/server/db/xata";
+import type { BarbershopRecord } from "~/server/db/xata";
 
 export const BarbershopsList = () => {
   const t = useTranslations("global");
