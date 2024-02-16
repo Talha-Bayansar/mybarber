@@ -180,6 +180,13 @@
           "link": {
             "table": "address"
           }
+        },
+        {
+          "name": "owner",
+          "type": "link",
+          "link": {
+            "table": "nextauth_users"
+          }
         }
       ]
     },

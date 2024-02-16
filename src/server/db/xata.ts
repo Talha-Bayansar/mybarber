@@ -31,6 +31,7 @@ const tables = [
       { column: "user", table: "nextauth_sessions" },
       { column: "user", table: "barber" },
       { column: "user", table: "reservation" },
+      { column: "owner", table: "barbershop" },
     ],
   },
   {
@@ -42,6 +43,7 @@ const tables = [
       { name: "verified", type: "bool" },
       { name: "address", type: "link", link: { table: "address" } },
       { name: "logo", type: "file", file: { defaultPublicAccess: true } },
+      { name: "owner", type: "link", link: { table: "nextauth_users" } },
     ],
     revLinks: [
       { column: "barbershop", table: "favorite_barbershop" },

@@ -9,4 +9,7 @@ export const routes = {
   reservations: {
     root: "/reservations",
   },
+  owner: {
+    root: "/owner",
+  },
 };

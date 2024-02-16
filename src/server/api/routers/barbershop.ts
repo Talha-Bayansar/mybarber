@@ -1,18 +1,12 @@
 import { TRPCError } from "@trpc/server";
 import { z } from "zod";
-import { generateMsIntervals, getDayOfWeek, isArrayEmpty } from "~/lib/utils";
 
 import {
   createTRPCRouter,
   protectedProcedure,
   publicProcedure,
 } from "~/server/api/trpc";
-import type {
-  BarberRecord,
-  BarbershopRecord,
-  OpeningHoursRecord,
-  ReservationRecord,
-} from "~/server/db/xata";
+import type { BarbershopRecord } from "~/server/db/xata";
 import { getAvailableIntervals } from "../lib/barbershop";
 
 export const barbershopRouter = createTRPCRouter({
@@ -86,6 +80,22 @@ export const barbershopRouter = createTRPCRouter({
 
       return response;
     }),
+  getByOwner: protectedProcedure.query(async ({ ctx }) => {
+    const { xata, session } = ctx;
+
+    const response = await xata.db.barbershop
+      .filter({
+        "owner.id": session.user.id,
+      })
+      .getFirst();
+
+    if (!response)
+      throw new TRPCError({
+        code: "NOT_FOUND",
+      });
+
+    return response;
+  }),
   getAvailableIntervals: protectedProcedure
     .input(
       z.object({
