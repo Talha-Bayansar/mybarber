@@ -11,5 +11,20 @@ export const routes = {
   },
   owner: {
     root: "/owner",
+    openingHours: {
+      root: "/owner/opening-hours",
+    },
+    preferences: {
+      root: "/owner/preferences",
+    },
+    priceList: {
+      root: "/owner/price-list",
+    },
+    reservations: {
+      root: "/owner/reservations",
+    },
+    barbers: {
+      root: "/owner/barbers",
+    },
   },
 };

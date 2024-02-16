@@ -3,16 +3,17 @@ import { Main } from "~/components/layout/main";
 import { PageWrapper } from "~/components/layout/page-wrapper";
 import { Title } from "~/components/layout/title";
 
-const OwnerPage = async () => {
+const OwnerLayout = async ({ children }: { children: React.ReactNode }) => {
   const t = await getTranslations("OwnerPage");
 
   return (
-    <PageWrapper>
+    <PageWrapper hasNavigationBar={false}>
       <Main>
         <Title>{t("title")}</Title>
+        {children}
       </Main>
     </PageWrapper>
   );
 };
 
-export default OwnerPage;
+export default OwnerLayout;

@@ -109,6 +109,16 @@
     "review_button": "Review & Pay"
   },
   "OwnerPage": {
-    "title": "Owner portal"
+    "title": "Owner dashboard",
+    "price_list": "Price list",
+    "price_list_description": "Manage and customize service prices for your barbershop.",
+    "preferences": "Preferences",
+    "preferences_description": "Customize and adjust preferences for your barbershop.",
+    "opening_hours": "Opening hours",
+    "opening_hours_description": "Set and update the operating hours for your barbershop.",
+    "barbers": "Barbers",
+    "barbers_description": "Manage the team of barbers working at your barbershop.",
+    "reservations": "Reservations",
+    "reservations_description": "View and manage upcoming reservations for your barbershop."
   }
 }
