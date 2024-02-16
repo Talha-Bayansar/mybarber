@@ -22,6 +22,7 @@ import { routes } from "~/lib/routes";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 
 const formSchema = z.object({
   barberId: z.string().min(1),
@@ -151,14 +152,16 @@ export const BarberSelection = ({ date, time }: Props) => {
           )}
         />
         <div className="flex justify-between">
-          <Button asChild>
+          <Button variant="outline" asChild>
             <Link
               href={`${routes.barbershops.root}/${barbershopId}/new-reservation`}
             >
-              {t("global.previous")}
+              <ChevronLeft size={20} /> {t("global.back")}
             </Link>
           </Button>
-          <Button type="submit">{t("global.next")}</Button>
+          <Button type="submit">
+            {t("global.next")} <ChevronRight size={20} />
+          </Button>
         </div>
       </form>
     </Form>

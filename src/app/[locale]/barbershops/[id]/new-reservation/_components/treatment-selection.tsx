@@ -1,4 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useParams } from "next/navigation";
 import { useForm } from "react-hook-form";
@@ -130,14 +131,16 @@ export const TreatmentSelection = ({ date, time, barberId }: Props) => {
           )}
         />
         <div className="flex justify-between">
-          <Button asChild>
+          <Button variant="outline" asChild>
             <Link
               href={`${routes.barbershops.root}/${barbershopId}/new-reservation?${getSearchParams()}`}
             >
-              {t("global.previous")}
+              <ChevronLeft size={20} /> {t("global.back")}
             </Link>
           </Button>
-          <Button type="submit">{t("global.submit")}</Button>
+          <Button type="submit">
+            {t("NewReservationPage.review_button")} <ChevronRight size={20} />
+          </Button>
         </div>
       </form>
     </Form>

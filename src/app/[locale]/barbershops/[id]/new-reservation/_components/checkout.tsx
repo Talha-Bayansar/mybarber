@@ -40,28 +40,29 @@ export const Checkout = ({ reservation: reservationId }: Props) => {
   if (!reservation) return <EmptyState />;
 
   return (
-    <List>
-      <h2 className="text-xl font-medium">
-        {t("NewReservationPage.your_reservation")}
-      </h2>
-      <Card className="p-4">
-        <p className="text-xl font-medium">
-          {format(reservation.date!, "dd/MM/yyyy")} -{" "}
-          {getTimeFromMs(reservation.start_time!)}
-        </p>
-        <p>
-          <span className="font-medium">{t("global.barbershop")}: </span>
-          {reservation.barbershop?.name}
-        </p>
-        <p>
-          <span className="font-medium">{t("global.barber")}: </span>
-          {`${reservation.barber?.first_name} ${reservation.barber?.last_name}`}
-        </p>
-        <p>
-          <span className="font-medium">{t("global.treatment")}: </span>
-          {reservation.price_list_item?.name}
-        </p>
-        {/* <p>
+    <List className="flex-grow justify-between md:justify-start">
+      <List>
+        <h2 className="text-xl font-medium">
+          {t("NewReservationPage.your_reservation")}
+        </h2>
+        <Card className="p-4">
+          <p className="text-xl font-medium">
+            {format(reservation.date!, "dd/MM/yyyy")} -{" "}
+            {getTimeFromMs(reservation.start_time!)}
+          </p>
+          <p>
+            <span className="font-medium">{t("global.barbershop")}: </span>
+            {reservation.barbershop?.name}
+          </p>
+          <p>
+            <span className="font-medium">{t("global.barber")}: </span>
+            {`${reservation.barber?.first_name} ${reservation.barber?.last_name}`}
+          </p>
+          <p>
+            <span className="font-medium">{t("global.treatment")}: </span>
+            {reservation.price_list_item?.name}
+          </p>
+          {/* <p>
         <span className="font-medium">{t("price")}: </span>
         {
           getCurrencyByCode(reservation.price_list_item!.price_list!.currency!)
@@ -69,9 +70,10 @@ export const Checkout = ({ reservation: reservationId }: Props) => {
         }{" "}
         {reservation.price_list_item?.price?.toFixed(2)}
       </p> */}
-      </Card>
+        </Card>
+      </List>
       <Button onClick={handleCheckout}>
-        {t("NewReservationPage.checkout")}
+        {t("NewReservationPage.payment_button")}
       </Button>
     </List>
   );
