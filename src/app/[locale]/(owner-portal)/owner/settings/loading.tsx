@@ -5,7 +5,7 @@ import { Main } from "~/components/layout/main";
 import { Title } from "~/components/layout/title";
 import { List } from "~/components/layout/list";
 import { SettingCardSkeleton } from "~/components/setting-card";
-import { RootNavBar } from "~/components/root-nav-bar";
+import { OwnerNavBar } from "../../_components/owner-nav-bar";
 
 const SettingsLoading = async () => {
   const t = await getTranslations("global");
@@ -20,7 +20,7 @@ const SettingsLoading = async () => {
           ))}
         </List>
       </Main>
-      <RootNavBar />
+      <OwnerNavBar />
     </PageWrapper>
   );
 };

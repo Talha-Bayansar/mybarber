@@ -69,7 +69,8 @@
     "barbershop": "Barbershop",
     "barber": "Barber",
     "price": "Price",
-    "auth_required": "You need to be authenticated to continue."
+    "auth_required": "You need to be authenticated to continue.",
+    "dashboard": "Dashboard"
   },
   "RootPage": {
     "search_placeholder": "Search barbershops by",
