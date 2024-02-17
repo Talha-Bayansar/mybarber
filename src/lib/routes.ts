@@ -26,5 +26,8 @@ export const routes = {
     barbers: {
       root: "/owner/barbers",
     },
+    settings: {
+      root: "/owner/settings",
+    },
   },
 };

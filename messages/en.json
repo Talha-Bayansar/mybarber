@@ -86,7 +86,10 @@
     "light": "Light",
     "dark": "Dark",
     "system": "System",
-    "sign_out_confirmation": "By signing out, you will be logged out of your account and any unsaved changes may be lost."
+    "sign_out_confirmation": "By signing out, you will be logged out of your account and any unsaved changes may be lost.",
+    "owner_panel": "Owner panel",
+    "owner_panel_description": "Manage your barbershop at the owner panel.",
+    "owner_panel_action": "Go to owner panel"
   },
   "BarbershopPage": {
     "new_reservation": "New reservation"

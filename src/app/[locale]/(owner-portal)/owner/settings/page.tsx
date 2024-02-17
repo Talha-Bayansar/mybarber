@@ -8,7 +8,6 @@ import { AuthButton } from "~/settings/components/auth-button";
 import { CurrentUser } from "~/settings/components/current-user";
 import { LanguageSetting } from "~/settings/components/language-setting";
 import { ThemeSetting } from "~/settings/components/theme-setting";
-import { OwnerSetting } from "./_components/owner-setting";
 
 const SettingsPage = async () => {
   const t = await getTranslations("global");
@@ -21,7 +20,6 @@ const SettingsPage = async () => {
           <CurrentUser />
           <LanguageSetting />
           <ThemeSetting />
-          <OwnerSetting />
           <AuthButton />
         </List>
       </Main>
