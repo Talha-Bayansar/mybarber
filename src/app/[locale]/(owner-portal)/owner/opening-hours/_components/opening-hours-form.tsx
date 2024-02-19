@@ -20,7 +20,7 @@ import {
   getMsSinceMidnight,
   getTimeFromMs,
 } from "~/lib/utils";
-import { OpeningHoursRecord } from "~/server/db/xata";
+import type { OpeningHoursRecord } from "~/server/db/xata";
 
 type Create = {
   day_of_week: number;

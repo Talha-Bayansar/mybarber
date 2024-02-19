@@ -136,7 +136,17 @@
       "title": "Preferences"
     },
     "PriceListPage": {
-      "title": "Price List"
+      "title": "Price List",
+      "name": "Name",
+      "name_placeholder": "Name of treatment",
+      "description": "Description",
+      "description_placeholder": "Description of treatment",
+      "duration": "Duration",
+      "duration_placeholder": "Duration of treatment in minutes",
+      "price": "Price",
+      "price_placeholder": "Price of treatment",
+      "create_success_message": "New treatment created successfully.",
+      "create_error_message": "Could not create new treatment."
     },
     "ReservationsPage": {
       "title": "Reservations"

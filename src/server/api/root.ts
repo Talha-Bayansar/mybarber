@@ -5,6 +5,7 @@ import { openingHoursRouter } from "./routers/opening-hours";
 import { reservationRouter } from "./routers/reservation";
 import { barberRouter } from "./routers/barber";
 import { hairTypeRouter } from "./routers/hair-type";
+import { priceListItemRouter } from "./routers/price-list-item";
 
 /**
  * This is the primary router for your server.
@@ -14,6 +15,7 @@ import { hairTypeRouter } from "./routers/hair-type";
 export const appRouter = createTRPCRouter({
   barbershop: barbershopRouter,
   priceList: priceListRouter,
+  priceListItem: priceListItemRouter,
   openingHours: openingHoursRouter,
   reservation: reservationRouter,
   barber: barberRouter,
