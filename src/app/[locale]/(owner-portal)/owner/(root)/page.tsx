@@ -1,6 +1,8 @@
 import { getTranslations } from "next-intl/server";
 import { notFound } from "next/navigation";
 import { List } from "~/components/layout/list";
+import { Main } from "~/components/layout/main";
+import { Title } from "~/components/layout/title";
 import { SettingCard } from "~/components/setting-card";
 import { routes } from "~/lib/routes";
 import { Link } from "~/navigation";
@@ -51,13 +53,16 @@ const OwnerPage = async () => {
   ];
 
   return (
-    <List className="md:grid md:grid-cols-2">
-      {items.map((item) => (
-        <Link key={item.title} href={item.href}>
-          <SettingCard title={item.title} description={item.description} />
-        </Link>
-      ))}
-    </List>
+    <Main>
+      <Title>{barbershop.name}</Title>
+      <List className="md:grid md:grid-cols-2">
+        {items.map((item) => (
+          <Link key={item.title} href={item.href}>
+            <SettingCard title={item.title} description={item.description} />
+          </Link>
+        ))}
+      </List>
+    </Main>
   );
 };
 

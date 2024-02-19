@@ -1,5 +1,12 @@
+import { Main } from "~/components/layout/main";
+import { Title } from "~/components/layout/title";
+
 const OwnerNotFound = () => {
-  return <div>OwnerNotFound</div>;
+  return (
+    <Main>
+      <Title>You don't own a barbershop.</Title>
+    </Main>
+  );
 };
 
 export default OwnerNotFound;

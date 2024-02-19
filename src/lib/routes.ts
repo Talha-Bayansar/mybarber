@@ -13,6 +13,9 @@ export const routes = {
     root: "/owner",
     openingHours: {
       root: "/owner/opening-hours",
+      edit: {
+        root: "/owner/opening-hours/edit",
+      },
     },
     preferences: {
       root: "/owner/preferences",
