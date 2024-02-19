@@ -25,7 +25,7 @@ export const PriceListView = ({ priceListJSON }: Props) => {
         <PriceListItem
           key={item.id}
           priceListItem={item as PriceListItemRecord}
-          currency={priceList!.currency!}
+          currency={priceList?.currency ?? "EUR"}
         />
       ))}
     </List>

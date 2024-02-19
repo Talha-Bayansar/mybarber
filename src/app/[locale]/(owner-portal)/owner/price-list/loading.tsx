@@ -5,9 +5,7 @@ import { TitleSkeleton } from "~/components/layout/title";
 import { generateArray } from "~/lib/utils";
 import { PriceListItemSkeleton } from "./_components/price-list-item";
 
-type Props = {};
-
-const PriceListLoading = (props: Props) => {
+const PriceListLoading = () => {
   return (
     <Main>
       <TitleSkeleton />
