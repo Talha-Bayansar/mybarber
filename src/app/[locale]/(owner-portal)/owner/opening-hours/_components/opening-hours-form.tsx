@@ -4,6 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useTranslations } from "next-intl";
 import { useForm } from "react-hook-form";
 import z from "zod";
+import { List } from "~/components/layout/list";
 import { Button } from "~/components/ui/button";
 import {
   Form,
@@ -13,9 +14,10 @@ import {
   FormLabel,
   FormMessage,
 } from "~/components/ui/form";
-import { Input } from "~/components/ui/input";
+import { Input, InputFieldSkeleton } from "~/components/ui/input";
 import {
   calculateTimeDifference,
+  generateArray,
   getDateFromTime,
   getMsSinceMidnight,
   getTimeFromMs,
@@ -118,5 +120,15 @@ export const OpeningHoursForm = ({ input, isLoading, onSubmit }: Props) => {
         </Button>
       </form>
     </Form>
+  );
+};
+
+export const OpeningHoursFormSkeleton = () => {
+  return (
+    <List className="gap-8">
+      {generateArray(4).map((v) => (
+        <InputFieldSkeleton key={v} />
+      ))}
+    </List>
   );
 };

@@ -29,9 +29,9 @@ type Props = {
   }) => void;
 };
 
-const isUpdate = (input?: Update) => {
-  return (input as Update).id !== undefined;
-};
+// const isUpdate = (input?: Update) => {
+//   return (input as Update).id !== undefined;
+// };
 
 export const PriceListItemForm = ({ input, isLoading, onSubmit }: Props) => {
   const t = useTranslations("global");

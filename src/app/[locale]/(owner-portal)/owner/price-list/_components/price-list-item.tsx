@@ -1,5 +1,6 @@
 "use client";
 
+import { Skeleton } from "~/components/ui/skeleton";
 import { getCurrencyByCode } from "~/lib/utils";
 import type { PriceListItemRecord } from "~/server/db/xata";
 
@@ -22,4 +23,8 @@ export const PriceListItem = ({ priceListItem, currency }: Props) => {
       </span>
     </div>
   );
+};
+
+export const PriceListItemSkeleton = () => {
+  return <Skeleton className="h-12 w-full" />;
 };

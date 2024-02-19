@@ -20,12 +20,12 @@ export const PriceListView = ({ priceListJSON }: Props) => {
   if (!priceList || isArrayEmpty(priceList.items)) return <EmptyState />;
 
   return (
-    <List className="mt-8">
+    <List>
       {priceList.items.map((item) => (
         <PriceListItem
           key={item.id}
           priceListItem={item as PriceListItemRecord}
-          currency={priceList?.currency!}
+          currency={priceList!.currency!}
         />
       ))}
     </List>
