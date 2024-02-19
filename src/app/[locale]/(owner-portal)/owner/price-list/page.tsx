@@ -3,7 +3,7 @@ import { Main } from "~/components/layout/main";
 import { Title } from "~/components/layout/title";
 
 const PriceListPage = async () => {
-  const t = await getTranslations("OwnerPriceListPage");
+  const t = await getTranslations("Owner.PriceListPage");
 
   return (
     <Main>

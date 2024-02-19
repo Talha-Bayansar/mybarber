@@ -3,7 +3,7 @@ import { Main } from "~/components/layout/main";
 import { Title } from "~/components/layout/title";
 
 const BarbersPage = async () => {
-  const t = await getTranslations("OwnerBarbersPage");
+  const t = await getTranslations("Owner.BarbersPage");
 
   return (
     <Main>

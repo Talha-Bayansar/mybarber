@@ -16,7 +16,7 @@ type DashboardItem = {
 };
 
 const OwnerPage = async () => {
-  const t = await getTranslations("OwnerPage");
+  const t = await getTranslations("Owner.RootPage");
   let barbershop: BarbershopRecord;
   try {
     barbershop = (await api.barbershop.getByOwner.query()) as BarbershopRecord;

@@ -6,7 +6,7 @@ import { routes } from "~/lib/routes";
 import { OpeningHoursView } from "./_components/opening-hours-view";
 
 const OpeningHoursPage = async () => {
-  const t = await getTranslations("OwnerOpeningHoursPage");
+  const t = await getTranslations("Owner.OpeningHoursPage");
 
   return (
     <Main>

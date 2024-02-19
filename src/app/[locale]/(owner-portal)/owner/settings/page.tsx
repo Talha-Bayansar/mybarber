@@ -8,7 +8,7 @@ import { LanguageSetting } from "~/settings/components/language-setting";
 import { ThemeSetting } from "~/settings/components/theme-setting";
 
 const SettingsPage = async () => {
-  const t = await getTranslations("OwnerSettingsPage");
+  const t = await getTranslations("Owner.SettingsPage");
 
   return (
     <Main>

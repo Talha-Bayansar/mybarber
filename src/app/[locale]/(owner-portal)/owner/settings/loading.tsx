@@ -6,7 +6,7 @@ import { List } from "~/components/layout/list";
 import { SettingCardSkeleton } from "~/components/setting-card";
 
 const SettingsLoading = async () => {
-  const t = await getTranslations("OwnerSettingsPage");
+  const t = await getTranslations("Owner.SettingsPage");
 
   return (
     <Main>

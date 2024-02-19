@@ -3,7 +3,7 @@ import { Main } from "~/components/layout/main";
 import { Title } from "~/components/layout/title";
 
 const PreferencesPage = async () => {
-  const t = await getTranslations("OwnerPreferencesPage");
+  const t = await getTranslations("Owner.PreferencesPage");
 
   return (
     <Main>
