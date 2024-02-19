@@ -124,5 +124,23 @@
     "barbers_description": "Manage the team of barbers working at your barbershop.",
     "reservations": "Reservations",
     "reservations_description": "View and manage upcoming reservations for your barbershop."
+  },
+  "OwnerBarbersPage": {
+    "title": "Barbers"
+  },
+  "OwnerOpeningHoursPage": {
+    "title": "Opening hours"
+  },
+  "OwnerPreferencesPage": {
+    "title": "Preferences"
+  },
+  "OwnerPriceListPage": {
+    "title": "Price List"
+  },
+  "OwnerReservationsPage": {
+    "title": "Reservations"
+  },
+  "OwnerSettingsPage": {
+    "title": "Settings"
   }
 }

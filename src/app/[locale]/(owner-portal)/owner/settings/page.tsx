@@ -10,12 +10,12 @@ import { ThemeSetting } from "~/settings/components/theme-setting";
 import { OwnerNavBar } from "../../_components/owner-nav-bar";
 
 const SettingsPage = async () => {
-  const t = await getTranslations("global");
+  const t = await getTranslations("OwnerSettingsPage");
 
   return (
     <PageWrapper>
       <Main>
-        <Title>{t("settings")}</Title>
+        <Title>{t("title")}</Title>
         <List>
           <CurrentUser />
           <LanguageSetting />

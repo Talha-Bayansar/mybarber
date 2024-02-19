@@ -8,12 +8,12 @@ import { SettingCardSkeleton } from "~/components/setting-card";
 import { OwnerNavBar } from "../../_components/owner-nav-bar";
 
 const SettingsLoading = async () => {
-  const t = await getTranslations("global");
+  const t = await getTranslations("OwnerSettingsPage");
 
   return (
     <PageWrapper>
       <Main>
-        <Title>{t("settings")}</Title>
+        <Title>{t("title")}</Title>
         <List>
           {generateArray(6).map((item) => (
             <SettingCardSkeleton key={`setting_card_${item}`} />
