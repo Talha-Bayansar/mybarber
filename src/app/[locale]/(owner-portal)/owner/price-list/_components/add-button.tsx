@@ -14,6 +14,8 @@ import { PriceListItemForm } from "./price-list-item-form";
 import { api } from "~/trpc/react";
 import { toast } from "sonner";
 import { routes } from "~/lib/routes";
+import { useMediaQuery } from "usehooks-ts";
+import { Drawer, DrawerContent, DrawerTrigger } from "~/components/ui/drawer";
 
 type Props = {
   priceListId: string;
@@ -22,6 +24,7 @@ type Props = {
 export const AddButton = ({ priceListId }: Props) => {
   const t = useTranslations("global");
   const tOwner = useTranslations("Owner.PriceListPage");
+  const isBigScreen = useMediaQuery("(min-width: 768px)");
   const utils = api.useUtils();
   const createItem = api.priceListItem.create.useMutation({
     onSuccess: async () => {
@@ -37,24 +40,45 @@ export const AddButton = ({ priceListId }: Props) => {
     <TooltipProvider>
       <Tooltip>
         <TooltipTrigger asChild>
-          <Dialog>
-            <DialogTrigger asChild>
-              <Button className="h-auto rounded-full p-3">
-                <Plus />
-              </Button>
-            </DialogTrigger>
-            <DialogContent>
-              <PriceListItemForm
-                onSubmit={(values) =>
-                  createItem.mutate({
-                    ...values,
-                    priceListId,
-                  })
-                }
-                isLoading={createItem.isLoading}
-              />
-            </DialogContent>
-          </Dialog>
+          {isBigScreen ? (
+            <Dialog>
+              <DialogTrigger asChild>
+                <Button className="h-auto rounded-full p-3">
+                  <Plus />
+                </Button>
+              </DialogTrigger>
+              <DialogContent>
+                <PriceListItemForm
+                  onSubmit={(values) =>
+                    createItem.mutate({
+                      ...values,
+                      priceListId,
+                    })
+                  }
+                  isLoading={createItem.isLoading}
+                />
+              </DialogContent>
+            </Dialog>
+          ) : (
+            <Drawer shouldScaleBackground>
+              <DrawerTrigger asChild>
+                <Button className="h-auto rounded-full p-3">
+                  <Plus />
+                </Button>
+              </DrawerTrigger>
+              <DrawerContent className="p-8">
+                <PriceListItemForm
+                  onSubmit={(values) =>
+                    createItem.mutate({
+                      ...values,
+                      priceListId,
+                    })
+                  }
+                  isLoading={createItem.isLoading}
+                />
+              </DrawerContent>
+            </Drawer>
+          )}
         </TooltipTrigger>
         <TooltipContent>
           <p>{t("create")}</p>

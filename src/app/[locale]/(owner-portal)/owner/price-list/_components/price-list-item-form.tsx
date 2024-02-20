@@ -14,6 +14,13 @@ import {
   FormMessage,
 } from "~/components/ui/form";
 import { Input } from "~/components/ui/input";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "~/components/ui/select";
 import { PriceListItemRecord } from "~/server/db/xata";
 
 type Update = PriceListItemRecord;
@@ -32,11 +39,15 @@ type Props = {
 export const PriceListItemForm = ({ input, isLoading, onSubmit }: Props) => {
   const t = useTranslations("global");
   const tOwner = useTranslations("Owner.PriceListPage");
+  const durationOptions = [15, 30, 45, 60, 75, 90];
 
   const formSchema = z.object({
     name: z.string().min(1),
     description: z.string().min(1),
-    duration: z.string().min(1),
+    duration: z
+      .string()
+      .min(1)
+      .refine((v) => durationOptions.includes(Number(v))),
     price: z.string().min(1),
   });
 
@@ -103,12 +114,18 @@ export const PriceListItemForm = ({ input, isLoading, onSubmit }: Props) => {
             <FormItem>
               <FormLabel>{tOwner("duration")}</FormLabel>
               <FormControl>
-                <Input
-                  placeholder={tOwner("duration_placeholder")}
-                  type="number"
-                  inputMode="numeric"
-                  {...field}
-                />
+                <Select value={field.value} onValueChange={field.onChange}>
+                  <SelectTrigger>
+                    <SelectValue placeholder={tOwner("duration_placeholder")} />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {durationOptions.map((option) => (
+                      <SelectItem key={option} value={option.toString()}>
+                        {option}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
               </FormControl>
               <FormMessage />
             </FormItem>
