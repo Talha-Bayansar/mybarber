@@ -156,7 +156,10 @@
       "title": "Reservations"
     },
     "SettingsPage": {
-      "title": "Settings"
+      "title": "Settings",
+      "client_panel": "Client panel",
+      "client_panel_description": "Go back to the client panel.",
+      "client_panel_action": "Go to client panel"
     },
     "OpeningHoursEditPage": {
       "title": "Edit opening hours",

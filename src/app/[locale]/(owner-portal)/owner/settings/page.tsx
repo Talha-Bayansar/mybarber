@@ -6,6 +6,7 @@ import { AuthButton } from "~/settings/components/auth-button";
 import { CurrentUser } from "~/settings/components/current-user";
 import { LanguageSetting } from "~/settings/components/language-setting";
 import { ThemeSetting } from "~/settings/components/theme-setting";
+import { ClientSetting } from "./_components/client-setting";
 
 const SettingsPage = async () => {
   const t = await getTranslations("Owner.SettingsPage");
@@ -17,6 +18,7 @@ const SettingsPage = async () => {
         <CurrentUser />
         <LanguageSetting />
         <ThemeSetting />
+        <ClientSetting />
         <AuthButton />
       </List>
     </Main>
