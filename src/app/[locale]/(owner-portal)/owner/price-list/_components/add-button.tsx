@@ -66,16 +66,18 @@ export const AddButton = ({ priceListId }: Props) => {
                   <Plus />
                 </Button>
               </DrawerTrigger>
-              <DrawerContent className="overflow-y-scroll p-8">
-                <PriceListItemForm
-                  onSubmit={(values) =>
-                    createItem.mutate({
-                      ...values,
-                      priceListId,
-                    })
-                  }
-                  isLoading={createItem.isLoading}
-                />
+              <DrawerContent>
+                <div className="h-full w-full overflow-y-scroll p-8">
+                  <PriceListItemForm
+                    onSubmit={(values) =>
+                      createItem.mutate({
+                        ...values,
+                        priceListId,
+                      })
+                    }
+                    isLoading={createItem.isLoading}
+                  />
+                </div>
               </DrawerContent>
             </Drawer>
           )}
