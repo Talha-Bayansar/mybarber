@@ -29,10 +29,6 @@ type Props = {
   }) => void;
 };
 
-// const isUpdate = (input?: Update) => {
-//   return (input as Update).id !== undefined;
-// };
-
 export const PriceListItemForm = ({ input, isLoading, onSubmit }: Props) => {
   const t = useTranslations("global");
   const tOwner = useTranslations("Owner.PriceListPage");
@@ -137,7 +133,7 @@ export const PriceListItemForm = ({ input, isLoading, onSubmit }: Props) => {
           )}
         />
         <Button className="w-full" type="submit" disabled={isLoading}>
-          {t("continue")}
+          {input ? t("edit") : t("create")}
         </Button>
       </form>
     </Form>

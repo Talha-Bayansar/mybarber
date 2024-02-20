@@ -255,12 +255,7 @@ export default function LocaleLayout({
   const messages = useMessages();
   return (
     <html lang={locale} suppressHydrationWarning>
-      <body
-        className={cn(
-          "flex min-h-screen w-full overflow-x-hidden bg-background font-sans antialiased",
-          inter.variable,
-        )}
-      >
+      <body className={cn("font-sans antialiased", inter.variable)}>
         <TRPCReactProvider>
           <ThemeProvider
             attribute="class"
@@ -269,7 +264,12 @@ export default function LocaleLayout({
           >
             <NextIntlClientProvider messages={messages}>
               <NextAuthProvider>
-                {children}
+                <div
+                  className="flex min-h-screen w-full overflow-x-hidden bg-background"
+                  vaul-drawer-wrapper=""
+                >
+                  {children}
+                </div>
                 <Toaster />
               </NextAuthProvider>
             </NextIntlClientProvider>
