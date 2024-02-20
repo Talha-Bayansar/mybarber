@@ -62,6 +62,48 @@ export const reservationRouter = createTRPCRouter({
 
       return response;
     }),
+  getByMyBarbershopInfinite: protectedProcedure
+    .input(
+      z.object({
+        size: z.number().min(1).max(20).optional(),
+        cursor: z.string().optional(),
+      }),
+    )
+    .query(async ({ ctx, input }) => {
+      const { xata, session } = ctx;
+
+      const barbershop = await xata.db.barbershop
+        .filter({
+          "owner.id": session.user.id,
+        })
+        .getFirst();
+
+      if (!barbershop)
+        throw new TRPCError({
+          code: "UNAUTHORIZED",
+        });
+
+      const reservations = await xata.db.reservation
+        .filter({
+          "barbershop.id": barbershop.id,
+        })
+        .sort("date", "desc")
+        .sort("start_time", "desc")
+        .select(["*", "barber.*", "price_list_item.*"])
+        .getPaginated({
+          pagination: {
+            size: input.size,
+            after: input.cursor,
+          },
+        });
+
+      if (!reservations)
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+        });
+
+      return reservations;
+    }),
   getAllByDate: protectedProcedure
     .input(
       z.object({

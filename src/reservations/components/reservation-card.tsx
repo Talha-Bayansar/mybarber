@@ -1,6 +1,6 @@
 import { type ReservationRecord } from "~/server/db/xata";
 import { format } from "date-fns";
-import { getCurrencyByCode, getTimeFromMs } from "~/lib/utils";
+import { getTimeFromMs } from "~/lib/utils";
 import { Card } from "~/components/ui/card";
 import { Skeleton } from "~/components/ui/skeleton";
 import { useTranslations } from "next-intl";
@@ -9,7 +9,7 @@ type Props = {
   reservation: ReservationRecord;
 };
 
-export const ReservationItem = ({ reservation }: Props) => {
+export const ReservationCard = ({ reservation }: Props) => {
   const t = useTranslations("global");
   const fullName = reservation.barber
     ? `${reservation.barber?.first_name} ${reservation.barber?.last_name}`
@@ -45,6 +45,6 @@ export const ReservationItem = ({ reservation }: Props) => {
   );
 };
 
-export const ReservationItemSkeleton = () => {
+export const ReservationCardSkeleton = () => {
   return <Skeleton className="h-32 w-full" />;
 };

@@ -1,19 +1,19 @@
 "use client";
 
-import { generateArray, isArrayEmpty, reducePages } from "~/lib/utils";
-import { api } from "~/trpc/react";
-import type { ReservationRecord } from "~/server/db/xata";
-import { PaginationButton } from "~/components/pagination-button";
 import { EmptyState } from "~/components/empty-state";
 import { List } from "~/components/layout/list";
+import { PaginationButton } from "~/components/pagination-button";
+import { generateArray, isArrayEmpty, reducePages } from "~/lib/utils";
 import {
   ReservationCard,
   ReservationCardSkeleton,
 } from "~/reservations/components/reservation-card";
+import type { ReservationRecord } from "~/server/db/xata";
+import { api } from "~/trpc/react";
 
 export const ReservationsList = () => {
   const { data, isLoading, fetchNextPage, isFetchingNextPage } =
-    api.reservation.getPaginated.useInfiniteQuery(
+    api.reservation.getByMyBarbershopInfinite.useInfiniteQuery(
       {},
       {
         getNextPageParam: (previousPage) => previousPage.meta.page.cursor,
@@ -48,7 +48,7 @@ export const ReservationsList = () => {
 export const ReservationsListSkeleton = () => {
   return (
     <List>
-      {generateArray(6).map((v) => (
+      {generateArray(10).map((v) => (
         <ReservationCardSkeleton key={v} />
       ))}
     </List>
