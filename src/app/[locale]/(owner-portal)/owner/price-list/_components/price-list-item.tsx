@@ -79,7 +79,7 @@ const PriceListItemDrawer = ({
           </span>
         </div>
       </DrawerTrigger>
-      <DrawerContent className="p-8">
+      <DrawerContent className="overflow-y-scroll p-8">
         <Form priceListItem={priceListItem} toggleModal={toggleModal} />
       </DrawerContent>
     </Drawer>
