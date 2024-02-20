@@ -47,7 +47,7 @@ export const PriceListItemForm = ({ input, isLoading, onSubmit }: Props) => {
     duration: z
       .string()
       .min(1)
-      .refine((v) => durationOptions.includes(Number(v))),
+      .refine((v) => durationOptions.includes(Number(v) / 60 / 1000)),
     price: z.string().min(1),
   });
 
@@ -120,7 +120,10 @@ export const PriceListItemForm = ({ input, isLoading, onSubmit }: Props) => {
                   </SelectTrigger>
                   <SelectContent>
                     {durationOptions.map((option) => (
-                      <SelectItem key={option} value={option.toString()}>
+                      <SelectItem
+                        key={option}
+                        value={(option * 60 * 1000).toString()}
+                      >
                         {option}
                       </SelectItem>
                     ))}
