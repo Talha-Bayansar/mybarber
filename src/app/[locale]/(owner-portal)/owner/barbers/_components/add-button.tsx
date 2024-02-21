@@ -11,6 +11,7 @@ import {
 } from "~/components/ui/tooltip";
 import { ModalSheet } from "~/components/modal-sheet";
 import { InviteBarberForm } from "./invite-barber-form";
+import { ForwardedRef, forwardRef } from "react";
 
 export const AddButton = () => {
   const t = useTranslations("Owner.BarbersPage");
@@ -20,11 +21,7 @@ export const AddButton = () => {
       <Tooltip>
         <TooltipTrigger asChild>
           <ModalSheet
-            trigger={
-              <Button className="h-auto rounded-full p-3">
-                <Plus />
-              </Button>
-            }
+            trigger={<CustomButton />}
             content={<InviteBarberForm />}
           />
         </TooltipTrigger>
@@ -35,3 +32,11 @@ export const AddButton = () => {
     </TooltipProvider>
   );
 };
+
+const CustomButton = forwardRef(
+  (props, ref: ForwardedRef<HTMLButtonElement>) => (
+    <Button {...props} ref={ref} className="h-auto rounded-full p-3">
+      <Plus />
+    </Button>
+  ),
+);

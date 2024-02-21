@@ -17,6 +17,10 @@ import {
 import { Input } from "~/components/ui/input";
 import { api } from "~/trpc/react";
 
+const formSchema = z.object({
+  email: z.string().email().min(1),
+});
+
 export const InviteBarberForm = () => {
   const tGlobal = useTranslations("global");
   const tBarbersPage = useTranslations("Owner.BarbersPage");
@@ -29,10 +33,6 @@ export const InviteBarberForm = () => {
         toast(tBarbersPage("invitation_error_message"));
       },
     });
-
-  const formSchema = z.object({
-    email: z.string().email().min(1),
-  });
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
