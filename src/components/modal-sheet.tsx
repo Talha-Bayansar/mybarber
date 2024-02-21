@@ -23,9 +23,7 @@ export const ModalSheet = ({ content, trigger }: Props) => {
   return (
     <Drawer shouldScaleBackground>
       <DrawerTrigger asChild>{trigger}</DrawerTrigger>
-      <DrawerContent>
-        <div className="h-full w-full overflow-y-scroll p-8">{content}</div>
-      </DrawerContent>
+      <DrawerContent>{content}</DrawerContent>
     </Drawer>
   );
 };

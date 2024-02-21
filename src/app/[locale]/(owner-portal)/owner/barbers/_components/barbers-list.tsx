@@ -21,7 +21,7 @@ export const BarbersList = async () => {
   return (
     <List>
       {barbers.map((barber) => (
-        <Card>
+        <Card key={barber.id}>
           <CardContent className="flex items-center gap-4 p-4">
             <Avatar className="h-16 w-16">
               <AvatarImage

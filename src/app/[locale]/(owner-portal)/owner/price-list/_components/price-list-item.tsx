@@ -80,9 +80,7 @@ const PriceListItemDrawer = ({
         </div>
       </DrawerTrigger>
       <DrawerContent>
-        <div className="h-full w-full overflow-y-scroll p-8">
-          <Form priceListItem={priceListItem} toggleModal={toggleModal} />
-        </div>
+        <Form priceListItem={priceListItem} toggleModal={toggleModal} />
       </DrawerContent>
     </Drawer>
   );
