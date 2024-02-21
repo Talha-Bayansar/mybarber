@@ -18,7 +18,7 @@ export const AddButton = () => {
   return (
     <TooltipProvider>
       <Tooltip>
-        <TooltipTrigger>
+        <TooltipTrigger asChild>
           <ModalSheet
             trigger={
               <Button className="h-auto rounded-full p-3">

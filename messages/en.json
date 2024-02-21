@@ -131,7 +131,9 @@
     "BarbersPage": {
       "title": "Barbers",
       "invite_barber": "Invite barber",
-      "invite": "Invite"
+      "invite": "Invite",
+      "invitation_success_message": "Invitation successfully sent to barber.",
+      "invitation_error_message": "Could not invite barber with given email."
     },
     "OpeningHoursPage": {
       "title": "Opening hours"

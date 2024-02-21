@@ -225,6 +225,25 @@
       ]
     },
     {
+      "name": "barbershop_barber_invitation",
+      "columns": [
+        {
+          "name": "barber",
+          "type": "link",
+          "link": {
+            "table": "barber"
+          }
+        },
+        {
+          "name": "barbershop",
+          "type": "link",
+          "link": {
+            "table": "barbershop"
+          }
+        }
+      ]
+    },
+    {
       "name": "hair_type",
       "columns": [
         {
