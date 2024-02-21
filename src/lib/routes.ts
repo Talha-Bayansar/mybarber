@@ -9,6 +9,12 @@ export const routes = {
   reservations: {
     root: "/reservations",
   },
+  barber: {
+    root: "/barber",
+    settings: {
+      root: "/barber/settings",
+    },
+  },
   owner: {
     root: "/owner",
     openingHours: {

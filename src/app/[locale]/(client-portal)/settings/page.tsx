@@ -9,6 +9,7 @@ import { CurrentUser } from "~/settings/components/current-user";
 import { LanguageSetting } from "~/settings/components/language-setting";
 import { ThemeSetting } from "~/settings/components/theme-setting";
 import { OwnerSetting } from "./_components/owner-setting";
+import { BarberSetting } from "./_components/barber-setting";
 
 const SettingsPage = async () => {
   const t = await getTranslations("global");
@@ -21,6 +22,7 @@ const SettingsPage = async () => {
           <CurrentUser />
           <LanguageSetting />
           <ThemeSetting />
+          <BarberSetting />
           <OwnerSetting />
           <AuthButton />
         </List>

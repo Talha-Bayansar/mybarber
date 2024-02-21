@@ -52,6 +52,22 @@ export const barberRouter = createTRPCRouter({
 
     return barbers;
   }),
+  getMyBarber: protectedProcedure.query(async ({ ctx }) => {
+    const { xata, session } = ctx;
+
+    const barber = await xata.db.barber
+      .filter({
+        "user.id": session.user.id,
+      })
+      .getFirst();
+
+    if (!barber)
+      throw new TRPCError({
+        code: "UNAUTHORIZED",
+      });
+
+    return barber;
+  }),
   getAllAvailable: protectedProcedure
     .input(
       z.object({

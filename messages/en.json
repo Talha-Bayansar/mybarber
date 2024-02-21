@@ -92,7 +92,10 @@
     "sign_out_confirmation": "By signing out, you will be logged out of your account and any unsaved changes may be lost.",
     "owner_panel": "Owner panel",
     "owner_panel_description": "Manage your barbershop at the owner panel.",
-    "owner_panel_action": "Go to owner panel"
+    "owner_panel_action": "Go to owner panel",
+    "barber_panel": "Barber panel",
+    "barber_panel_description": "Manage your clients and invitations at the barber panel.",
+    "barber_panel_action": "Go to barber panel"
   },
   "BarbershopPage": {
     "new_reservation": "New reservation"
@@ -176,6 +179,15 @@
       "create_opening_hours_succes": "Successfully added opening hours.",
       "edit_opening_hours_succes": "Successfully edited opening hours.",
       "delete_opening_hours_succes": "Successfully deleted opening hours."
+    }
+  },
+  "Barber": {
+    "RootPage": {
+      "welcome_message": "Welcome {name}!",
+      "barbershop": "Barbershop",
+      "barbershop_description": "Manage your clients at your barbershop.",
+      "invitations": "Invitations",
+      "invitations_description": "Accept or deny invitations from other barbershops."
     }
   }
 }
