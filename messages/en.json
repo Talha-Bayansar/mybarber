@@ -129,7 +129,9 @@
       "reservations_description": "View and manage upcoming reservations for your barbershop."
     },
     "BarbersPage": {
-      "title": "Barbers"
+      "title": "Barbers",
+      "invite_barber": "Invite barber",
+      "invite": "Invite"
     },
     "OpeningHoursPage": {
       "title": "Opening hours"
