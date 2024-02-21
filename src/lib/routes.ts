@@ -11,6 +11,12 @@ export const routes = {
   },
   barber: {
     root: "/barber",
+    barbershop: {
+      root: "/barber/barbershop",
+    },
+    invitations: {
+      root: "/barber/invitations",
+    },
     settings: {
       root: "/barber/settings",
     },

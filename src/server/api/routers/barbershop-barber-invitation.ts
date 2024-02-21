@@ -3,6 +3,36 @@ import { createTRPCRouter, protectedProcedure } from "../trpc";
 import { TRPCError } from "@trpc/server";
 
 export const barbershopBarberInvitationRouter = createTRPCRouter({
+  getByMyBarber: protectedProcedure
+    .input(
+      z.object({
+        size: z.number().min(1).optional().default(20),
+        cursor: z.string().optional(),
+      }),
+    )
+    .query(async ({ ctx, input }) => {
+      const { xata, session } = ctx;
+
+      const barber = await xata.db.barber
+        .filter({
+          "user.id": session.user.id,
+        })
+        .getFirstOrThrow();
+
+      const invitations = await xata.db.barbershop_barber_invitation
+        .filter({
+          "barber.id": barber.id,
+        })
+        .select(["id", "barbershop.*"])
+        .getPaginated({
+          pagination: {
+            size: input.size,
+            after: input.cursor,
+          },
+        });
+
+      return invitations;
+    }),
   inviteToMyBarbershop: protectedProcedure
     .input(
       z.object({

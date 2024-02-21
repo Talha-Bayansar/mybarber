@@ -28,12 +28,12 @@ const BarberPage = async () => {
     {
       title: t("barbershop"),
       description: t("barbershop_description"),
-      href: routes.barber.root,
+      href: routes.barber.barbershop.root,
     },
     {
       title: t("invitations"),
       description: t("invitations_description"),
-      href: routes.barber.root,
+      href: routes.barber.invitations.root,
     },
   ];
 

@@ -36,7 +36,7 @@ export const ReservationsListItem = ({ reservation }: Props) => {
         value={`${
           reservation.price_list_item
             ? getCurrencyByCode(
-                reservation.price_list_item!.price_list!.currency! ?? "EUR",
+                reservation.price_list_item.price_list?.currency ?? "EUR",
               )?.symbol
             : ""
         } ${reservation.price_list_item?.price?.toFixed(2) ?? t("not_specified")}`}

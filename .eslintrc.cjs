@@ -24,6 +24,7 @@ const config = {
     "@typescript-eslint/prefer-nullish-coalescing": "off",
     "@typescript-eslint/no-explicit-any": "off",
     "@typescript-eslint/no-floating-promises": "warn",
+    "@typescript-eslint/no-unnecessary-type-assertion": "warn",
 
     "@typescript-eslint/consistent-type-imports": [
       "warn",
