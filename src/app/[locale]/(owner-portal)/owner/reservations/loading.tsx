@@ -1,12 +1,13 @@
 import { Main } from "~/components/layout/main";
 import { TitleSkeleton } from "~/components/layout/title";
-import { ReservationsListSkeleton } from "./_components/reservations-list";
+import { ReservationsTableSkeleton } from "./_components/reservations-table";
+import { columns } from "./_components/columns";
 
 const OwnerReservationsLoading = () => {
   return (
     <Main>
       <TitleSkeleton />
-      <ReservationsListSkeleton />
+      <ReservationsTableSkeleton columns={columns} data={[]} />
     </Main>
   );
 };

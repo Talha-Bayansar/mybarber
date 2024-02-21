@@ -70,7 +70,9 @@
     "barber": "Barber",
     "price": "Price",
     "auth_required": "You need to be authenticated to continue.",
-    "dashboard": "Dashboard"
+    "dashboard": "Dashboard",
+    "yes": "Yes",
+    "no": "No"
   },
   "RootPage": {
     "search_placeholder": "Search barbershops by",
@@ -153,7 +155,8 @@
       "delete_error_message": "Could not delete treatment."
     },
     "ReservationsPage": {
-      "title": "Reservations"
+      "title": "Reservations",
+      "is_paid": "Is paid"
     },
     "SettingsPage": {
       "title": "Settings",

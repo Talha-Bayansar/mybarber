@@ -62,11 +62,11 @@ export const reservationRouter = createTRPCRouter({
 
       return response;
     }),
-  getByMyBarbershopInfinite: protectedProcedure
+  getByMyBarbershopPaginated: protectedProcedure
     .input(
       z.object({
-        size: z.number().min(1).max(20).optional(),
-        cursor: z.string().optional(),
+        size: z.number().min(1).optional().default(20),
+        offset: z.number().optional().default(0),
       }),
     )
     .query(async ({ ctx, input }) => {
@@ -93,7 +93,7 @@ export const reservationRouter = createTRPCRouter({
         .getPaginated({
           pagination: {
             size: input.size,
-            after: input.cursor,
+            offset: input.offset,
           },
         });
 
