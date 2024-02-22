@@ -15,7 +15,7 @@ import {
   TableHeader,
   TableRow,
 } from "~/components/ui/table";
-import { useParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import {
   Pagination,
   PaginationContent,
@@ -27,6 +27,7 @@ import { routes } from "~/lib/routes";
 import { Button } from "~/components/ui/button";
 import { Skeleton } from "~/components/ui/skeleton";
 import { useTranslations } from "next-intl";
+import { useRouter } from "~/navigation";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -37,7 +38,10 @@ export const ReservationsTable = <TData, TValue>({
   columns,
   data,
 }: DataTableProps<TData, TValue>) => {
-  const { offset } = useParams<{ offset: string }>();
+  const router = useRouter();
+  const SIZE = 10;
+  const searchParams = useSearchParams();
+  const offset = searchParams.get("offset");
   const t = useTranslations("global");
   const table = useReactTable({
     data,
@@ -102,15 +106,23 @@ export const ReservationsTable = <TData, TValue>({
           <PaginationItem>
             <Button variant="ghost" disabled={!offset || Number(offset) <= 0}>
               <PaginationPrevious
-                href={`${routes.owner.reservations.root}?offset=${Number(offset) - 20}`}
+                onClick={() =>
+                  router.push(
+                    `${routes.owner.reservations.root}?offset=${Number(offset) - SIZE}`,
+                  )
+                }
               />
             </Button>
           </PaginationItem>
 
           <PaginationItem>
-            <Button variant="ghost" disabled={!offset || Number(offset) <= 0}>
+            <Button variant="ghost">
               <PaginationNext
-                href={`${routes.owner.reservations.root}?offset=${offset ? Number(offset) : 0 + 20}`}
+                onClick={() =>
+                  router.push(
+                    `${routes.owner.reservations.root}?offset=${offset ? Number(offset) : 0 + SIZE}`,
+                  )
+                }
               />
             </Button>
           </PaginationItem>

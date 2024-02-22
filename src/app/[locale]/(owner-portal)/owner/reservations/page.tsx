@@ -16,7 +16,7 @@ type Props = {
 const ReservationsPage = async ({ searchParams }: Props) => {
   const { offset } = searchParams;
   const t = await getTranslations("Owner.ReservationsPage");
-  const SIZE = 20;
+  const SIZE = 10;
 
   const reservations = await api.reservation.getByMyBarbershopPaginated.query({
     size: SIZE,
