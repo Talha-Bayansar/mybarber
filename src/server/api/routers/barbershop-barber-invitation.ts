@@ -33,6 +33,59 @@ export const barbershopBarberInvitationRouter = createTRPCRouter({
 
       return invitations;
     }),
+  acceptBarbershopInvitation: protectedProcedure
+    .input(
+      z.object({
+        id: z.string().min(1),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      const { xata, session } = ctx;
+
+      const invitation = await xata.db.barbershop_barber_invitation
+        .filter({
+          $all: [
+            {
+              id: input.id,
+            },
+            {
+              "barber.user.id": session.user.id,
+            },
+          ],
+        })
+        .select(["barber.id", "barbershop.id"])
+        .getFirstOrThrow();
+
+      const barber = await xata.db.barber.updateOrThrow({
+        id: invitation.barber?.id ?? "",
+        barbershop: invitation.barbershop?.id,
+      });
+
+      await invitation.delete();
+
+      return barber;
+    }),
+  denyBarbershopInvitation: protectedProcedure
+    .input(
+      z.object({
+        id: z.string().min(1),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      const { xata } = ctx;
+
+      const invitation = await xata.db.barbershop_barber_invitation.delete({
+        id: input.id,
+      });
+
+      if (!invitation)
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+        });
+
+      return invitation;
+    }),
+
   inviteToMyBarbershop: protectedProcedure
     .input(
       z.object({
