@@ -187,11 +187,11 @@
       "barbershop": "Barbershop",
       "barbershop_description": "Manage your clients at your barbershop.",
       "invitations": "Invitations",
-      "invitations_description": "Accept or deny invitations from other barbershops.",
-      "accept_confirmation": "By accepting you will replace your current barbershop with this barbershop."
+      "invitations_description": "Accept or deny invitations from other barbershops."
     },
     "InvitationsPage": {
-      "title": "Invitations"
+      "title": "Invitations",
+      "accept_confirmation": "By accepting you will replace your current barbershop with this barbershop."
     },
     "SettingsPage": {
       "title": "Settings"

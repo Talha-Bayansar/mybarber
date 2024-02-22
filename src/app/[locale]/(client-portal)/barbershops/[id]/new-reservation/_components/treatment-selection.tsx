@@ -38,7 +38,6 @@ type Props = {
 export const TreatmentSelection = ({ date, time, barberId }: Props) => {
   const t = useTranslations();
   const router = useRouter();
-  // const utils = api.useUtils();
   const { id: barbershopId } = useParams<{ id: string }>();
   const { data: priceList, isLoading: isLoading } =
     api.priceList.getByBarbershopId.useQuery({
@@ -46,7 +45,6 @@ export const TreatmentSelection = ({ date, time, barberId }: Props) => {
     });
   const createReservation = api.reservation.create.useMutation({
     onSuccess: (reservation) => {
-      // toast(t("NewReservationPage.success_message"));
       const searchParams = new URLSearchParams();
       searchParams.set("reservation", reservation.id);
       router.push(
@@ -113,7 +111,7 @@ export const TreatmentSelection = ({ date, time, barberId }: Props) => {
                     return (
                       <FormItem key={item.id} className="flex gap-4">
                         <FormLabel className="flex flex-grow flex-col">
-                          <span className="font-normal">{item.name}</span>
+                          <span className="font-medium">{item.name}</span>
                           <span className="text-sm font-normal text-gray-500">
                             {item.description}
                           </span>
@@ -138,7 +136,7 @@ export const TreatmentSelection = ({ date, time, barberId }: Props) => {
               <ChevronLeft size={20} /> {t("global.back")}
             </Link>
           </Button>
-          <Button type="submit">
+          <Button type="submit" disabled={createReservation.isLoading}>
             {t("NewReservationPage.review_button")} <ChevronRight size={20} />
           </Button>
         </div>

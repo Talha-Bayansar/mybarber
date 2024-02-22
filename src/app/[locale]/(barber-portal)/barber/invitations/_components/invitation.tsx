@@ -21,5 +21,5 @@ export const Invitation = ({ invitation }: Props) => {
 };
 
 export const InvitationSkeleton = () => {
-  return <Skeleton className="h-12 w-full" />;
+  return <Skeleton className="h-8 w-full" />;
 };

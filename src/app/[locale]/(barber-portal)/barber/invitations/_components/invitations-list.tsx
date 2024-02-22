@@ -48,11 +48,13 @@ export const InvitationsList = () => {
 
 export const InvitationsListSkeleton = () => {
   return (
-    <List className="gap-0">
+    <List>
       {generateArray(10).map((v) => (
         <>
-          <InvitationSkeleton key={v} />
-          {v < generateArray(10).length - 1 && <Separator />}
+          <InvitationSkeleton key={`skeleton_${v}`} />
+          {v < generateArray(10).length - 1 && (
+            <Separator key={`seperator_${v}`} />
+          )}
         </>
       ))}
     </List>
