@@ -159,6 +159,24 @@ export const barbershopRouter = createTRPCRouter({
 
       return !!response;
     }),
+  deleteBarber: protectedProcedure
+    .input(
+      z.object({
+        barberId: z.string().min(1),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      const { xata } = ctx;
+
+      const barber = await xata.db.barber.update({
+        id: input.barberId,
+        barbershop: null,
+      });
+
+      if (!barber) throw new TRPCError({ code: "BAD_REQUEST" });
+
+      return barber;
+    }),
   toggleFavorite: protectedProcedure
     .input(
       z.object({

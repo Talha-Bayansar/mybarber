@@ -1,11 +1,10 @@
-import { Avatar, AvatarFallback, AvatarImage } from "~/components/ui/avatar";
-import { Card, CardContent } from "~/components/ui/card";
 import type { BarberRecord, BarbershopRecord } from "~/server/db/xata";
 import { api } from "~/trpc/server";
 import { List } from "~/components/layout/list";
 import { generateArray, isArrayEmpty } from "~/lib/utils";
 import { EmptyState } from "~/components/empty-state";
 import { Skeleton } from "~/components/ui/skeleton";
+import { BarberItem } from "./barber-item";
 
 export const BarbersList = async () => {
   let barbers: BarberRecord[];
@@ -21,23 +20,7 @@ export const BarbersList = async () => {
   return (
     <List>
       {barbers.map((barber) => (
-        <Card key={barber.id}>
-          <CardContent className="flex items-center gap-4 p-4">
-            <Avatar className="h-16 w-16">
-              <AvatarImage
-                className="object-cover"
-                src={barber.image?.url}
-                alt={`picture of ${barber.first_name} ${barber.last_name}`}
-              />
-              <AvatarFallback>
-                {barber.first_name?.at(0)} {barber.last_name?.at(0)}
-              </AvatarFallback>
-            </Avatar>
-            <div className="flex-grow text-xl">
-              {barber.first_name} {barber.last_name}
-            </div>
-          </CardContent>
-        </Card>
+        <BarberItem key={barber.id} barber={barber} />
       ))}
     </List>
   );
