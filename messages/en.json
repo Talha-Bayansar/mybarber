@@ -136,7 +136,9 @@
       "invite_barber": "Invite barber",
       "invite": "Invite",
       "invitation_success_message": "Invitation successfully sent to barber.",
-      "invitation_error_message": "Could not invite barber with given email."
+      "invitation_error_message": "Could not invite barber with given email.",
+      "delete_barber_success_message": "Barber successfully deleted from your barbershop.",
+      "delete_barber_error_message": "Barber could not be deleted from your barbershop."
     },
     "OpeningHoursPage": {
       "title": "Opening hours"

@@ -1,26 +1,30 @@
-import type { BarberRecord, BarbershopRecord } from "~/server/db/xata";
-import { api } from "~/trpc/server";
+"use client";
+import type { BarberRecord } from "~/server/db/xata";
 import { List } from "~/components/layout/list";
 import { generateArray, isArrayEmpty } from "~/lib/utils";
 import { EmptyState } from "~/components/empty-state";
 import { Skeleton } from "~/components/ui/skeleton";
 import { BarberItem } from "./barber-item";
+import { api } from "~/trpc/react";
+import type { SelectedPick } from "@xata.io/client";
 
-export const BarbersList = async () => {
-  let barbers: BarberRecord[];
-  try {
-    const response = await api.barber.getByMyBarbershop.query();
-    barbers = response as BarbershopRecord[];
-  } catch (error) {
-    barbers = [];
-  }
+type Props = {
+  barbers: Readonly<SelectedPick<BarberRecord, ["*"]>>[];
+};
 
-  if (isArrayEmpty(barbers)) return <EmptyState />;
+export const BarbersList = ({ barbers }: Props) => {
+  const { data, isLoading } = api.barber.getByMyBarbershop.useQuery(undefined, {
+    initialData: barbers,
+  });
+
+  if (isLoading) return <BarbersListSkeleton />;
+
+  if (!data || isArrayEmpty(data)) return <EmptyState />;
 
   return (
     <List>
       {barbers.map((barber) => (
-        <BarberItem key={barber.id} barber={barber} />
+        <BarberItem key={barber.id} barber={barber as BarberRecord} />
       ))}
     </List>
   );
