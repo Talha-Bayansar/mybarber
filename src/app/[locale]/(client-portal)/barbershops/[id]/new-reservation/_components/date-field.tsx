@@ -42,6 +42,7 @@ export const DateField = ({ form }: Props) => {
   const [isPickerOpen, setIsPickerOpen] = useState<boolean>(false);
   const { data, isLoading } = api.openingHours.getAllByBarbershopId.useQuery({
     barbershopId: id,
+    withReservation: true,
   });
 
   if (isLoading) return <InputFieldSkeleton />;

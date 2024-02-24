@@ -7,6 +7,7 @@ export const openingHoursRouter = createTRPCRouter({
     .input(
       z.object({
         barbershopId: z.string().min(1),
+        withReservation: z.boolean().optional(),
       }),
     )
     .query(async ({ ctx, input }) => {
@@ -15,6 +16,7 @@ export const openingHoursRouter = createTRPCRouter({
       const response = await xata.db.opening_hours
         .filter({
           "barbershop.id": input.barbershopId,
+          with_reservation: input.withReservation,
         })
         .getAll();
 
@@ -25,7 +27,7 @@ export const openingHoursRouter = createTRPCRouter({
 
       return response;
     }),
-  getByMyBarbershop: protectedProcedure.query(async ({ ctx, input }) => {
+  getByMyBarbershop: protectedProcedure.query(async ({ ctx }) => {
     const { xata, session } = ctx;
 
     const barbershop = await xata.db.barbershop

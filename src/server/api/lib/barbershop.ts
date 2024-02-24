@@ -114,6 +114,7 @@ export const getAvailableIntervals = async ({
     .filter({
       day_of_week: dayOfWeek,
       "barbershop.id": barbershopId,
+      with_reservation: true,
     })
     .getAll();
 
