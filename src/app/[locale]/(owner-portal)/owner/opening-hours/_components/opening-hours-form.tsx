@@ -9,12 +9,14 @@ import { Button } from "~/components/ui/button";
 import {
   Form,
   FormControl,
+  FormDescription,
   FormField,
   FormItem,
   FormLabel,
   FormMessage,
 } from "~/components/ui/form";
 import { Input, InputFieldSkeleton } from "~/components/ui/input";
+import { Switch } from "~/components/ui/switch";
 import {
   calculateTimeDifference,
   generateArray,
@@ -37,6 +39,7 @@ type Props = {
     startTime: number;
     duration: number;
     dayOfWeek: number;
+    withReservation: boolean;
   }) => void;
 };
 
@@ -51,6 +54,7 @@ export const OpeningHoursForm = ({ input, isLoading, onSubmit }: Props) => {
   const formSchema = z.object({
     startTime: z.string().min(1),
     endTime: z.string().min(1),
+    withReservation: z.boolean(),
   });
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -64,6 +68,9 @@ export const OpeningHoursForm = ({ input, isLoading, onSubmit }: Props) => {
             (input as Update).start_time! + (input as Update).duration!,
           )
         : "",
+      withReservation: isUpdate(input)
+        ? (input as Update).with_reservation ?? false
+        : true,
     },
   });
 
@@ -76,6 +83,7 @@ export const OpeningHoursForm = ({ input, isLoading, onSubmit }: Props) => {
       startTime,
       duration,
       dayOfWeek: input.day_of_week!,
+      withReservation: values.withReservation,
     });
   }
 
@@ -105,6 +113,28 @@ export const OpeningHoursForm = ({ input, isLoading, onSubmit }: Props) => {
                 <Input placeholder="17:00" type="time" {...field} />
               </FormControl>
               <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="withReservation"
+          render={({ field }) => (
+            <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
+              <div className="space-y-0.5">
+                <FormLabel className="text-base">
+                  {tOwner("with_reservation")}
+                </FormLabel>
+                <FormDescription>
+                  {tOwner("with_reservation_description")}
+                </FormDescription>
+              </div>
+              <FormControl>
+                <Switch
+                  checked={field.value}
+                  onCheckedChange={field.onChange}
+                />
+              </FormControl>
             </FormItem>
           )}
         />

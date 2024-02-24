@@ -182,6 +182,8 @@
       "opening_hour": "Opening hour",
       "closing_hour": "Closing hour",
       "day_of_the_week": "Day of the week",
+      "with_reservation": "With reservation",
+      "with_reservation_description": "Toggle between reservation and walk-in modes for your barbershop's opening hours.",
       "create_opening_hours_succes": "Successfully added opening hours.",
       "edit_opening_hours_succes": "Successfully edited opening hours.",
       "delete_opening_hours_succes": "Successfully deleted opening hours."

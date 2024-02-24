@@ -137,6 +137,7 @@ const tables = [
       { name: "duration", type: "int" },
       { name: "day_of_week", type: "int" },
       { name: "barbershop", type: "link", link: { table: "barbershop" } },
+      { name: "with_reservation", type: "bool" },
     ],
   },
   {

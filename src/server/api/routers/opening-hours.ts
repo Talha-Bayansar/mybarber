@@ -58,6 +58,7 @@ export const openingHoursRouter = createTRPCRouter({
         startTime: z.number().min(1),
         duration: z.number().min(1),
         dayOfWeek: z.number().min(0).max(6),
+        withReservation: z.boolean(),
       }),
     )
     .mutation(async ({ ctx, input }) => {
@@ -78,6 +79,7 @@ export const openingHoursRouter = createTRPCRouter({
         start_time: input.startTime,
         duration: input.duration,
         day_of_week: input.dayOfWeek,
+        with_reservation: input.withReservation,
         barbershop: barbershop.id,
       });
 
@@ -95,6 +97,7 @@ export const openingHoursRouter = createTRPCRouter({
         startTime: z.number().min(1),
         duration: z.number().min(1),
         dayOfWeek: z.number().min(0).max(6),
+        withReservation: z.boolean(),
       }),
     )
     .mutation(async ({ ctx, input }) => {
@@ -116,6 +119,7 @@ export const openingHoursRouter = createTRPCRouter({
         start_time: input.startTime,
         duration: input.duration,
         day_of_week: input.dayOfWeek,
+        with_reservation: input.withReservation,
         barbershop: barbershop.id,
       });
 

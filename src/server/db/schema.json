@@ -371,6 +371,10 @@
           "type": "int"
         },
         {
+          "name": "with_reservation",
+          "type": "bool"
+        },
+        {
           "name": "barbershop",
           "type": "link",
           "link": {
