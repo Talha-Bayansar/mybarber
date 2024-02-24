@@ -4,17 +4,18 @@ import { api } from "~/trpc/react";
 import { List } from "~/components/layout/list";
 import { HeartOff } from "lucide-react";
 import { useTranslations } from "next-intl";
-import { BarbershopsListSkeleton } from "./barbershops-list";
-import { BarbershopItem } from "./barbershop-item";
+import type { BarbershopRecord } from "~/server/db/xata";
+import { BarbershopsListSkeleton } from "../../(root)/_components/barbershops-list";
+import { BarbershopItem } from "../../(root)/_components/barbershop-item";
 
 type Props = {
-  initialData: string;
+  barbershopsData: BarbershopRecord[];
 };
 
-export const FavoritesList = ({ initialData }: Props) => {
+export const FavoritesList = ({ barbershopsData }: Props) => {
   const { data: barbershops, isLoading } =
     api.barbershop.getFavoriteBarbershops.useQuery(undefined, {
-      initialData: JSON.parse(initialData),
+      initialData: barbershopsData,
     });
 
   if (isLoading) return <BarbershopsListSkeleton />;
@@ -35,7 +36,7 @@ export const FavoritesList = ({ initialData }: Props) => {
 };
 
 const NoFavorites = () => {
-  const t = useTranslations("RootPage");
+  const t = useTranslations("FavoritesPage");
 
   return (
     <div className="mt-20 flex w-full flex-col items-center gap-4">

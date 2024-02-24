@@ -67,6 +67,7 @@
     "not_available": "Not available",
     "treatment": "Treatment",
     "barbershop": "Barbershop",
+    "favorites": "Favorites",
     "barber": "Barber",
     "price": "Price",
     "auth_required": "You need to be authenticated to continue.",
@@ -76,8 +77,11 @@
   },
   "RootPage": {
     "search_placeholder": "Search barbershops by",
-    "favorites_subtitle": "My favorites",
     "not_searched": "Find barbers by ZIP code or name",
+    "no_favorites": "You don't have any favorite barbershops"
+  },
+  "FavoritesPage": {
+    "title": "My favorites",
     "no_favorites": "You don't have any favorite barbershops"
   },
   "SettingsPage": {
