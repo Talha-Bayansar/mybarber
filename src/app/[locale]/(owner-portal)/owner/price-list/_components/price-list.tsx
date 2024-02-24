@@ -20,7 +20,7 @@ export const PriceListView = ({ priceListJSON }: Props) => {
   if (!priceList || isArrayEmpty(priceList.items)) return <EmptyState />;
 
   return (
-    <List>
+    <List className="gap-0">
       {priceList.items.map((item) => (
         <PriceListItem
           key={item.id}

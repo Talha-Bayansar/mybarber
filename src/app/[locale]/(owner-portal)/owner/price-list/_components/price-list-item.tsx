@@ -1,13 +1,10 @@
 "use client";
 
-import { Drawer, DrawerContent, DrawerTrigger } from "~/components/ui/drawer";
 import { Skeleton } from "~/components/ui/skeleton";
 import { getCurrencyByCode } from "~/lib/utils";
 import type { PriceListItemRecord } from "~/server/db/xata";
 import { PriceListItemForm } from "./price-list-item-form";
 import { api } from "~/trpc/react";
-import { useMediaQuery } from "usehooks-ts";
-import { Dialog, DialogContent, DialogTrigger } from "~/components/ui/dialog";
 import { useTranslations } from "next-intl";
 import { toast } from "sonner";
 import { List } from "~/components/layout/list";
@@ -24,94 +21,41 @@ import {
   AlertDialogTrigger,
 } from "~/components/ui/alert-dialog";
 import { useState } from "react";
+import { ModalSheet } from "~/components/modal-sheet";
 
 type Props = {
   priceListItem: PriceListItemRecord;
   currency: string;
 };
 
-export const PriceListItem = (props: Props) => {
-  const isBigScreen = useMediaQuery("(min-width: 768px)");
+export const PriceListItem = ({ priceListItem, currency }: Props) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  if (isBigScreen)
-    return (
-      <PriceListItemDialog
-        {...props}
-        isOpen={isModalOpen}
-        toggleModal={setIsModalOpen}
-      />
-    );
-
   return (
-    <PriceListItemDrawer
-      {...props}
-      isOpen={isModalOpen}
-      toggleModal={setIsModalOpen}
+    <ModalSheet
+      open={isModalOpen}
+      onOpenChange={setIsModalOpen}
+      trigger={
+        <Button
+          variant="ghost"
+          className="flex h-auto justify-between px-0 py-1 text-start"
+        >
+          <div className="flex flex-grow flex-col">
+            <span className="text-xl font-medium">{priceListItem.name}</span>
+            <span className="text-sm text-gray-500">
+              {priceListItem.description}
+            </span>
+          </div>
+          <span>
+            {getCurrencyByCode(currency)?.symbol}{" "}
+            {priceListItem.price?.toFixed(2)}
+          </span>
+        </Button>
+      }
+      content={
+        <Form priceListItem={priceListItem} toggleModal={setIsModalOpen} />
+      }
     />
-  );
-};
-
-type ModalProps = Props & {
-  isOpen: boolean;
-  toggleModal: (v: boolean) => unknown;
-};
-
-const PriceListItemDrawer = ({
-  priceListItem,
-  currency,
-  isOpen,
-  toggleModal,
-}: ModalProps) => {
-  return (
-    <Drawer shouldScaleBackground open={isOpen} onOpenChange={toggleModal}>
-      <DrawerTrigger asChild>
-        <div className="flex justify-between">
-          <div className="flex flex-grow flex-col">
-            <span className="text-xl font-medium">{priceListItem.name}</span>
-            <span className="text-sm text-gray-500">
-              {priceListItem.description}
-            </span>
-          </div>
-          <span>
-            {getCurrencyByCode(currency)?.symbol}{" "}
-            {priceListItem.price?.toFixed(2)}
-          </span>
-        </div>
-      </DrawerTrigger>
-      <DrawerContent>
-        <Form priceListItem={priceListItem} toggleModal={toggleModal} />
-      </DrawerContent>
-    </Drawer>
-  );
-};
-
-const PriceListItemDialog = ({
-  priceListItem,
-  currency,
-  isOpen,
-  toggleModal,
-}: ModalProps) => {
-  return (
-    <Dialog open={isOpen} onOpenChange={toggleModal}>
-      <DialogTrigger asChild>
-        <div className="flex cursor-pointer justify-between">
-          <div className="flex flex-grow flex-col">
-            <span className="text-xl font-medium">{priceListItem.name}</span>
-            <span className="text-sm text-gray-500">
-              {priceListItem.description}
-            </span>
-          </div>
-          <span>
-            {getCurrencyByCode(currency)?.symbol}{" "}
-            {priceListItem.price?.toFixed(2)}
-          </span>
-        </div>
-      </DialogTrigger>
-      <DialogContent>
-        <Form priceListItem={priceListItem} toggleModal={toggleModal} />
-      </DialogContent>
-    </Dialog>
   );
 };
 
