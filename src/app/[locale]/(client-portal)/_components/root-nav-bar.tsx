@@ -6,15 +6,15 @@ import { useTranslations } from "next-intl";
 import { useParams, usePathname } from "next/navigation";
 import { routes } from "~/lib/routes";
 import { Link } from "~/navigation";
-import { NavigationBar } from "./layout/navigation-bar";
+import { NavigationBar } from "~/components/layout/navigation-bar";
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
-} from "./ui/tooltip";
+} from "~/components/ui/tooltip";
 import { cn } from "~/lib/utils";
-import { IconButton } from "./icon-button";
+import { IconButton } from "~/components/icon-button";
 
 export const RootNavBar = () => {
   const pathName = usePathname();

@@ -1,5 +1,8 @@
 export const routes = {
   root: "/",
+  favorites: {
+    root: "/favorites",
+  },
   settings: {
     root: "/settings",
   },
