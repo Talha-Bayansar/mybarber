@@ -120,7 +120,7 @@ export const ReservationsTable = <TData, TValue>({
               <PaginationNext
                 onClick={() =>
                   router.push(
-                    `${routes.owner.reservations.root}?offset=${offset ? Number(offset) : 0 + SIZE}`,
+                    `${routes.owner.reservations.root}?offset=${offset ? Number(offset) + SIZE : 0 + SIZE}`,
                   )
                 }
               />
