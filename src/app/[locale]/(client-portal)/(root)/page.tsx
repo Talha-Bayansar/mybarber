@@ -1,4 +1,3 @@
-import { Header } from "~/components/layout/header";
 import { Main } from "~/components/layout/main";
 import { SearchForm } from "./_components/search-form";
 import { SearchResult } from "./_components/search-result";
@@ -12,12 +11,9 @@ type Props = {
 
 export default function RootPage({ searchParams }: Props) {
   return (
-    <>
-      <Header />
-      <Main className="mt-8 gap-4">
-        <SearchForm />
-        <SearchResult searchParams={searchParams} />
-      </Main>
-    </>
+    <Main className="mt-8 gap-4">
+      <SearchForm />
+      <SearchResult searchParams={searchParams} />
+    </Main>
   );
 }
