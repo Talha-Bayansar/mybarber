@@ -212,25 +212,29 @@ export const reservationRouter = createTRPCRouter({
         .filter({
           id: input.id,
         })
-        .select(["*", "barbershop.*"])
-        .getFirst();
+        .select(["*", "barbershop.*", "price_list_item.*"])
+        .getFirstOrThrow();
 
-      if (!reservation)
-        throw new TRPCError({
-          code: "INTERNAL_SERVER_ERROR",
-        });
+      const preferences = await xata.db.barbershop_preferences
+        .filter({
+          "barbershop.id": reservation.barbershop?.id,
+        })
+        .getFirstOrThrow();
+
+      console.log(preferences);
 
       const session = await stripe.checkout.sessions.create(
         {
           mode: "payment",
+          payment_method_types: ["bancontact", "card"],
           line_items: [
             {
               price_data: {
-                currency: "eur",
+                currency: preferences.currency?.toLowerCase() ?? "eur",
                 product_data: {
-                  name: "Voorschot reservatie",
+                  name: `${reservation.barbershop?.name}: ${reservation.price_list_item?.name}`,
                 },
-                unit_amount: 100,
+                unit_amount: preferences.prepayment_amount! * 100,
               },
               quantity: 1,
             },
