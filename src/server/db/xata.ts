@@ -52,6 +52,7 @@ const tables = [
       { column: "barbershop", table: "barber" },
       { column: "barbershop", table: "reservation" },
       { column: "barbershop", table: "barbershop_barber_invitation" },
+      { column: "barbershop", table: "barbershop_preferences" },
     ],
   },
   {
@@ -190,6 +191,14 @@ const tables = [
       { name: "barbershop", type: "link", link: { table: "barbershop" } },
     ],
   },
+  {
+    name: "barbershop_preferences",
+    columns: [
+      { name: "prepayment_amount", type: "float" },
+      { name: "barbershop", type: "link", link: { table: "barbershop" } },
+      { name: "currency", type: "string" },
+    ],
+  },
 ] as const;
 
 export type SchemaTables = typeof tables;
@@ -250,6 +259,9 @@ export type BarbershopBarberInvitation =
 export type BarbershopBarberInvitationRecord = BarbershopBarberInvitation &
   XataRecord;
 
+export type BarbershopPreferences = InferredTypes["barbershop_preferences"];
+export type BarbershopPreferencesRecord = BarbershopPreferences & XataRecord;
+
 export type DatabaseSchema = {
   nextauth_verificationTokens: NextauthVerificationTokensRecord;
   nextauth_users: NextauthUsersRecord;
@@ -268,6 +280,7 @@ export type DatabaseSchema = {
   barber_hair_type: BarberHairTypeRecord;
   reservation: ReservationRecord;
   barbershop_barber_invitation: BarbershopBarberInvitationRecord;
+  barbershop_preferences: BarbershopPreferencesRecord;
 };
 
 const DatabaseClient = buildClient();

@@ -191,6 +191,26 @@
       ]
     },
     {
+      "name": "barbershop_preferences",
+      "columns": [
+        {
+          "name": "prepayment_amount",
+          "type": "float"
+        },
+        {
+          "name": "currency",
+          "type": "string"
+        },
+        {
+          "name": "barbershop",
+          "type": "link",
+          "link": {
+            "table": "barbershop"
+          }
+        }
+      ]
+    },
+    {
       "name": "barber",
       "columns": [
         {
