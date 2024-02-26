@@ -221,8 +221,6 @@ export const reservationRouter = createTRPCRouter({
         })
         .getFirstOrThrow();
 
-      console.log(preferences);
-
       const session = await stripe.checkout.sessions.create(
         {
           mode: "payment",
