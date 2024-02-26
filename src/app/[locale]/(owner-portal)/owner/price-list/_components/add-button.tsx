@@ -9,22 +9,14 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "~/components/ui/tooltip";
-import { Dialog, DialogContent, DialogTrigger } from "~/components/ui/dialog";
 import { PriceListItemForm } from "./price-list-item-form";
 import { api } from "~/trpc/react";
 import { toast } from "sonner";
-import { routes } from "~/lib/routes";
-import { useMediaQuery } from "usehooks-ts";
-import { Drawer, DrawerContent, DrawerTrigger } from "~/components/ui/drawer";
+import { ModalSheet } from "~/components/modal-sheet";
 
-type Props = {
-  priceListId: string;
-};
-
-export const AddButton = ({ priceListId }: Props) => {
+export const AddButton = () => {
   const t = useTranslations("global");
   const tOwner = useTranslations("Owner.PriceListPage");
-  const isBigScreen = useMediaQuery("(min-width: 768px)");
   const utils = api.useUtils();
   const createItem = api.priceListItem.create.useMutation({
     onSuccess: async () => {
@@ -40,45 +32,23 @@ export const AddButton = ({ priceListId }: Props) => {
     <TooltipProvider>
       <Tooltip>
         <TooltipTrigger asChild>
-          {isBigScreen ? (
-            <Dialog>
-              <DialogTrigger asChild>
-                <Button className="h-auto rounded-full p-3">
-                  <Plus />
-                </Button>
-              </DialogTrigger>
-              <DialogContent>
-                <PriceListItemForm
-                  onSubmit={(values) =>
-                    createItem.mutate({
-                      ...values,
-                      priceListId,
-                    })
-                  }
-                  isLoading={createItem.isLoading}
-                />
-              </DialogContent>
-            </Dialog>
-          ) : (
-            <Drawer shouldScaleBackground>
-              <DrawerTrigger asChild>
-                <Button className="h-auto rounded-full p-3">
-                  <Plus />
-                </Button>
-              </DrawerTrigger>
-              <DrawerContent>
-                <PriceListItemForm
-                  onSubmit={(values) =>
-                    createItem.mutate({
-                      ...values,
-                      priceListId,
-                    })
-                  }
-                  isLoading={createItem.isLoading}
-                />
-              </DrawerContent>
-            </Drawer>
-          )}
+          <ModalSheet
+            trigger={
+              <Button className="h-auto rounded-full p-3">
+                <Plus />
+              </Button>
+            }
+            content={
+              <PriceListItemForm
+                onSubmit={(values) =>
+                  createItem.mutate({
+                    ...values,
+                  })
+                }
+                isLoading={createItem.isLoading}
+              />
+            }
+          />
         </TooltipTrigger>
         <TooltipContent>
           <p>{t("create")}</p>

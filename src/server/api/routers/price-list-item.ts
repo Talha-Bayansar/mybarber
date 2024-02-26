@@ -6,7 +6,6 @@ export const priceListItemRouter = createTRPCRouter({
   create: protectedProcedure
     .input(
       z.object({
-        priceListId: z.string().min(1),
         name: z.string().min(1),
         description: z.string().min(1),
         duration: z.number(),
@@ -14,14 +13,35 @@ export const priceListItemRouter = createTRPCRouter({
       }),
     )
     .mutation(async ({ ctx, input }) => {
-      const { xata } = ctx;
+      const { xata, session } = ctx;
+
+      const barbershop = await xata.db.barbershop
+        .filter({
+          "owner.id": session.user.id,
+        })
+        .getFirstOrThrow();
+
+      let priceList = await xata.db.price_list
+        .filter({
+          "barbershop.id": barbershop.id,
+        })
+        .getFirst();
+
+      if (!priceList) {
+        priceList = await xata.db.price_list.create({
+          currency: "EUR",
+          barbershop: barbershop.id,
+        });
+      }
+
+      if (!priceList) throw new TRPCError({ code: "INTERNAL_SERVER_ERROR" });
 
       const response = await xata.db.price_list_item.create({
         name: input.name,
         description: input.description,
         duration: input.duration,
         price: input.price,
-        price_list: input.priceListId,
+        price_list: priceList.id,
       });
 
       if (!response)

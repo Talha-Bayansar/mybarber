@@ -4,17 +4,21 @@ import { List } from "~/components/layout/list";
 import { isArrayEmpty } from "~/lib/utils";
 import { PriceListItem } from "./price-list-item";
 import { api } from "~/trpc/react";
-import type { PriceListItemRecord } from "~/server/db/xata";
+import type { PriceListItemRecord, PriceListRecord } from "~/server/db/xata";
 
-type Props = {
-  priceListJSON: string;
+export type PriceList = PriceListRecord & {
+  items: PriceListItemRecord[];
 };
 
-export const PriceListView = ({ priceListJSON }: Props) => {
+type Props = {
+  priceListData?: PriceList;
+};
+
+export const PriceListView = ({ priceListData }: Props) => {
   const { data: priceList } = api.priceList.getByMyBarbershop.useQuery(
     undefined,
     {
-      initialData: JSON.parse(priceListJSON) ?? [],
+      initialData: (priceListData as any) ?? null,
     },
   );
   if (!priceList || isArrayEmpty(priceList.items)) return <EmptyState />;
