@@ -26,9 +26,9 @@ const BarberPage = async () => {
 
   const items: DashboardItem[] = [
     {
-      title: t("barbershop"),
-      description: t("barbershop_description"),
-      href: routes.barber.barbershop.root,
+      title: t("schedule"),
+      description: t("schedule_description"),
+      href: routes.barber.schedule.root,
     },
     {
       title: t("invitations"),
@@ -44,7 +44,7 @@ const BarberPage = async () => {
           name: `${barber.first_name} ${barber.last_name}`,
         })}
       </Title>
-      <List className="md:grid md:grid-cols-2">
+      <List className="md:grid md:grid-cols-2 md:items-stretch">
         {items.map((item) => (
           <Link key={item.title} href={item.href}>
             <SettingCard title={item.title} description={item.description} />

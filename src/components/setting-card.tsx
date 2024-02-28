@@ -10,7 +10,7 @@ type Props = {
 
 export const SettingCard = ({ title, description, trailing }: Props) => {
   return (
-    <Card className="flex flex-col items-stretch gap-4 p-4 md:flex-row md:items-center">
+    <Card className="flex h-full w-full flex-col items-stretch gap-4 p-4 md:flex-row md:items-start">
       <div className="flex flex-grow flex-col items-start gap-1 text-left">
         <h2 className="font-medium">{title}</h2>
         <CardDescription>{description}</CardDescription>

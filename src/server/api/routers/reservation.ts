@@ -132,6 +132,43 @@ export const reservationRouter = createTRPCRouter({
 
       return response;
     }),
+  getByMyBarber: protectedProcedure
+    .input(
+      z.object({
+        date: z.string().min(10),
+      }),
+    )
+    .query(async ({ ctx, input }) => {
+      const { xata, session } = ctx;
+
+      const barber = await xata.db.barber
+        .filter({
+          "user.id": session.user.id,
+        })
+        .getFirstOrThrow();
+
+      const response = await xata.db.reservation
+        .filter({
+          date: input.date,
+          "barber.id": barber.id,
+          is_paid: true,
+        })
+        .sort("start_time", "asc")
+        .select([
+          "*",
+          "price_list_item.duration",
+          "price_list_item.name",
+          "user.name",
+        ])
+        .getAll();
+
+      if (!response)
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+        });
+
+      return response;
+    }),
   create: protectedProcedure
     .input(
       z.object({

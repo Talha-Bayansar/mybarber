@@ -55,6 +55,15 @@
       "5": "Saturday",
       "6": "Sunday"
     },
+    "day_of_week_short": {
+      "0": "Mon",
+      "1": "Tue",
+      "2": "Wed",
+      "3": "Thu",
+      "4": "Fri",
+      "5": "Sat",
+      "6": "Sun"
+    },
     "action_cannot_be_undone": "This action cannot be undone.",
     "price_list": "Price list",
     "contact": "Contact",
@@ -196,10 +205,13 @@
   "Barber": {
     "RootPage": {
       "welcome_message": "Welcome {name}!",
-      "barbershop": "Barbershop",
-      "barbershop_description": "Manage your clients at your barbershop.",
+      "schedule": "Schedule",
+      "schedule_description": "View your scheduled appointments and manage your availability.",
       "invitations": "Invitations",
       "invitations_description": "Accept or deny invitations from other barbershops."
+    },
+    "SchedulePage": {
+      "title": "Schedule"
     },
     "InvitationsPage": {
       "title": "Invitations",
