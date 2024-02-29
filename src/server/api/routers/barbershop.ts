@@ -318,4 +318,82 @@ export const barbershopRouter = createTRPCRouter({
 
       return response;
     }),
+  deleteById: protectedProcedure
+    .input(
+      z.object({
+        id: z.string().min(1),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      const { xata } = ctx;
+
+      const priceLists = await xata.db.price_list
+        .filter({
+          "barbershop.id": input.id,
+        })
+        .getAll();
+
+      for (const priceList of priceLists) {
+        const priceListItems = await xata.db.price_list_item
+          .filter({
+            "price_list.id": priceList.id,
+          })
+          .getAll();
+
+        for (const item of priceListItems) {
+          await item.delete();
+        }
+        await priceList.delete();
+      }
+
+      const favorites = await xata.db.favorite_barbershop
+        .filter({
+          "barbershop.id": input.id,
+        })
+        .getAll();
+
+      for (const favorite of favorites) {
+        await favorite.delete();
+      }
+
+      const preferences = await xata.db.barbershop_preferences
+        .filter({
+          "barbershop.id": input.id,
+        })
+        .getAll();
+
+      for (const preference of preferences) {
+        await preference.delete();
+      }
+
+      const openingHours = await xata.db.opening_hours
+        .filter({
+          "barbershop.id": input.id,
+        })
+        .getAll();
+
+      for (const hours of openingHours) {
+        await hours.delete();
+      }
+
+      const reservations = await xata.db.reservation
+        .filter({
+          "barbershop.id": input.id,
+        })
+        .getAll();
+
+      for (const reservation of reservations) {
+        await reservation.delete();
+      }
+
+      const invitations = await xata.db.barbershop_barber_invitation
+        .filter({
+          "barbershop.id": input.id,
+        })
+        .getAll();
+
+      for (const invitation of invitations) {
+        await invitation.delete();
+      }
+    }),
 });
