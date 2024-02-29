@@ -106,12 +106,18 @@
     "owner_panel": "Owner panel",
     "owner_panel_description": "Manage your barbershop at the owner panel.",
     "owner_panel_action": "Go to owner panel",
+    "barbershop_registration": "Barbershop registration",
+    "barbershop_registration_description": "Register your own barbershop.",
+    "barbershop_registration_action": "Register barbershop",
     "barber_panel": "Barber panel",
     "barber_panel_description": "Manage your clients and invitations at the barber panel.",
     "barber_panel_action": "Go to barber panel"
   },
   "BarbershopPage": {
     "new_reservation": "New reservation"
+  },
+  "BarbershopRegistrationPage": {
+    "title": "Barbershop registration"
   },
   "ReservationsPage": {
     "auth_required": "You need to be authenticated to see your reservations"

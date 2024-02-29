@@ -8,6 +8,9 @@ export const routes = {
   },
   barbershops: {
     root: "/barbershops",
+    registration: {
+      root: "/barbershops/registration",
+    },
   },
   reservations: {
     root: "/reservations",

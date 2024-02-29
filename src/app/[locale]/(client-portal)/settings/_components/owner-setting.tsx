@@ -14,7 +14,19 @@ export const OwnerSetting = async () => {
     const response = await api.barbershop.getByOwner.query();
     barbershop = response as BarbershopRecord;
   } catch (error) {
-    return null;
+    return (
+      <SettingCard
+        title={t("barbershop_registration")}
+        description={t("barbershop_registration_description")}
+        trailing={
+          <Button asChild>
+            <Link href={routes.barbershops.registration.root}>
+              {t("barbershop_registration_action")}
+            </Link>
+          </Button>
+        }
+      />
+    );
   }
 
   return (
