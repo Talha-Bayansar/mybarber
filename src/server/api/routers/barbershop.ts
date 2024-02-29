@@ -9,6 +9,10 @@ import {
 import type { BarbershopRecord } from "~/server/db/xata";
 import { getAvailableIntervals } from "../lib/barbershop";
 
+const phoneRegex = new RegExp(
+  /^([+]?[\s0-9]+)?(\d{3}|[(]?[0-9]+[)])?([-]?[\s]?[0-9])+$/,
+);
+
 export const barbershopRouter = createTRPCRouter({
   search: publicProcedure
     .input(
@@ -159,6 +163,93 @@ export const barbershopRouter = createTRPCRouter({
 
       return !!response;
     }),
+  register: protectedProcedure
+    .input(
+      z.object({
+        name: z.string().min(1).max(30),
+        email: z.string().email(),
+        phoneNumber: z.string().regex(phoneRegex),
+        city: z.string().min(1).max(30),
+        street: z.string().min(1).max(100),
+        houseNumber: z.string().min(1).max(10),
+        zip: z.string().min(1).max(10),
+        logoName: z.string(),
+        logoFileType: z.string(),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      const { xata, session } = ctx;
+
+      const barbershop = await xata.db.barbershop
+        .filter({
+          "owner.id": session.user.id,
+        })
+        .getFirst();
+
+      if (barbershop) throw new TRPCError({ code: "CONFLICT" });
+
+      let address;
+
+      address = await xata.db.address
+        .filter({
+          $all: [
+            {
+              city: input.city,
+            },
+            {
+              street: input.street,
+            },
+            {
+              house_number: input.houseNumber,
+            },
+            {
+              zip: input.zip,
+            },
+          ],
+        })
+        .getFirst();
+
+      if (!address) {
+        address = await xata.db.address.create({
+          city: input.city,
+          street: input.street,
+          house_number: input.houseNumber,
+          zip: input.zip,
+        });
+      }
+
+      if (!address) throw new TRPCError({ code: "INTERNAL_SERVER_ERROR" });
+
+      const registration = await xata.db.barbershop.create(
+        {
+          name: input.name,
+          email: input.email,
+          phone_number: input.phoneNumber,
+          address: address.id,
+          verified: false,
+          owner: session.user.id,
+          logo: {
+            name: input.logoName,
+            base64Content: "",
+            mediaType: input.logoFileType,
+          },
+        },
+        ["*", "logo.uploadUrl"],
+      );
+
+      if (!registration) throw new TRPCError({ code: "INTERNAL_SERVER_ERROR" });
+
+      const preferences = await xata.db.barbershop_preferences.create({
+        barbershop: registration.id,
+        currency: "EUR",
+        prepayment_amount: 5,
+      });
+
+      if (!preferences) throw new TRPCError({ code: "INTERNAL_SERVER_ERROR" });
+
+      return registration;
+    }),
+
   deleteBarber: protectedProcedure
     .input(
       z.object({

@@ -8,6 +8,7 @@ import { routes } from "~/lib/routes";
 import { Link } from "~/navigation";
 import type { BarbershopRecord } from "~/server/db/xata";
 import { api } from "~/trpc/server";
+import { NotVerified } from "./_components/not-verified";
 
 type DashboardItem = {
   title: string;
@@ -55,6 +56,7 @@ const OwnerPage = async () => {
   return (
     <Main>
       <Title>{barbershop.name}</Title>
+      {!barbershop.verified && <NotVerified />}
       <List className="md:grid md:grid-cols-2">
         {items.map((item) => (
           <Link key={item.title} href={item.href}>
