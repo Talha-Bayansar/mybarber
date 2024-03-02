@@ -14,7 +14,19 @@ export const BarberSetting = async () => {
     const response = await api.barber.getMyBarber.query();
     barber = response as BarberRecord;
   } catch (error) {
-    return null;
+    return (
+      <SettingCard
+        title={t("barber_registration")}
+        description={t("barber_registration_description")}
+        trailing={
+          <Button asChild>
+            <Link href={routes.barbers.registration.root}>
+              {t("barber_registration_action")}
+            </Link>
+          </Button>
+        }
+      />
+    );
   }
 
   return (

@@ -31,7 +31,7 @@ export const EditButton = () => {
       <Tooltip>
         <TooltipTrigger asChild>
           <Button asChild className="h-auto rounded-full p-3">
-            <Link href={href}>
+            <Link href={href} replace>
               <Pencil />
             </Link>
           </Button>

@@ -122,4 +122,70 @@ export const barberRouter = createTRPCRouter({
 
       return availableBarbers;
     }),
+  register: protectedProcedure
+    .input(
+      z.object({
+        firstName: z.string().min(1).max(50),
+        lastName: z.string().min(1).max(50),
+        imageName: z.string(),
+        imageFileType: z.string(),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      const { xata, session } = ctx;
+
+      const barber = await xata.db.barber
+        .filter({
+          "user.id": session.user.id,
+        })
+        .getFirst();
+
+      if (barber) throw new TRPCError({ code: "CONFLICT" });
+
+      const registration = await xata.db.barber.create(
+        {
+          first_name: input.firstName,
+          last_name: input.lastName,
+          user: session.user.id,
+          image: {
+            name: input.imageName,
+            base64Content: "",
+            mediaType: input.imageFileType,
+          },
+        },
+        ["*", "image.uploadUrl"],
+      );
+
+      if (!registration) throw new TRPCError({ code: "INTERNAL_SERVER_ERROR" });
+
+      return registration;
+    }),
+  updateMyBarber: protectedProcedure
+    .input(
+      z.object({
+        firstName: z.string().min(1).max(50),
+        lastName: z.string().min(1).max(50),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      const { xata, session } = ctx;
+
+      const barber = await xata.db.barber
+        .filter({
+          "user.id": session.user.id,
+        })
+        .getFirst();
+
+      if (!barber) throw new TRPCError({ code: "INTERNAL_SERVER_ERROR" });
+
+      const updatedBarber = await barber.update({
+        first_name: input.firstName,
+        last_name: input.lastName,
+      });
+
+      if (!updatedBarber)
+        throw new TRPCError({ code: "INTERNAL_SERVER_ERROR" });
+
+      return updatedBarber;
+    }),
 });

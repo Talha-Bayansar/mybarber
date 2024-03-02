@@ -12,6 +12,12 @@ export const routes = {
       root: "/barbershops/registration",
     },
   },
+  barbers: {
+    root: "/barbers",
+    registration: {
+      root: "/barbers/registration",
+    },
+  },
   reservations: {
     root: "/reservations",
   },

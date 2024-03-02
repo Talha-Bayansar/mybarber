@@ -113,7 +113,10 @@
     "barbershop_registration_action": "Register barbershop",
     "barber_panel": "Barber panel",
     "barber_panel_description": "Manage your clients and invitations at the barber panel.",
-    "barber_panel_action": "Go to barber panel"
+    "barber_panel_action": "Go to barber panel",
+    "barber_registration": "Barber registration",
+    "barber_registration_description": "Register as a barber.",
+    "barber_registration_action": "Register"
   },
   "BarbershopPage": {
     "new_reservation": "New reservation"
@@ -138,6 +141,17 @@
     "logo_placeholder": "Logo of barbershop",
     "registration_success_message": "Your barbershop has been successfully registered.",
     "registration_error_message": "Your barbershop could not be registered."
+  },
+  "BarberRegistrationPage": {
+    "title": "Barber registration",
+    "first_name": "First name",
+    "first_name_placeholder": "First name",
+    "last_name": "Last name",
+    "last_name_placeholder": "Last name",
+    "image": "Image",
+    "image_placeholder": "Your profile image",
+    "registration_success_message": "You have been successfully registered as a barber.",
+    "registration_error_message": "Failed to register you as a barber."
   },
   "ReservationsPage": {
     "auth_required": "You need to be authenticated to see your reservations"

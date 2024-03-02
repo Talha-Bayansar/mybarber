@@ -75,7 +75,7 @@ export const BarbershopForm = ({ barbershopData }: Props) => {
     onSuccess: async () => {
       await refetch();
       toast(tBarbershop("update_success_message"));
-      router.push(routes.owner.barbershopDetails.root);
+      router.replace(routes.owner.barbershopDetails.root);
     },
     onError: () => {
       toast(tBarbershop("update_error_message"));
