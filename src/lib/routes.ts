@@ -35,6 +35,9 @@ export const routes = {
         root: "/owner/opening-hours/edit",
       },
     },
+    barbershopDetails: {
+      root: "/owner/barbershop-details",
+    },
     preferences: {
       root: "/owner/preferences",
     },

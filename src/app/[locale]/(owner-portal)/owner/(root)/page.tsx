@@ -47,6 +47,11 @@ const OwnerPage = async () => {
       href: routes.owner.barbers.root,
     },
     {
+      title: t("barbershop_details"),
+      description: t("barbershop_details_description"),
+      href: routes.owner.barbershopDetails.root,
+    },
+    {
       title: t("preferences"),
       description: t("preferences_description"),
       href: routes.owner.preferences.root,

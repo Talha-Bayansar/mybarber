@@ -168,7 +168,9 @@
       "barbers": "Barbers",
       "barbers_description": "Manage the team of barbers working at your barbershop.",
       "reservations": "Reservations",
-      "reservations_description": "View and manage upcoming reservations for your barbershop."
+      "reservations_description": "View and manage upcoming reservations for your barbershop.",
+      "barbershop_details": "Barbershop details",
+      "barbershop_details_description": "Update and customize information about your barbershop."
     },
     "BarbersPage": {
       "title": "Barbers",
@@ -181,6 +183,25 @@
     },
     "OpeningHoursPage": {
       "title": "Opening hours"
+    },
+    "BarbershopDetailsPage": {
+      "title": "Barbershop details",
+      "name": "Name",
+      "name_placeholder": "Name of barbershop",
+      "email": "Email",
+      "email_placeholder": "Email of barbershop",
+      "phone_number": "Phone number",
+      "phone_number_placeholder": "Phone number of barbershop",
+      "zip": "ZIP",
+      "zip_placeholder": "ZIP of barbershop",
+      "city": "City",
+      "city_placeholder": "City of barbershop",
+      "street": "Street",
+      "street_placeholder": "Street of barbershop",
+      "house_number": "House number",
+      "house_number_placeholder": "House number of barbershop",
+      "update_success_message": "Your changes where successfully applied.",
+      "update_error_message": "Something went wrong while applying changes."
     },
     "PreferencesPage": {
       "title": "Preferences",

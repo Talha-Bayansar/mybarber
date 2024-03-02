@@ -9,7 +9,7 @@ const OwnerLoading = () => {
     <Main>
       <TitleSkeleton />
       <List className="md:grid md:grid-cols-2">
-        {generateArray(5).map((v) => (
+        {generateArray(6).map((v) => (
           <SettingCardSkeleton key={v} />
         ))}
       </List>

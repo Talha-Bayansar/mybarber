@@ -91,6 +91,7 @@ export const barbershopRouter = createTRPCRouter({
       .filter({
         "owner.id": session.user.id,
       })
+      .select(["*", "address.*"])
       .getFirst();
 
     if (!response)
@@ -249,7 +250,85 @@ export const barbershopRouter = createTRPCRouter({
 
       return registration;
     }),
+  updateMyBarbershop: protectedProcedure
+    .input(
+      z.object({
+        name: z.string().min(1).max(30),
+        email: z.string().email(),
+        phoneNumber: z.string().regex(phoneRegex),
+        city: z.string().min(1).max(30),
+        street: z.string().min(1).max(100),
+        houseNumber: z.string().min(1).max(10),
+        zip: z.string().min(1).max(10),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      const { xata, session } = ctx;
 
+      const barbershop = await xata.db.barbershop
+        .filter({
+          "owner.id": session.user.id,
+        })
+        .getFirst();
+
+      if (!barbershop) throw new TRPCError({ code: "INTERNAL_SERVER_ERROR" });
+
+      const updatedBarbershop = await barbershop.update({
+        name: input.name,
+        email: input.email,
+        phone_number: input.phoneNumber,
+      });
+
+      if (!updatedBarbershop)
+        throw new TRPCError({ code: "INTERNAL_SERVER_ERROR" });
+
+      const updatedAddress = await xata.db.address.update({
+        id: barbershop.address?.id ?? "",
+        city: input.city,
+        house_number: input.houseNumber,
+        street: input.street,
+        zip: input.zip,
+      });
+
+      if (!updatedAddress)
+        throw new TRPCError({ code: "INTERNAL_SERVER_ERROR" });
+
+      return true;
+    }),
+  updateMyBarbershopLogo: protectedProcedure
+    .input(
+      z.object({
+        logoName: z.string(),
+        logoFileType: z.string(),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      const { xata, session } = ctx;
+
+      const barbershop = await xata.db.barbershop
+        .filter({
+          "owner.id": session.user.id,
+        })
+        .getFirst();
+
+      if (!barbershop) throw new TRPCError({ code: "INTERNAL_SERVER_ERROR" });
+
+      const updatedBarbershop = await barbershop.update(
+        {
+          logo: {
+            name: input.logoName,
+            base64Content: "",
+            mediaType: input.logoFileType,
+          },
+        },
+        ["*", "logo.uploadUrl"],
+      );
+
+      if (!updatedBarbershop)
+        throw new TRPCError({ code: "INTERNAL_SERVER_ERROR" });
+
+      return updatedBarbershop;
+    }),
   deleteBarber: protectedProcedure
     .input(
       z.object({
