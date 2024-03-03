@@ -61,7 +61,7 @@ export const RegistrationForm = () => {
       await uploadImage(response.image!.uploadUrl!, form.getValues("image"));
       setUploading(false);
       toast(tRegistration("registration_success_message"));
-      router.push(routes.owner.root);
+      router.push(routes.barber.root);
     },
     onError: () => {
       toast(tRegistration("registration_error_message"));
