@@ -35,6 +35,11 @@ const BarberPage = async () => {
       description: t("invitations_description"),
       href: routes.barber.invitations.root,
     },
+    {
+      title: t("barber_details"),
+      description: t("barber_details_description"),
+      href: routes.barber.barberDetails.root,
+    },
   ];
 
   return (

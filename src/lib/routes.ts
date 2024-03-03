@@ -29,6 +29,9 @@ export const routes = {
     invitations: {
       root: "/barber/invitations",
     },
+    barberDetails: {
+      root: "/barber/details",
+    },
     settings: {
       root: "/barber/settings",
     },

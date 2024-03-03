@@ -215,7 +215,7 @@
       "house_number": "House number",
       "house_number_placeholder": "House number of barbershop",
       "update_success_message": "Your changes where successfully applied.",
-      "update_error_message": "Something went wrong while applying changes."
+      "update_error_message": "Something went wrong while applying your changes."
     },
     "PreferencesPage": {
       "title": "Preferences",
@@ -269,7 +269,18 @@
       "schedule": "Schedule",
       "schedule_description": "View your scheduled appointments and manage your availability.",
       "invitations": "Invitations",
-      "invitations_description": "Accept or deny invitations from other barbershops."
+      "invitations_description": "Accept or deny invitations from other barbershops.",
+      "barber_details": "Barber details",
+      "barber_details_description": "Update and customize your personal information."
+    },
+    "DetailsPage": {
+      "title": "Barber details",
+      "first_name": "First name",
+      "first_name_placeholder": "First name",
+      "last_name": "Last name",
+      "last_name_placeholder": "Last name",
+      "update_success_message": "Your changes where successfully applied.",
+      "update_error_message": "Something went wrong while applying your changes."
     },
     "SchedulePage": {
       "title": "Schedule"
