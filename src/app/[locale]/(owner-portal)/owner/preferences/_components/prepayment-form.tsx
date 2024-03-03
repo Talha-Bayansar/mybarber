@@ -21,7 +21,7 @@ import { toast } from "sonner";
 const formSchema = z.object({
   prepayment_amount: z.preprocess(
     (val) => parseFloat(val as string),
-    z.number().min(1),
+    z.number().min(10),
   ),
 });
 
@@ -44,7 +44,7 @@ export const PrepaymentForm = () => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      prepayment_amount: data?.prepayment_amount ?? 1,
+      prepayment_amount: data?.prepayment_amount ?? 10,
     },
   });
 

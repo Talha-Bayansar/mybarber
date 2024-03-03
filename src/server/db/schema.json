@@ -172,7 +172,8 @@
         },
         {
           "name": "verified",
-          "type": "bool"
+          "type": "bool",
+          "defaultValue": "false"
         },
         {
           "name": "address",
@@ -195,11 +196,13 @@
       "columns": [
         {
           "name": "prepayment_amount",
-          "type": "float"
+          "type": "float",
+          "defaultValue": "10"
         },
         {
           "name": "currency",
-          "type": "string"
+          "type": "string",
+          "defaultValue": "EUR"
         },
         {
           "name": "barbershop",

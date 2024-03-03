@@ -32,7 +32,7 @@ export const PrepaymentSetting = ({ preferences }: Props) => {
               <Input
                 className="md:w-min"
                 type="number"
-                value={data?.prepayment_amount ?? 0}
+                value={data?.prepayment_amount ?? 10}
                 disabled
               />
             }

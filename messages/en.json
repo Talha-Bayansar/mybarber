@@ -220,7 +220,7 @@
     "PreferencesPage": {
       "title": "Preferences",
       "prepayment": "Prepayment",
-      "prepayment_description": "Adjust the required prepayment amount for reservations at your barbershop.",
+      "prepayment_description": "Adjust the required prepayment amount in percentage for reservations at your barbershop.",
       "prepayment_success_message": "Prepayment amount successfully updated.",
       "prepayment_error_message": "Prepayment amount could not be updated."
     },
