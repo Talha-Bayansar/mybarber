@@ -9,7 +9,7 @@ const BarberLoading = () => {
     <Main>
       <TitleSkeleton />
       <List className="md:grid md:grid-cols-2">
-        {generateArray(2).map((v) => (
+        {generateArray(3).map((v) => (
           <SettingCardSkeleton key={v} />
         ))}
       </List>
