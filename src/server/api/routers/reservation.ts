@@ -269,13 +269,16 @@ export const reservationRouter = createTRPCRouter({
                 product_data: {
                   name: `${reservation.barbershop?.name}: ${reservation.price_list_item?.name}`,
                 },
-                unit_amount: preferences.prepayment_amount! * 100,
+                unit_amount:
+                  (preferences.prepayment_amount! / 100) *
+                  (reservation.price_list_item!.price! * 100),
               },
               quantity: 1,
             },
           ],
           payment_intent_data: {
-            application_fee_amount: 150,
+            application_fee_amount:
+              reservation.price_list_item!.price! * 100 * 0.05,
           },
           metadata: {
             reservation_id: reservation.id,
