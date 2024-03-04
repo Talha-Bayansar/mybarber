@@ -84,7 +84,8 @@
     "yes": "Yes",
     "no": "No",
     "warning": "Warning",
-    "not_verified": "Your barbershop is not verified yet."
+    "not_verified": "Your barbershop is not verified yet.",
+    "with_reservation_footnote": "*Reservation only"
   },
   "RootPage": {
     "search_placeholder": "Search barbershops by",
