@@ -8,6 +8,7 @@ import { hairTypeRouter } from "./routers/hair-type";
 import { priceListItemRouter } from "./routers/price-list-item";
 import { barbershopBarberInvitationRouter } from "./routers/barbershop-barber-invitation";
 import { barbershopPreferencesRouter } from "./routers/barbershop-preferences";
+import { userPreferencesRouter } from "./routers/user-preferences";
 
 /**
  * This is the primary router for your server.
@@ -24,6 +25,7 @@ export const appRouter = createTRPCRouter({
   hairType: hairTypeRouter,
   barbershopBarberInvitation: barbershopBarberInvitationRouter,
   barbershopPreferences: barbershopPreferencesRouter,
+  userPreferences: userPreferencesRouter,
 });
 
 // export type definition of API

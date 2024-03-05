@@ -44,6 +44,21 @@ export const authOptions: NextAuthOptions = {
         id: user.id,
       },
     }),
+    async signIn({ user }) {
+      const prefs = await xata.db.user_preferences
+        .filter({
+          "user.id": user.id,
+        })
+        .getFirst();
+
+      if (!prefs) {
+        await xata.db.user_preferences.create({
+          user: user.id,
+        });
+      }
+
+      return true;
+    },
   },
   adapter: XataAdapter(xata),
   providers: [

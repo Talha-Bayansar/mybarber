@@ -214,6 +214,30 @@
       ]
     },
     {
+      "name": "user_preferences",
+      "columns": [
+        {
+          "name": "language",
+          "type": "string",
+          "defaultValue": "en"
+        },
+        {
+          "name": "hair_type",
+          "type": "link",
+          "link": {
+            "table": "hair_type"
+          }
+        },
+        {
+          "name": "user",
+          "type": "link",
+          "link": {
+            "table": "nextauth_users"
+          }
+        }
+      ]
+    },
+    {
       "name": "barber",
       "columns": [
         {

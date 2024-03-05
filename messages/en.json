@@ -83,9 +83,12 @@
     "dashboard": "Dashboard",
     "yes": "Yes",
     "no": "No",
+    "none": "None",
     "warning": "Warning",
     "not_verified": "Your barbershop is not verified yet.",
-    "with_reservation_footnote": "*Reservation only"
+    "with_reservation_footnote": "*Reservation only",
+    "short": "Short",
+    "long": "Long"
   },
   "RootPage": {
     "search_placeholder": "Search barbershops by",
@@ -101,6 +104,8 @@
     "language_description": "Select your preferred language for the app.",
     "display_mode": "Display Mode",
     "display_mode_description": "Switch between light and dark themes for your preference.",
+    "hair_type": "Hair type",
+    "hair_type_description": "Select your hair type of choice.",
     "select_theme": "Select theme",
     "light": "Light",
     "dark": "Dark",

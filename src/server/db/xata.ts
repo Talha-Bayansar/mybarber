@@ -32,6 +32,7 @@ const tables = [
       { column: "user", table: "barber" },
       { column: "user", table: "reservation" },
       { column: "owner", table: "barbershop" },
+      { column: "user", table: "user_preferences" },
     ],
   },
   {
@@ -40,10 +41,10 @@ const tables = [
       { name: "name", type: "string" },
       { name: "phone_number", type: "string" },
       { name: "email", type: "email" },
-      { name: "verified", type: "bool" },
       { name: "address", type: "link", link: { table: "address" } },
       { name: "logo", type: "file", file: { defaultPublicAccess: true } },
       { name: "owner", type: "link", link: { table: "nextauth_users" } },
+      { name: "verified", type: "bool", defaultValue: "false" },
     ],
     revLinks: [
       { column: "barbershop", table: "favorite_barbershop" },
@@ -159,7 +160,10 @@ const tables = [
   {
     name: "hair_type",
     columns: [{ name: "name", type: "string" }],
-    revLinks: [{ column: "hair_type", table: "barber_hair_type" }],
+    revLinks: [
+      { column: "hair_type", table: "barber_hair_type" },
+      { column: "hair_type", table: "user_preferences" },
+    ],
   },
   {
     name: "barber_hair_type",
@@ -194,9 +198,17 @@ const tables = [
   {
     name: "barbershop_preferences",
     columns: [
-      { name: "prepayment_amount", type: "float" },
       { name: "barbershop", type: "link", link: { table: "barbershop" } },
-      { name: "currency", type: "string" },
+      { name: "prepayment_amount", type: "float", defaultValue: "10" },
+      { name: "currency", type: "string", defaultValue: "EUR" },
+    ],
+  },
+  {
+    name: "user_preferences",
+    columns: [
+      { name: "language", type: "string", defaultValue: "en" },
+      { name: "hair_type", type: "link", link: { table: "hair_type" } },
+      { name: "user", type: "link", link: { table: "nextauth_users" } },
     ],
   },
 ] as const;
@@ -262,6 +274,9 @@ export type BarbershopBarberInvitationRecord = BarbershopBarberInvitation &
 export type BarbershopPreferences = InferredTypes["barbershop_preferences"];
 export type BarbershopPreferencesRecord = BarbershopPreferences & XataRecord;
 
+export type UserPreferences = InferredTypes["user_preferences"];
+export type UserPreferencesRecord = UserPreferences & XataRecord;
+
 export type DatabaseSchema = {
   nextauth_verificationTokens: NextauthVerificationTokensRecord;
   nextauth_users: NextauthUsersRecord;
@@ -281,6 +296,7 @@ export type DatabaseSchema = {
   reservation: ReservationRecord;
   barbershop_barber_invitation: BarbershopBarberInvitationRecord;
   barbershop_preferences: BarbershopPreferencesRecord;
+  user_preferences: UserPreferencesRecord;
 };
 
 const DatabaseClient = buildClient();
