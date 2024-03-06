@@ -272,6 +272,25 @@
       ]
     },
     {
+      "name": "barber_skill",
+      "columns": [
+        {
+          "name": "skill",
+          "type": "link",
+          "link": {
+            "table": "hair_type"
+          }
+        },
+        {
+          "name": "barber",
+          "type": "link",
+          "link": {
+            "table": "barber"
+          }
+        }
+      ]
+    },
+    {
       "name": "barbershop_barber_invitation",
       "columns": [
         {

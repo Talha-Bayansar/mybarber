@@ -1,3 +1,4 @@
+"use client";
 import { format } from "date-fns";
 import { useTranslations } from "next-intl";
 import { useRouter } from "next/navigation";

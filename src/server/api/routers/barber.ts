@@ -74,16 +74,32 @@ export const barberRouter = createTRPCRouter({
         barbershopId: z.string().min(1),
         date: z.string().min(10).optional(),
         time: z.number(),
+        hairTypeId: z.string().min(1).optional(),
       }),
     )
     .query(async ({ ctx, input }) => {
       const { xata } = ctx;
 
-      const barbers = await xata.db.barber
+      let barbers = await xata.db.barber
         .filter({
           "barbershop.id": input.barbershopId,
         })
         .getAll();
+
+      if (input.hairTypeId) {
+        for (const barber of barbers) {
+          const hasSkill = await xata.db.barber_hair_type
+            .filter({
+              "barber.id": barber.id,
+              "hair_type.id": input.hairTypeId,
+            })
+            .getFirst();
+
+          if (!hasSkill) {
+            barbers = barbers.filter((b) => b.id !== barber.id);
+          }
+        }
+      }
 
       const reservations = await xata.db.reservation
         .filter({
@@ -165,6 +181,7 @@ export const barberRouter = createTRPCRouter({
       z.object({
         firstName: z.string().min(1).max(50),
         lastName: z.string().min(1).max(50),
+        hairTypes: z.string().array(),
       }),
     )
     .mutation(async ({ ctx, input }) => {
@@ -185,6 +202,32 @@ export const barberRouter = createTRPCRouter({
 
       if (!updatedBarber)
         throw new TRPCError({ code: "INTERNAL_SERVER_ERROR" });
+
+      const barberHairTypes = await xata.db.barber_hair_type
+        .filter({
+          "barber.id": barber.id,
+        })
+        .getAll();
+
+      for (const hairType of barberHairTypes) {
+        const shouldHaveHairType = input.hairTypes.includes(hairType.id);
+        if (!shouldHaveHairType) {
+          await hairType.delete();
+        }
+      }
+
+      for (const hairTypeId of input.hairTypes) {
+        const exists = barberHairTypes.find((type) => type.id === hairTypeId);
+
+        if (!exists) {
+          const response = await xata.db.barber_hair_type.create({
+            barber: barber.id,
+            hair_type: hairTypeId,
+          });
+
+          if (!response) throw new TRPCError({ code: "INTERNAL_SERVER_ERROR" });
+        }
+      }
 
       return updatedBarber;
     }),

@@ -38,7 +38,7 @@ export const HairTypeSelect = ({ preferences, hairTypes }: Props) => {
       </SelectTrigger>
       <SelectContent>
         {hairTypes.map((type) => (
-          <SelectItem value={type.id}>
+          <SelectItem key={type.id} value={type.id}>
             {t(`global.${type.name?.toLocaleLowerCase()}`)}
           </SelectItem>
         ))}

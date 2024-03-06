@@ -22,7 +22,8 @@ import { routes } from "~/lib/routes";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { ChevronLeft, ChevronRight, HelpCircle } from "lucide-react";
+import type { UserPreferencesRecord } from "~/server/db/xata";
 
 const formSchema = z.object({
   barberId: z.string().min(1),
@@ -33,9 +34,10 @@ const formSchema = z.object({
 type Props = {
   date?: string;
   time?: string;
+  userPreferences: UserPreferencesRecord;
 };
 
-export const BarberSelection = ({ date, time }: Props) => {
+export const BarberSelection = ({ date, time, userPreferences }: Props) => {
   const t = useTranslations();
   const router = useRouter();
   const { id: barbershopId } = useParams<{ id: string }>();
@@ -44,6 +46,7 @@ export const BarberSelection = ({ date, time }: Props) => {
       barbershopId,
       date,
       time: Number(time),
+      hairTypeId: userPreferences.hair_type?.id,
     });
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -104,8 +107,9 @@ export const BarberSelection = ({ date, time }: Props) => {
                   className="grid grid-cols-2 gap-8"
                 >
                   <FormItem className="flex flex-col items-center justify-end text-center">
-                    <FormLabel className="flex flex-grow flex-col justify-end font-normal">
-                      {t("NewReservationPage.no_preference")}
+                    <FormLabel className="flex flex-grow flex-col items-center justify-end gap-2 font-normal">
+                      <HelpCircle className="h-20 w-20" />
+                      <span>{t("NewReservationPage.no_preference")}</span>
                     </FormLabel>
                     <FormControl>
                       <RadioGroupItem value="no-preference" />

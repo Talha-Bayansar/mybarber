@@ -39,7 +39,7 @@ const NoFavorites = () => {
   const t = useTranslations("FavoritesPage");
 
   return (
-    <div className="mt-20 flex w-full flex-col items-center gap-4">
+    <div className="mt-20 flex w-full flex-grow flex-col items-center justify-center gap-4 md:justify-start">
       <HeartOff className="text-primary" size={60} />
       <p className="text-center">{t("no_favorites")}</p>
     </div>

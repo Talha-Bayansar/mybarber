@@ -88,7 +88,9 @@
     "not_verified": "Your barbershop is not verified yet.",
     "with_reservation_footnote": "*Reservation only",
     "short": "Short",
-    "long": "Long"
+    "long": "Long",
+    "hair_type": "Hair type",
+    "hair_types": "Hair types"
   },
   "RootPage": {
     "search_placeholder": "Search barbershops by",

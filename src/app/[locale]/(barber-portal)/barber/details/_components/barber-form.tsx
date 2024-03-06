@@ -3,11 +3,20 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useTranslations } from "next-intl";
 import { useSearchParams } from "next/navigation";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import z from "zod";
 import { List } from "~/components/layout/list";
 import { Button } from "~/components/ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuCheckboxItem,
+  DropdownMenuContent,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "~/components/ui/dropdown-menu";
 import {
   Form,
   FormControl,
@@ -22,9 +31,9 @@ import {
   InputSkeleton,
 } from "~/components/ui/input";
 import { routes } from "~/lib/routes";
-import { generateArray } from "~/lib/utils";
+import { generateArray, isArrayEmpty } from "~/lib/utils";
 import { useRouter } from "~/navigation";
-import type { BarberRecord } from "~/server/db/xata";
+import type { BarberRecord, HairTypeRecord } from "~/server/db/xata";
 import { api } from "~/trpc/react";
 
 const phoneRegex = new RegExp(
@@ -34,13 +43,20 @@ const phoneRegex = new RegExp(
 const formSchema = z.object({
   firstName: z.string().min(1).max(50),
   lastName: z.string().min(1).max(50),
+  hairTypes: z.string().array(),
 });
 
 type Props = {
   barberData: BarberRecord;
+  hairTypes: HairTypeRecord[];
+  barberHairTypes: HairTypeRecord[];
 };
 
-export const BarberForm = ({ barberData }: Props) => {
+export const BarberForm = ({
+  barberData,
+  hairTypes,
+  barberHairTypes,
+}: Props) => {
   const t = useTranslations("global");
   const params = useSearchParams();
   const editable = params.get("editable") ? true : false;
@@ -55,6 +71,7 @@ export const BarberForm = ({ barberData }: Props) => {
     defaultValues: {
       firstName: barber.first_name ?? "",
       lastName: barber.last_name ?? "",
+      hairTypes: barberHairTypes.map((type) => type.id),
     },
   });
 
@@ -73,6 +90,15 @@ export const BarberForm = ({ barberData }: Props) => {
     updateBarber.mutate({
       ...values,
     });
+  }
+
+  function toggleValue(arr: string[], value: string) {
+    const index = arr.indexOf(value);
+    if (index === -1) {
+      return [...arr, value];
+    } else {
+      return arr.filter((v) => v !== value);
+    }
   }
 
   return (
@@ -111,6 +137,49 @@ export const BarberForm = ({ barberData }: Props) => {
                     placeholder={tBarber("first_name_placeholder")}
                     {...field}
                   />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="hairTypes"
+            disabled={!editable}
+            render={({ field }) => (
+              <FormItem className="flex flex-col items-start gap-2">
+                <FormLabel>{t("hair_types")}</FormLabel>
+                <FormControl>
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <Button
+                        disabled={!editable}
+                        variant="outline"
+                        className="w-full font-normal"
+                      >
+                        {isArrayEmpty(field.value)
+                          ? "None"
+                          : `${field.value.length} hair type(s) selected`}
+                      </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent className="w-56">
+                      {hairTypes.map((type) => (
+                        <DropdownMenuCheckboxItem
+                          key={type.id}
+                          checked={field.value.includes(type.id)}
+                          onCheckedChange={() =>
+                            form.setValue(
+                              "hairTypes",
+                              toggleValue(field.value, type.id),
+                            )
+                          }
+                          onSelect={(e) => e.preventDefault()}
+                        >
+                          {t(type.name!.toLowerCase())}
+                        </DropdownMenuCheckboxItem>
+                      ))}
+                    </DropdownMenuContent>
+                  </DropdownMenu>
                 </FormControl>
                 <FormMessage />
               </FormItem>
