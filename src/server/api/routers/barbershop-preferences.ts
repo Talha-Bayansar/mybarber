@@ -17,7 +17,7 @@ export const barbershopPreferencesRouter = createTRPCRouter({
   updateMyBarbershopPreferences: protectedProcedure
     .input(
       z.object({
-        amount: z.number().min(1),
+        amount: z.number().min(10).max(100),
       }),
     )
     .mutation(async ({ ctx, input }) => {

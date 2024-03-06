@@ -21,7 +21,7 @@ import { toast } from "sonner";
 const formSchema = z.object({
   prepayment_amount: z.preprocess(
     (val) => parseFloat(val as string),
-    z.number().min(10),
+    z.number().min(10).max(100),
   ),
 });
 
