@@ -99,7 +99,8 @@
   },
   "FavoritesPage": {
     "title": "My favorites",
-    "no_favorites": "You don't have any favorite barbershops"
+    "no_favorites": "You don't have any favorite barbershops",
+    "auth_required": "Sign in to save your favorite barbershops"
   },
   "SettingsPage": {
     "language": "Language",
@@ -162,7 +163,7 @@
     "registration_error_message": "Failed to register you as a barber."
   },
   "ReservationsPage": {
-    "auth_required": "You need to be authenticated to see your reservations"
+    "auth_required": "Sign in to start tracking your reservations"
   },
   "NewReservationPage": {
     "title": "New reservation",

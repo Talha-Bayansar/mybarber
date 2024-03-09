@@ -9,7 +9,7 @@ export const SignInButton = () => {
 
   return (
     <Button
-      className="flex items-center gap-1"
+      className="flex w-full items-center gap-1"
       onClick={() => signIn("google")}
     >
       {t("sign_in")} <FcGoogle size={20} />

@@ -6,7 +6,13 @@ import type { UserPreferencesRecord } from "~/server/db/xata";
 
 export const HairTypeSetting = async () => {
   const t = await getTranslations("SettingsPage");
-  const preferences = await api.userPreferences.get.query();
+  let preferences: UserPreferencesRecord;
+  try {
+    preferences =
+      (await api.userPreferences.get.query()) as UserPreferencesRecord;
+  } catch (error) {
+    return null;
+  }
   const hairTypes = await api.hairType.getAll.query();
 
   return (

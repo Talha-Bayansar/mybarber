@@ -155,7 +155,6 @@ const tables = [
       { column: "barber", table: "barber_hair_type" },
       { column: "barber", table: "reservation" },
       { column: "barber", table: "barbershop_barber_invitation" },
-      { column: "barber", table: "barber_skill" },
     ],
   },
   {
@@ -164,7 +163,6 @@ const tables = [
     revLinks: [
       { column: "hair_type", table: "barber_hair_type" },
       { column: "hair_type", table: "user_preferences" },
-      { column: "skill", table: "barber_skill" },
     ],
   },
   {
@@ -211,13 +209,6 @@ const tables = [
       { name: "language", type: "string", defaultValue: "en" },
       { name: "hair_type", type: "link", link: { table: "hair_type" } },
       { name: "user", type: "link", link: { table: "nextauth_users" } },
-    ],
-  },
-  {
-    name: "barber_skill",
-    columns: [
-      { name: "skill", type: "link", link: { table: "hair_type" } },
-      { name: "barber", type: "link", link: { table: "barber" } },
     ],
   },
 ] as const;
@@ -286,9 +277,6 @@ export type BarbershopPreferencesRecord = BarbershopPreferences & XataRecord;
 export type UserPreferences = InferredTypes["user_preferences"];
 export type UserPreferencesRecord = UserPreferences & XataRecord;
 
-export type BarberSkill = InferredTypes["barber_skill"];
-export type BarberSkillRecord = BarberSkill & XataRecord;
-
 export type DatabaseSchema = {
   nextauth_verificationTokens: NextauthVerificationTokensRecord;
   nextauth_users: NextauthUsersRecord;
@@ -309,7 +297,6 @@ export type DatabaseSchema = {
   barbershop_barber_invitation: BarbershopBarberInvitationRecord;
   barbershop_preferences: BarbershopPreferencesRecord;
   user_preferences: UserPreferencesRecord;
-  barber_skill: BarberSkillRecord;
 };
 
 const DatabaseClient = buildClient();
