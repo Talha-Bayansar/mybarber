@@ -101,7 +101,7 @@ export const barbershopRouter = createTRPCRouter({
 
     return response;
   }),
-  getAvailableIntervals: protectedProcedure
+  getAvailableIntervals: publicProcedure
     .input(
       z.object({
         barbershopId: z.string().min(1),

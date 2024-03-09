@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { createTRPCRouter, protectedProcedure } from "../trpc";
+import { createTRPCRouter, protectedProcedure, publicProcedure } from "../trpc";
 import { TRPCError } from "@trpc/server";
 import { isValidDateFormat } from "~/lib/utils";
 import { getAvailableIntervals } from "../lib/barbershop";
@@ -7,7 +7,7 @@ import { stripe } from "~/lib/stripe";
 import { routes } from "~/lib/routes";
 
 export const reservationRouter = createTRPCRouter({
-  getById: protectedProcedure
+  getById: publicProcedure
     .input(
       z.object({
         id: z.string().min(1),
@@ -169,7 +169,7 @@ export const reservationRouter = createTRPCRouter({
 
       return response;
     }),
-  create: protectedProcedure
+  create: publicProcedure
     .input(
       z.object({
         barberId: z.string().min(1),
@@ -215,7 +215,7 @@ export const reservationRouter = createTRPCRouter({
         date: input.date,
         start_time: input.startTime,
         price_list_item: input.priceListItemId,
-        user: session.user.id,
+        user: session?.user.id,
         barber: input.barberId,
         is_paid: false,
       });
@@ -227,7 +227,7 @@ export const reservationRouter = createTRPCRouter({
 
       return response;
     }),
-  checkout: protectedProcedure
+  checkout: publicProcedure
     .input(
       z.object({
         id: z.string().min(1),

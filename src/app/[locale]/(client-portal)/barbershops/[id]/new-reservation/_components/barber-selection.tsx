@@ -34,7 +34,7 @@ const formSchema = z.object({
 type Props = {
   date?: string;
   time?: string;
-  userPreferences: UserPreferencesRecord;
+  userPreferences?: UserPreferencesRecord;
 };
 
 export const BarberSelection = ({ date, time, userPreferences }: Props) => {
@@ -46,7 +46,7 @@ export const BarberSelection = ({ date, time, userPreferences }: Props) => {
       barbershopId,
       date,
       time: Number(time),
-      hairTypeId: userPreferences.hair_type?.id,
+      hairTypeId: userPreferences?.hair_type?.id,
     });
 
   const form = useForm<z.infer<typeof formSchema>>({

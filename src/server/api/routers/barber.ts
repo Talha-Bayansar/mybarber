@@ -68,7 +68,7 @@ export const barberRouter = createTRPCRouter({
 
     return barber;
   }),
-  getAllAvailable: protectedProcedure
+  getAllAvailable: publicProcedure
     .input(
       z.object({
         barbershopId: z.string().min(1),
@@ -129,7 +129,7 @@ export const barberRouter = createTRPCRouter({
 
       const bookedBarberIds = [
         ...new Set(
-          filteredReservations.map((reservation) => reservation.barber!.id),
+          filteredReservations.map((reservation) => reservation.barber?.id),
         ),
       ];
       const availableBarbers = barbers.filter(

@@ -20,7 +20,13 @@ type Props = {
 export const ReservationForm = async ({
   searchParams: { barber, date, time, reservation },
 }: Props) => {
-  const userPreferences = await api.userPreferences.get.query();
+  let userPreferences: UserPreferencesRecord | undefined;
+  try {
+    userPreferences =
+      (await api.userPreferences.get.query()) as UserPreferencesRecord;
+  } catch (error) {
+    userPreferences = undefined;
+  }
 
   if (reservation) return <Checkout reservation={reservation} />;
 
@@ -32,7 +38,7 @@ export const ReservationForm = async ({
       <BarberSelection
         date={date}
         time={time}
-        userPreferences={userPreferences as UserPreferencesRecord}
+        userPreferences={userPreferences}
       />
     );
 
