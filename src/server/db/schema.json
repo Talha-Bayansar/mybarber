@@ -446,6 +446,18 @@
           "type": "bool"
         },
         {
+          "name": "guest_email",
+          "type": "string"
+        },
+        {
+          "name": "guest_name",
+          "type": "string"
+        },
+        {
+          "name": "guest_phone_number",
+          "type": "string"
+        },
+        {
           "name": "user",
           "type": "link",
           "link": {

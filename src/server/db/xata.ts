@@ -186,6 +186,9 @@ const tables = [
       { name: "barber", type: "link", link: { table: "barber" } },
       { name: "barbershop", type: "link", link: { table: "barbershop" } },
       { name: "is_paid", type: "bool" },
+      { name: "guest_email", type: "string" },
+      { name: "guest_name", type: "string" },
+      { name: "guest_phone_number", type: "string" },
     ],
   },
   {

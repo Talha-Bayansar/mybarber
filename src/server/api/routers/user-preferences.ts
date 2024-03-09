@@ -10,7 +10,15 @@ export const userPreferencesRouter = createTRPCRouter({
       .filter({
         "user.id": session.user.id,
       })
-      .getFirstOrThrow();
+      .getFirst();
+
+    if (!preferences) {
+      const response = await xata.db.user_preferences.create({
+        user: session.user.id,
+      });
+
+      return response;
+    }
 
     return preferences;
   }),
