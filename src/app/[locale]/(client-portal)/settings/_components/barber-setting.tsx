@@ -3,12 +3,16 @@ import { SettingCard } from "~/components/setting-card";
 import { Button } from "~/components/ui/button";
 import { routes } from "~/lib/routes";
 import { Link } from "~/navigation";
+import { getServerAuthSession } from "~/server/auth";
 import type { BarberRecord } from "~/server/db/xata";
 import { api } from "~/trpc/server";
 
 export const BarberSetting = async () => {
   let barber: BarberRecord;
+  const session = await getServerAuthSession();
   const t = await getTranslations("SettingsPage");
+
+  if (!session) return null;
 
   try {
     const response = await api.barber.getMyBarber.query();

@@ -3,12 +3,16 @@ import { SettingCard } from "~/components/setting-card";
 import { Button } from "~/components/ui/button";
 import { routes } from "~/lib/routes";
 import { Link } from "~/navigation";
+import { getServerAuthSession } from "~/server/auth";
 import type { BarbershopRecord } from "~/server/db/xata";
 import { api } from "~/trpc/server";
 
 export const OwnerSetting = async () => {
   let barbershop: BarbershopRecord;
+  const session = await getServerAuthSession();
   const t = await getTranslations("SettingsPage");
+
+  if (!session) return null;
 
   try {
     const response = await api.barbershop.getByOwner.query();
