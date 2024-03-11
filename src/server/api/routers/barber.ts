@@ -3,6 +3,23 @@ import { createTRPCRouter, protectedProcedure, publicProcedure } from "../trpc";
 import { TRPCError } from "@trpc/server";
 
 export const barberRouter = createTRPCRouter({
+  getById: publicProcedure
+    .input(
+      z.object({
+        id: z.string().min(1),
+      }),
+    )
+    .query(async ({ ctx, input }) => {
+      const { xata } = ctx;
+
+      const barber = await xata.db.barber
+        .filter({
+          id: input.id,
+        })
+        .getFirstOrThrow();
+
+      return barber;
+    }),
   getByBarbershopId: publicProcedure
     .input(
       z.object({

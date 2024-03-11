@@ -283,8 +283,8 @@ export const reservationRouter = createTRPCRouter({
           metadata: {
             reservation_id: reservation.id,
           },
-          success_url: `${origin}/${locale}${routes.reservations.root}`,
-          cancel_url: referer ?? `${origin}/${locale}`,
+          success_url: `${origin}/${locale}${routes.barbershops.id(reservation.barbershop!.id).newReservation.success.root}`,
+          cancel_url: `${origin}/${locale}${routes.barbershops.id(reservation.barbershop!.id).newReservation.fail.root}`,
         },
         {
           stripeAccount: "acct_1OjWyTQYkSiAfvdP",

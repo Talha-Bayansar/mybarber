@@ -13,12 +13,12 @@ type Props = {
     barber?: string;
     date?: string;
     time?: string;
-    reservation?: string;
+    treatment?: string;
   };
 };
 
 export const ReservationForm = async ({
-  searchParams: { barber, date, time, reservation },
+  searchParams: { barber, date, time, treatment },
 }: Props) => {
   let userPreferences: UserPreferencesRecord | undefined;
   try {
@@ -28,7 +28,15 @@ export const ReservationForm = async ({
     userPreferences = undefined;
   }
 
-  if (reservation) return <Checkout reservation={reservation} />;
+  if (barber && date && time && treatment)
+    return (
+      <Checkout
+        barberId={barber}
+        date={date}
+        time={time}
+        priceListItemId={treatment}
+      />
+    );
 
   if (date && time && barber)
     return <TreatmentSelection date={date} time={time} barberId={barber} />;

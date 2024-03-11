@@ -11,6 +11,20 @@ export const routes = {
     registration: {
       root: "/barbershops/registration",
     },
+    id: (id: string) => {
+      return {
+        root: `/barbershops/${id}`,
+        newReservation: {
+          root: `/barbershops/${id}/new-reservation`,
+          success: {
+            root: `/barbershops/${id}/new-reservation/success`,
+          },
+          fail: {
+            root: `/barbershops/${id}/new-reservation/fail`,
+          },
+        },
+      };
+    },
   },
   barbers: {
     root: "/barbers",

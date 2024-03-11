@@ -1,8 +1,25 @@
 import { z } from "zod";
-import { createTRPCRouter, protectedProcedure } from "../trpc";
+import { createTRPCRouter, protectedProcedure, publicProcedure } from "../trpc";
 import { TRPCError } from "@trpc/server";
 
 export const priceListItemRouter = createTRPCRouter({
+  getById: publicProcedure
+    .input(
+      z.object({
+        id: z.string().min(1),
+      }),
+    )
+    .query(async ({ ctx, input }) => {
+      const { xata } = ctx;
+
+      const priceListItem = await xata.db.price_list_item
+        .filter({
+          id: input.id,
+        })
+        .getFirstOrThrow();
+
+      return priceListItem;
+    }),
   create: protectedProcedure
     .input(
       z.object({

@@ -173,11 +173,12 @@
     "select_date": "Select date",
     "select_barber": "Select barber",
     "no_preference": "No preference",
-    "success_message": "Successfully created new reservation.",
-    "error_message": "Something went wrong while creating new reservation.",
     "your_reservation": "Your reservation",
     "payment_button": "Proceed to Payment",
-    "review_button": "Review & Pay"
+    "review_button": "Review & Pay",
+    "success_message": "Your reservation was successfully created.",
+    "go_to_reservations": "Go to your reservations",
+    "error_message": "Something went wrong while creating new reservation."
   },
   "Owner": {
     "RootPage": {

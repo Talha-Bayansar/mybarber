@@ -4,7 +4,6 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useParams } from "next/navigation";
 import { useForm } from "react-hook-form";
-import { toast } from "sonner";
 import { z } from "zod";
 import { List } from "~/components/layout/list";
 import { Button } from "~/components/ui/button";
@@ -44,18 +43,6 @@ export const TreatmentSelection = ({ date, time, barberId }: Props) => {
     api.priceList.getByBarbershopId.useQuery({
       barbershopId,
     });
-  const createReservation = api.reservation.create.useMutation({
-    onSuccess: (reservation) => {
-      const searchParams = new URLSearchParams();
-      searchParams.set("reservation", reservation.id);
-      router.push(
-        `${routes.barbershops.root}/${barbershopId}/new-reservation?${searchParams.toString()}`,
-      );
-    },
-    onError: () => {
-      toast(t("NewReservationPage.error_message"));
-    },
-  });
 
   const getSearchParams = () => {
     const searchParams = new URLSearchParams();
@@ -77,13 +64,14 @@ export const TreatmentSelection = ({ date, time, barberId }: Props) => {
 
   function onSubmit(values: z.infer<typeof formSchema>) {
     const { date, time, barberId, priceListItemId } = values;
-    createReservation.mutate({
-      barbershopId,
-      date,
-      startTime: Number(time),
-      priceListItemId,
-      barberId: barberId,
-    });
+    const searchParams = new URLSearchParams();
+    searchParams.set("date", date);
+    searchParams.set("time", time);
+    searchParams.set("barber", barberId);
+    searchParams.set("treatment", priceListItemId);
+    router.push(
+      `${routes.barbershops.root}/${barbershopId}/new-reservation?${searchParams.toString()}`,
+    );
   }
 
   if (isLoading) return <TreatmentSelectionSkeleton />;
@@ -137,7 +125,7 @@ export const TreatmentSelection = ({ date, time, barberId }: Props) => {
               <ChevronLeft size={20} /> {t("global.back")}
             </Link>
           </Button>
-          <Button type="submit" disabled={createReservation.isLoading}>
+          <Button type="submit">
             {t("NewReservationPage.review_button")} <ChevronRight size={20} />
           </Button>
         </div>
