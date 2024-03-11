@@ -178,7 +178,14 @@
     "review_button": "Review & Pay",
     "success_message": "Your reservation was successfully created.",
     "go_to_reservations": "Go to your reservations",
-    "error_message": "Something went wrong while creating new reservation."
+    "error_message": "Something went wrong while creating new reservation.",
+    "personal_information": "Personal information",
+    "name": "Full name",
+    "name_placeholder": "Full name",
+    "email": "Email",
+    "email_placeholder": "Your personal email",
+    "phone_number": "Phone number",
+    "phone_number_placeholder": "Your personal phone number"
   },
   "Owner": {
     "RootPage": {

@@ -177,6 +177,9 @@ export const reservationRouter = createTRPCRouter({
         startTime: z.number(),
         priceListItemId: z.string().min(1),
         barbershopId: z.string().min(1),
+        guestName: z.string().min(1).optional(),
+        guestEmail: z.string().email().min(1).optional(),
+        guestPhoneNumber: z.string().min(1).optional(),
       }),
     )
     .mutation(async ({ ctx, input }) => {
@@ -218,6 +221,9 @@ export const reservationRouter = createTRPCRouter({
         user: session?.user.id,
         barber: input.barberId,
         is_paid: false,
+        guest_email: input.guestEmail,
+        guest_name: input.guestName,
+        guest_phone_number: input.guestPhoneNumber,
       });
 
       if (!response)
