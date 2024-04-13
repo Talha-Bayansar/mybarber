@@ -31,7 +31,12 @@ export const LanguageSetting = () => {
           </SelectTrigger>
           <SelectContent>
             {locales.map((locale) => (
-              <SelectItem className="uppercase" key={locale} value={locale}>
+              <SelectItem
+                disabled={locale !== "en"}
+                className="uppercase"
+                key={locale}
+                value={locale}
+              >
                 {locale}
               </SelectItem>
             ))}
